@@ -1,0 +1,4262 @@
+[
+  {
+    "id": "unlock-woodcutting-10",
+    "type": "UNLOCK",
+    "title": "Woodcutting 1 → 10",
+    "description": "You may train Woodcutting up to level 10. You must reach 10 before opening another pack.",
+    "weight": 10,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Woodcutting",
+        "cap": 10
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Woodcutting",
+      "level": 10
+    }
+  },
+  {
+    "id": "unlock-mining-10",
+    "type": "UNLOCK",
+    "title": "Mining 1 → 10",
+    "description": "You may train Mining up to level 10. You must reach 10 before opening another pack.",
+    "weight": 10,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Mining",
+        "cap": 10
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Mining",
+      "level": 10
+    }
+  },
+  {
+    "id": "task-slayer-5",
+    "type": "TASK",
+    "title": "On the Board",
+    "description": "Complete 5 slayer tasks (manual).",
+    "weight": 7
+  },
+  {
+    "id": "task-cows-50",
+    "type": "TASK",
+    "title": "Beefy Beginnings",
+    "description": "Kill 50 cows (manual).",
+    "weight": 7
+  },
+  {
+    "id": "unlock-agility-001-010",
+    "type": "UNLOCK",
+    "title": "Agility 1 → 10",
+    "description": "Increase your Agility cap to 10. You must reach 10 before opening another pack.",
+    "weight": 14,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Agility",
+        "cap": 10
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Agility",
+      "level": 10
+    },
+    "_generated": "skill_unlock_v1"
+  },
+  {
+    "id": "unlock-agility-011-020",
+    "type": "UNLOCK",
+    "title": "Agility 11 → 20",
+    "description": "Increase your Agility cap to 20. You must reach 20 before opening another pack.",
+    "weight": 12,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Agility",
+        "cap": 20
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Agility",
+      "level": 20
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Agility",
+        "cap": 10
+      }
+    ]
+  },
+  {
+    "id": "unlock-agility-021-030",
+    "type": "UNLOCK",
+    "title": "Agility 21 → 30",
+    "description": "Increase your Agility cap to 30. You must reach 30 before opening another pack.",
+    "weight": 10,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Agility",
+        "cap": 30
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Agility",
+      "level": 30
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Agility",
+        "cap": 20
+      }
+    ]
+  },
+  {
+    "id": "unlock-agility-031-040",
+    "type": "UNLOCK",
+    "title": "Agility 31 → 40",
+    "description": "Increase your Agility cap to 40. You must reach 40 before opening another pack.",
+    "weight": 9,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Agility",
+        "cap": 40
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Agility",
+      "level": 40
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Agility",
+        "cap": 30
+      }
+    ]
+  },
+  {
+    "id": "unlock-agility-041-050",
+    "type": "UNLOCK",
+    "title": "Agility 41 → 50",
+    "description": "Increase your Agility cap to 50. You must reach 50 before opening another pack.",
+    "weight": 8,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Agility",
+        "cap": 50
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Agility",
+      "level": 50
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Agility",
+        "cap": 40
+      }
+    ]
+  },
+  {
+    "id": "unlock-agility-051-060",
+    "type": "UNLOCK",
+    "title": "Agility 51 → 60",
+    "description": "Increase your Agility cap to 60. You must reach 60 before opening another pack.",
+    "weight": 7,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Agility",
+        "cap": 60
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Agility",
+      "level": 60
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Agility",
+        "cap": 50
+      }
+    ]
+  },
+  {
+    "id": "unlock-agility-061-070",
+    "type": "UNLOCK",
+    "title": "Agility 61 → 70",
+    "description": "Increase your Agility cap to 70. You must reach 70 before opening another pack.",
+    "weight": 6,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Agility",
+        "cap": 70
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Agility",
+      "level": 70
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Agility",
+        "cap": 60
+      }
+    ]
+  },
+  {
+    "id": "unlock-agility-071-080",
+    "type": "UNLOCK",
+    "title": "Agility 71 → 80",
+    "description": "Increase your Agility cap to 80. You must reach 80 before opening another pack.",
+    "weight": 5,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Agility",
+        "cap": 80
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Agility",
+      "level": 80
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Agility",
+        "cap": 70
+      }
+    ]
+  },
+  {
+    "id": "unlock-agility-081-090",
+    "type": "UNLOCK",
+    "title": "Agility 81 → 90",
+    "description": "Increase your Agility cap to 90. You must reach 90 before opening another pack.",
+    "weight": 4,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Agility",
+        "cap": 90
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Agility",
+      "level": 90
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Agility",
+        "cap": 80
+      }
+    ]
+  },
+  {
+    "id": "unlock-agility-091-099",
+    "type": "UNLOCK",
+    "title": "Agility 91 → 99",
+    "description": "Increase your Agility cap to 99. You must reach 99 before opening another pack.",
+    "weight": 3,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Agility",
+        "cap": 99
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Agility",
+      "level": 99
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Agility",
+        "cap": 90
+      }
+    ]
+  },
+  {
+    "id": "unlock-construction-001-010",
+    "type": "UNLOCK",
+    "title": "Construction 1 → 10",
+    "description": "Increase your Construction cap to 10. You must reach 10 before opening another pack.",
+    "weight": 14,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Construction",
+        "cap": 10
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Construction",
+      "level": 10
+    },
+    "_generated": "skill_unlock_v1"
+  },
+  {
+    "id": "unlock-construction-011-020",
+    "type": "UNLOCK",
+    "title": "Construction 11 → 20",
+    "description": "Increase your Construction cap to 20. You must reach 20 before opening another pack.",
+    "weight": 12,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Construction",
+        "cap": 20
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Construction",
+      "level": 20
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Construction",
+        "cap": 10
+      }
+    ]
+  },
+  {
+    "id": "unlock-construction-021-030",
+    "type": "UNLOCK",
+    "title": "Construction 21 → 30",
+    "description": "Increase your Construction cap to 30. You must reach 30 before opening another pack.",
+    "weight": 10,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Construction",
+        "cap": 30
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Construction",
+      "level": 30
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Construction",
+        "cap": 20
+      }
+    ]
+  },
+  {
+    "id": "unlock-construction-031-040",
+    "type": "UNLOCK",
+    "title": "Construction 31 → 40",
+    "description": "Increase your Construction cap to 40. You must reach 40 before opening another pack.",
+    "weight": 9,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Construction",
+        "cap": 40
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Construction",
+      "level": 40
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Construction",
+        "cap": 30
+      }
+    ]
+  },
+  {
+    "id": "unlock-construction-041-050",
+    "type": "UNLOCK",
+    "title": "Construction 41 → 50",
+    "description": "Increase your Construction cap to 50. You must reach 50 before opening another pack.",
+    "weight": 8,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Construction",
+        "cap": 50
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Construction",
+      "level": 50
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Construction",
+        "cap": 40
+      }
+    ]
+  },
+  {
+    "id": "unlock-construction-051-060",
+    "type": "UNLOCK",
+    "title": "Construction 51 → 60",
+    "description": "Increase your Construction cap to 60. You must reach 60 before opening another pack.",
+    "weight": 7,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Construction",
+        "cap": 60
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Construction",
+      "level": 60
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Construction",
+        "cap": 50
+      }
+    ]
+  },
+  {
+    "id": "unlock-construction-061-070",
+    "type": "UNLOCK",
+    "title": "Construction 61 → 70",
+    "description": "Increase your Construction cap to 70. You must reach 70 before opening another pack.",
+    "weight": 6,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Construction",
+        "cap": 70
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Construction",
+      "level": 70
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Construction",
+        "cap": 60
+      }
+    ]
+  },
+  {
+    "id": "unlock-construction-071-080",
+    "type": "UNLOCK",
+    "title": "Construction 71 → 80",
+    "description": "Increase your Construction cap to 80. You must reach 80 before opening another pack.",
+    "weight": 5,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Construction",
+        "cap": 80
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Construction",
+      "level": 80
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Construction",
+        "cap": 70
+      }
+    ]
+  },
+  {
+    "id": "unlock-construction-081-090",
+    "type": "UNLOCK",
+    "title": "Construction 81 → 90",
+    "description": "Increase your Construction cap to 90. You must reach 90 before opening another pack.",
+    "weight": 4,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Construction",
+        "cap": 90
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Construction",
+      "level": 90
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Construction",
+        "cap": 80
+      }
+    ]
+  },
+  {
+    "id": "unlock-construction-091-099",
+    "type": "UNLOCK",
+    "title": "Construction 91 → 99",
+    "description": "Increase your Construction cap to 99. You must reach 99 before opening another pack.",
+    "weight": 3,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Construction",
+        "cap": 99
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Construction",
+      "level": 99
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Construction",
+        "cap": 90
+      }
+    ]
+  },
+  {
+    "id": "unlock-cooking-001-010",
+    "type": "UNLOCK",
+    "title": "Cooking 1 → 10",
+    "description": "Increase your Cooking cap to 10. You must reach 10 before opening another pack.",
+    "weight": 14,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Cooking",
+        "cap": 10
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Cooking",
+      "level": 10
+    },
+    "_generated": "skill_unlock_v1"
+  },
+  {
+    "id": "unlock-cooking-011-020",
+    "type": "UNLOCK",
+    "title": "Cooking 11 → 20",
+    "description": "Increase your Cooking cap to 20. You must reach 20 before opening another pack.",
+    "weight": 12,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Cooking",
+        "cap": 20
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Cooking",
+      "level": 20
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Cooking",
+        "cap": 10
+      }
+    ]
+  },
+  {
+    "id": "unlock-cooking-021-030",
+    "type": "UNLOCK",
+    "title": "Cooking 21 → 30",
+    "description": "Increase your Cooking cap to 30. You must reach 30 before opening another pack.",
+    "weight": 10,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Cooking",
+        "cap": 30
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Cooking",
+      "level": 30
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Cooking",
+        "cap": 20
+      }
+    ]
+  },
+  {
+    "id": "unlock-cooking-031-040",
+    "type": "UNLOCK",
+    "title": "Cooking 31 → 40",
+    "description": "Increase your Cooking cap to 40. You must reach 40 before opening another pack.",
+    "weight": 9,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Cooking",
+        "cap": 40
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Cooking",
+      "level": 40
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Cooking",
+        "cap": 30
+      }
+    ]
+  },
+  {
+    "id": "unlock-cooking-041-050",
+    "type": "UNLOCK",
+    "title": "Cooking 41 → 50",
+    "description": "Increase your Cooking cap to 50. You must reach 50 before opening another pack.",
+    "weight": 8,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Cooking",
+        "cap": 50
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Cooking",
+      "level": 50
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Cooking",
+        "cap": 40
+      }
+    ]
+  },
+  {
+    "id": "unlock-cooking-051-060",
+    "type": "UNLOCK",
+    "title": "Cooking 51 → 60",
+    "description": "Increase your Cooking cap to 60. You must reach 60 before opening another pack.",
+    "weight": 7,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Cooking",
+        "cap": 60
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Cooking",
+      "level": 60
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Cooking",
+        "cap": 50
+      }
+    ]
+  },
+  {
+    "id": "unlock-cooking-061-070",
+    "type": "UNLOCK",
+    "title": "Cooking 61 → 70",
+    "description": "Increase your Cooking cap to 70. You must reach 70 before opening another pack.",
+    "weight": 6,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Cooking",
+        "cap": 70
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Cooking",
+      "level": 70
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Cooking",
+        "cap": 60
+      }
+    ]
+  },
+  {
+    "id": "unlock-cooking-071-080",
+    "type": "UNLOCK",
+    "title": "Cooking 71 → 80",
+    "description": "Increase your Cooking cap to 80. You must reach 80 before opening another pack.",
+    "weight": 5,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Cooking",
+        "cap": 80
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Cooking",
+      "level": 80
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Cooking",
+        "cap": 70
+      }
+    ]
+  },
+  {
+    "id": "unlock-cooking-081-090",
+    "type": "UNLOCK",
+    "title": "Cooking 81 → 90",
+    "description": "Increase your Cooking cap to 90. You must reach 90 before opening another pack.",
+    "weight": 4,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Cooking",
+        "cap": 90
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Cooking",
+      "level": 90
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Cooking",
+        "cap": 80
+      }
+    ]
+  },
+  {
+    "id": "unlock-cooking-091-099",
+    "type": "UNLOCK",
+    "title": "Cooking 91 → 99",
+    "description": "Increase your Cooking cap to 99. You must reach 99 before opening another pack.",
+    "weight": 3,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Cooking",
+        "cap": 99
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Cooking",
+      "level": 99
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Cooking",
+        "cap": 90
+      }
+    ]
+  },
+  {
+    "id": "unlock-crafting-001-010",
+    "type": "UNLOCK",
+    "title": "Crafting 1 → 10",
+    "description": "Increase your Crafting cap to 10. You must reach 10 before opening another pack.",
+    "weight": 14,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Crafting",
+        "cap": 10
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Crafting",
+      "level": 10
+    },
+    "_generated": "skill_unlock_v1"
+  },
+  {
+    "id": "unlock-crafting-011-020",
+    "type": "UNLOCK",
+    "title": "Crafting 11 → 20",
+    "description": "Increase your Crafting cap to 20. You must reach 20 before opening another pack.",
+    "weight": 12,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Crafting",
+        "cap": 20
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Crafting",
+      "level": 20
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Crafting",
+        "cap": 10
+      }
+    ]
+  },
+  {
+    "id": "unlock-crafting-021-030",
+    "type": "UNLOCK",
+    "title": "Crafting 21 → 30",
+    "description": "Increase your Crafting cap to 30. You must reach 30 before opening another pack.",
+    "weight": 10,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Crafting",
+        "cap": 30
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Crafting",
+      "level": 30
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Crafting",
+        "cap": 20
+      }
+    ]
+  },
+  {
+    "id": "unlock-crafting-031-040",
+    "type": "UNLOCK",
+    "title": "Crafting 31 → 40",
+    "description": "Increase your Crafting cap to 40. You must reach 40 before opening another pack.",
+    "weight": 9,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Crafting",
+        "cap": 40
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Crafting",
+      "level": 40
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Crafting",
+        "cap": 30
+      }
+    ]
+  },
+  {
+    "id": "unlock-crafting-041-050",
+    "type": "UNLOCK",
+    "title": "Crafting 41 → 50",
+    "description": "Increase your Crafting cap to 50. You must reach 50 before opening another pack.",
+    "weight": 8,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Crafting",
+        "cap": 50
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Crafting",
+      "level": 50
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Crafting",
+        "cap": 40
+      }
+    ]
+  },
+  {
+    "id": "unlock-crafting-051-060",
+    "type": "UNLOCK",
+    "title": "Crafting 51 → 60",
+    "description": "Increase your Crafting cap to 60. You must reach 60 before opening another pack.",
+    "weight": 7,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Crafting",
+        "cap": 60
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Crafting",
+      "level": 60
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Crafting",
+        "cap": 50
+      }
+    ]
+  },
+  {
+    "id": "unlock-crafting-061-070",
+    "type": "UNLOCK",
+    "title": "Crafting 61 → 70",
+    "description": "Increase your Crafting cap to 70. You must reach 70 before opening another pack.",
+    "weight": 6,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Crafting",
+        "cap": 70
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Crafting",
+      "level": 70
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Crafting",
+        "cap": 60
+      }
+    ]
+  },
+  {
+    "id": "unlock-crafting-071-080",
+    "type": "UNLOCK",
+    "title": "Crafting 71 → 80",
+    "description": "Increase your Crafting cap to 80. You must reach 80 before opening another pack.",
+    "weight": 5,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Crafting",
+        "cap": 80
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Crafting",
+      "level": 80
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Crafting",
+        "cap": 70
+      }
+    ]
+  },
+  {
+    "id": "unlock-crafting-081-090",
+    "type": "UNLOCK",
+    "title": "Crafting 81 → 90",
+    "description": "Increase your Crafting cap to 90. You must reach 90 before opening another pack.",
+    "weight": 4,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Crafting",
+        "cap": 90
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Crafting",
+      "level": 90
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Crafting",
+        "cap": 80
+      }
+    ]
+  },
+  {
+    "id": "unlock-crafting-091-099",
+    "type": "UNLOCK",
+    "title": "Crafting 91 → 99",
+    "description": "Increase your Crafting cap to 99. You must reach 99 before opening another pack.",
+    "weight": 3,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Crafting",
+        "cap": 99
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Crafting",
+      "level": 99
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Crafting",
+        "cap": 90
+      }
+    ]
+  },
+  {
+    "id": "unlock-farming-001-010",
+    "type": "UNLOCK",
+    "title": "Farming 1 → 10",
+    "description": "Increase your Farming cap to 10. You must reach 10 before opening another pack.",
+    "weight": 14,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Farming",
+        "cap": 10
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Farming",
+      "level": 10
+    },
+    "_generated": "skill_unlock_v1"
+  },
+  {
+    "id": "unlock-farming-011-020",
+    "type": "UNLOCK",
+    "title": "Farming 11 → 20",
+    "description": "Increase your Farming cap to 20. You must reach 20 before opening another pack.",
+    "weight": 12,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Farming",
+        "cap": 20
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Farming",
+      "level": 20
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Farming",
+        "cap": 10
+      }
+    ]
+  },
+  {
+    "id": "unlock-farming-021-030",
+    "type": "UNLOCK",
+    "title": "Farming 21 → 30",
+    "description": "Increase your Farming cap to 30. You must reach 30 before opening another pack.",
+    "weight": 10,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Farming",
+        "cap": 30
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Farming",
+      "level": 30
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Farming",
+        "cap": 20
+      }
+    ]
+  },
+  {
+    "id": "unlock-farming-031-040",
+    "type": "UNLOCK",
+    "title": "Farming 31 → 40",
+    "description": "Increase your Farming cap to 40. You must reach 40 before opening another pack.",
+    "weight": 9,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Farming",
+        "cap": 40
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Farming",
+      "level": 40
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Farming",
+        "cap": 30
+      }
+    ]
+  },
+  {
+    "id": "unlock-farming-041-050",
+    "type": "UNLOCK",
+    "title": "Farming 41 → 50",
+    "description": "Increase your Farming cap to 50. You must reach 50 before opening another pack.",
+    "weight": 8,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Farming",
+        "cap": 50
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Farming",
+      "level": 50
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Farming",
+        "cap": 40
+      }
+    ]
+  },
+  {
+    "id": "unlock-farming-051-060",
+    "type": "UNLOCK",
+    "title": "Farming 51 → 60",
+    "description": "Increase your Farming cap to 60. You must reach 60 before opening another pack.",
+    "weight": 7,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Farming",
+        "cap": 60
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Farming",
+      "level": 60
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Farming",
+        "cap": 50
+      }
+    ]
+  },
+  {
+    "id": "unlock-farming-061-070",
+    "type": "UNLOCK",
+    "title": "Farming 61 → 70",
+    "description": "Increase your Farming cap to 70. You must reach 70 before opening another pack.",
+    "weight": 6,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Farming",
+        "cap": 70
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Farming",
+      "level": 70
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Farming",
+        "cap": 60
+      }
+    ]
+  },
+  {
+    "id": "unlock-farming-071-080",
+    "type": "UNLOCK",
+    "title": "Farming 71 → 80",
+    "description": "Increase your Farming cap to 80. You must reach 80 before opening another pack.",
+    "weight": 5,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Farming",
+        "cap": 80
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Farming",
+      "level": 80
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Farming",
+        "cap": 70
+      }
+    ]
+  },
+  {
+    "id": "unlock-farming-081-090",
+    "type": "UNLOCK",
+    "title": "Farming 81 → 90",
+    "description": "Increase your Farming cap to 90. You must reach 90 before opening another pack.",
+    "weight": 4,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Farming",
+        "cap": 90
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Farming",
+      "level": 90
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Farming",
+        "cap": 80
+      }
+    ]
+  },
+  {
+    "id": "unlock-farming-091-099",
+    "type": "UNLOCK",
+    "title": "Farming 91 → 99",
+    "description": "Increase your Farming cap to 99. You must reach 99 before opening another pack.",
+    "weight": 3,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Farming",
+        "cap": 99
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Farming",
+      "level": 99
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Farming",
+        "cap": 90
+      }
+    ]
+  },
+  {
+    "id": "unlock-firemaking-001-010",
+    "type": "UNLOCK",
+    "title": "Firemaking 1 → 10",
+    "description": "Increase your Firemaking cap to 10. You must reach 10 before opening another pack.",
+    "weight": 14,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Firemaking",
+        "cap": 10
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Firemaking",
+      "level": 10
+    },
+    "_generated": "skill_unlock_v1"
+  },
+  {
+    "id": "unlock-firemaking-011-020",
+    "type": "UNLOCK",
+    "title": "Firemaking 11 → 20",
+    "description": "Increase your Firemaking cap to 20. You must reach 20 before opening another pack.",
+    "weight": 12,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Firemaking",
+        "cap": 20
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Firemaking",
+      "level": 20
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Firemaking",
+        "cap": 10
+      }
+    ]
+  },
+  {
+    "id": "unlock-firemaking-021-030",
+    "type": "UNLOCK",
+    "title": "Firemaking 21 → 30",
+    "description": "Increase your Firemaking cap to 30. You must reach 30 before opening another pack.",
+    "weight": 10,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Firemaking",
+        "cap": 30
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Firemaking",
+      "level": 30
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Firemaking",
+        "cap": 20
+      }
+    ]
+  },
+  {
+    "id": "unlock-firemaking-031-040",
+    "type": "UNLOCK",
+    "title": "Firemaking 31 → 40",
+    "description": "Increase your Firemaking cap to 40. You must reach 40 before opening another pack.",
+    "weight": 9,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Firemaking",
+        "cap": 40
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Firemaking",
+      "level": 40
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Firemaking",
+        "cap": 30
+      }
+    ]
+  },
+  {
+    "id": "unlock-firemaking-041-050",
+    "type": "UNLOCK",
+    "title": "Firemaking 41 → 50",
+    "description": "Increase your Firemaking cap to 50. You must reach 50 before opening another pack.",
+    "weight": 8,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Firemaking",
+        "cap": 50
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Firemaking",
+      "level": 50
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Firemaking",
+        "cap": 40
+      }
+    ]
+  },
+  {
+    "id": "unlock-firemaking-051-060",
+    "type": "UNLOCK",
+    "title": "Firemaking 51 → 60",
+    "description": "Increase your Firemaking cap to 60. You must reach 60 before opening another pack.",
+    "weight": 7,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Firemaking",
+        "cap": 60
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Firemaking",
+      "level": 60
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Firemaking",
+        "cap": 50
+      }
+    ]
+  },
+  {
+    "id": "unlock-firemaking-061-070",
+    "type": "UNLOCK",
+    "title": "Firemaking 61 → 70",
+    "description": "Increase your Firemaking cap to 70. You must reach 70 before opening another pack.",
+    "weight": 6,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Firemaking",
+        "cap": 70
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Firemaking",
+      "level": 70
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Firemaking",
+        "cap": 60
+      }
+    ]
+  },
+  {
+    "id": "unlock-firemaking-071-080",
+    "type": "UNLOCK",
+    "title": "Firemaking 71 → 80",
+    "description": "Increase your Firemaking cap to 80. You must reach 80 before opening another pack.",
+    "weight": 5,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Firemaking",
+        "cap": 80
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Firemaking",
+      "level": 80
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Firemaking",
+        "cap": 70
+      }
+    ]
+  },
+  {
+    "id": "unlock-firemaking-081-090",
+    "type": "UNLOCK",
+    "title": "Firemaking 81 → 90",
+    "description": "Increase your Firemaking cap to 90. You must reach 90 before opening another pack.",
+    "weight": 4,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Firemaking",
+        "cap": 90
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Firemaking",
+      "level": 90
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Firemaking",
+        "cap": 80
+      }
+    ]
+  },
+  {
+    "id": "unlock-firemaking-091-099",
+    "type": "UNLOCK",
+    "title": "Firemaking 91 → 99",
+    "description": "Increase your Firemaking cap to 99. You must reach 99 before opening another pack.",
+    "weight": 3,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Firemaking",
+        "cap": 99
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Firemaking",
+      "level": 99
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Firemaking",
+        "cap": 90
+      }
+    ]
+  },
+  {
+    "id": "unlock-fishing-001-010",
+    "type": "UNLOCK",
+    "title": "Fishing 1 → 10",
+    "description": "Increase your Fishing cap to 10. You must reach 10 before opening another pack.",
+    "weight": 14,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Fishing",
+        "cap": 10
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Fishing",
+      "level": 10
+    },
+    "_generated": "skill_unlock_v1"
+  },
+  {
+    "id": "unlock-fishing-011-020",
+    "type": "UNLOCK",
+    "title": "Fishing 11 → 20",
+    "description": "Increase your Fishing cap to 20. You must reach 20 before opening another pack.",
+    "weight": 12,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Fishing",
+        "cap": 20
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Fishing",
+      "level": 20
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Fishing",
+        "cap": 10
+      }
+    ]
+  },
+  {
+    "id": "unlock-fishing-021-030",
+    "type": "UNLOCK",
+    "title": "Fishing 21 → 30",
+    "description": "Increase your Fishing cap to 30. You must reach 30 before opening another pack.",
+    "weight": 10,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Fishing",
+        "cap": 30
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Fishing",
+      "level": 30
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Fishing",
+        "cap": 20
+      }
+    ]
+  },
+  {
+    "id": "unlock-fishing-031-040",
+    "type": "UNLOCK",
+    "title": "Fishing 31 → 40",
+    "description": "Increase your Fishing cap to 40. You must reach 40 before opening another pack.",
+    "weight": 9,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Fishing",
+        "cap": 40
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Fishing",
+      "level": 40
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Fishing",
+        "cap": 30
+      }
+    ]
+  },
+  {
+    "id": "unlock-fishing-041-050",
+    "type": "UNLOCK",
+    "title": "Fishing 41 → 50",
+    "description": "Increase your Fishing cap to 50. You must reach 50 before opening another pack.",
+    "weight": 8,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Fishing",
+        "cap": 50
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Fishing",
+      "level": 50
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Fishing",
+        "cap": 40
+      }
+    ]
+  },
+  {
+    "id": "unlock-fishing-051-060",
+    "type": "UNLOCK",
+    "title": "Fishing 51 → 60",
+    "description": "Increase your Fishing cap to 60. You must reach 60 before opening another pack.",
+    "weight": 7,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Fishing",
+        "cap": 60
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Fishing",
+      "level": 60
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Fishing",
+        "cap": 50
+      }
+    ]
+  },
+  {
+    "id": "unlock-fishing-061-070",
+    "type": "UNLOCK",
+    "title": "Fishing 61 → 70",
+    "description": "Increase your Fishing cap to 70. You must reach 70 before opening another pack.",
+    "weight": 6,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Fishing",
+        "cap": 70
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Fishing",
+      "level": 70
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Fishing",
+        "cap": 60
+      }
+    ]
+  },
+  {
+    "id": "unlock-fishing-071-080",
+    "type": "UNLOCK",
+    "title": "Fishing 71 → 80",
+    "description": "Increase your Fishing cap to 80. You must reach 80 before opening another pack.",
+    "weight": 5,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Fishing",
+        "cap": 80
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Fishing",
+      "level": 80
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Fishing",
+        "cap": 70
+      }
+    ]
+  },
+  {
+    "id": "unlock-fishing-081-090",
+    "type": "UNLOCK",
+    "title": "Fishing 81 → 90",
+    "description": "Increase your Fishing cap to 90. You must reach 90 before opening another pack.",
+    "weight": 4,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Fishing",
+        "cap": 90
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Fishing",
+      "level": 90
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Fishing",
+        "cap": 80
+      }
+    ]
+  },
+  {
+    "id": "unlock-fishing-091-099",
+    "type": "UNLOCK",
+    "title": "Fishing 91 → 99",
+    "description": "Increase your Fishing cap to 99. You must reach 99 before opening another pack.",
+    "weight": 3,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Fishing",
+        "cap": 99
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Fishing",
+      "level": 99
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Fishing",
+        "cap": 90
+      }
+    ]
+  },
+  {
+    "id": "unlock-fletching-001-010",
+    "type": "UNLOCK",
+    "title": "Fletching 1 → 10",
+    "description": "Increase your Fletching cap to 10. You must reach 10 before opening another pack.",
+    "weight": 14,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Fletching",
+        "cap": 10
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Fletching",
+      "level": 10
+    },
+    "_generated": "skill_unlock_v1"
+  },
+  {
+    "id": "unlock-fletching-011-020",
+    "type": "UNLOCK",
+    "title": "Fletching 11 → 20",
+    "description": "Increase your Fletching cap to 20. You must reach 20 before opening another pack.",
+    "weight": 12,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Fletching",
+        "cap": 20
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Fletching",
+      "level": 20
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Fletching",
+        "cap": 10
+      }
+    ]
+  },
+  {
+    "id": "unlock-fletching-021-030",
+    "type": "UNLOCK",
+    "title": "Fletching 21 → 30",
+    "description": "Increase your Fletching cap to 30. You must reach 30 before opening another pack.",
+    "weight": 10,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Fletching",
+        "cap": 30
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Fletching",
+      "level": 30
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Fletching",
+        "cap": 20
+      }
+    ]
+  },
+  {
+    "id": "unlock-fletching-031-040",
+    "type": "UNLOCK",
+    "title": "Fletching 31 → 40",
+    "description": "Increase your Fletching cap to 40. You must reach 40 before opening another pack.",
+    "weight": 9,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Fletching",
+        "cap": 40
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Fletching",
+      "level": 40
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Fletching",
+        "cap": 30
+      }
+    ]
+  },
+  {
+    "id": "unlock-fletching-041-050",
+    "type": "UNLOCK",
+    "title": "Fletching 41 → 50",
+    "description": "Increase your Fletching cap to 50. You must reach 50 before opening another pack.",
+    "weight": 8,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Fletching",
+        "cap": 50
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Fletching",
+      "level": 50
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Fletching",
+        "cap": 40
+      }
+    ]
+  },
+  {
+    "id": "unlock-fletching-051-060",
+    "type": "UNLOCK",
+    "title": "Fletching 51 → 60",
+    "description": "Increase your Fletching cap to 60. You must reach 60 before opening another pack.",
+    "weight": 7,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Fletching",
+        "cap": 60
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Fletching",
+      "level": 60
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Fletching",
+        "cap": 50
+      }
+    ]
+  },
+  {
+    "id": "unlock-fletching-061-070",
+    "type": "UNLOCK",
+    "title": "Fletching 61 → 70",
+    "description": "Increase your Fletching cap to 70. You must reach 70 before opening another pack.",
+    "weight": 6,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Fletching",
+        "cap": 70
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Fletching",
+      "level": 70
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Fletching",
+        "cap": 60
+      }
+    ]
+  },
+  {
+    "id": "unlock-fletching-071-080",
+    "type": "UNLOCK",
+    "title": "Fletching 71 → 80",
+    "description": "Increase your Fletching cap to 80. You must reach 80 before opening another pack.",
+    "weight": 5,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Fletching",
+        "cap": 80
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Fletching",
+      "level": 80
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Fletching",
+        "cap": 70
+      }
+    ]
+  },
+  {
+    "id": "unlock-fletching-081-090",
+    "type": "UNLOCK",
+    "title": "Fletching 81 → 90",
+    "description": "Increase your Fletching cap to 90. You must reach 90 before opening another pack.",
+    "weight": 4,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Fletching",
+        "cap": 90
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Fletching",
+      "level": 90
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Fletching",
+        "cap": 80
+      }
+    ]
+  },
+  {
+    "id": "unlock-fletching-091-099",
+    "type": "UNLOCK",
+    "title": "Fletching 91 → 99",
+    "description": "Increase your Fletching cap to 99. You must reach 99 before opening another pack.",
+    "weight": 3,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Fletching",
+        "cap": 99
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Fletching",
+      "level": 99
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Fletching",
+        "cap": 90
+      }
+    ]
+  },
+  {
+    "id": "unlock-herblore-001-010",
+    "type": "UNLOCK",
+    "title": "Herblore 1 → 10",
+    "description": "Increase your Herblore cap to 10. You must reach 10 before opening another pack.",
+    "weight": 14,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Herblore",
+        "cap": 10
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Herblore",
+      "level": 10
+    },
+    "_generated": "skill_unlock_v1"
+  },
+  {
+    "id": "unlock-herblore-011-020",
+    "type": "UNLOCK",
+    "title": "Herblore 11 → 20",
+    "description": "Increase your Herblore cap to 20. You must reach 20 before opening another pack.",
+    "weight": 12,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Herblore",
+        "cap": 20
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Herblore",
+      "level": 20
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Herblore",
+        "cap": 10
+      }
+    ]
+  },
+  {
+    "id": "unlock-herblore-021-030",
+    "type": "UNLOCK",
+    "title": "Herblore 21 → 30",
+    "description": "Increase your Herblore cap to 30. You must reach 30 before opening another pack.",
+    "weight": 10,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Herblore",
+        "cap": 30
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Herblore",
+      "level": 30
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Herblore",
+        "cap": 20
+      }
+    ]
+  },
+  {
+    "id": "unlock-herblore-031-040",
+    "type": "UNLOCK",
+    "title": "Herblore 31 → 40",
+    "description": "Increase your Herblore cap to 40. You must reach 40 before opening another pack.",
+    "weight": 9,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Herblore",
+        "cap": 40
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Herblore",
+      "level": 40
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Herblore",
+        "cap": 30
+      }
+    ]
+  },
+  {
+    "id": "unlock-herblore-041-050",
+    "type": "UNLOCK",
+    "title": "Herblore 41 → 50",
+    "description": "Increase your Herblore cap to 50. You must reach 50 before opening another pack.",
+    "weight": 8,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Herblore",
+        "cap": 50
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Herblore",
+      "level": 50
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Herblore",
+        "cap": 40
+      }
+    ]
+  },
+  {
+    "id": "unlock-herblore-051-060",
+    "type": "UNLOCK",
+    "title": "Herblore 51 → 60",
+    "description": "Increase your Herblore cap to 60. You must reach 60 before opening another pack.",
+    "weight": 7,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Herblore",
+        "cap": 60
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Herblore",
+      "level": 60
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Herblore",
+        "cap": 50
+      }
+    ]
+  },
+  {
+    "id": "unlock-herblore-061-070",
+    "type": "UNLOCK",
+    "title": "Herblore 61 → 70",
+    "description": "Increase your Herblore cap to 70. You must reach 70 before opening another pack.",
+    "weight": 6,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Herblore",
+        "cap": 70
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Herblore",
+      "level": 70
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Herblore",
+        "cap": 60
+      }
+    ]
+  },
+  {
+    "id": "unlock-herblore-071-080",
+    "type": "UNLOCK",
+    "title": "Herblore 71 → 80",
+    "description": "Increase your Herblore cap to 80. You must reach 80 before opening another pack.",
+    "weight": 5,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Herblore",
+        "cap": 80
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Herblore",
+      "level": 80
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Herblore",
+        "cap": 70
+      }
+    ]
+  },
+  {
+    "id": "unlock-herblore-081-090",
+    "type": "UNLOCK",
+    "title": "Herblore 81 → 90",
+    "description": "Increase your Herblore cap to 90. You must reach 90 before opening another pack.",
+    "weight": 4,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Herblore",
+        "cap": 90
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Herblore",
+      "level": 90
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Herblore",
+        "cap": 80
+      }
+    ]
+  },
+  {
+    "id": "unlock-herblore-091-099",
+    "type": "UNLOCK",
+    "title": "Herblore 91 → 99",
+    "description": "Increase your Herblore cap to 99. You must reach 99 before opening another pack.",
+    "weight": 3,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Herblore",
+        "cap": 99
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Herblore",
+      "level": 99
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Herblore",
+        "cap": 90
+      }
+    ]
+  },
+  {
+    "id": "unlock-hunter-001-010",
+    "type": "UNLOCK",
+    "title": "Hunter 1 → 10",
+    "description": "Increase your Hunter cap to 10. You must reach 10 before opening another pack.",
+    "weight": 14,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Hunter",
+        "cap": 10
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Hunter",
+      "level": 10
+    },
+    "_generated": "skill_unlock_v1"
+  },
+  {
+    "id": "unlock-hunter-011-020",
+    "type": "UNLOCK",
+    "title": "Hunter 11 → 20",
+    "description": "Increase your Hunter cap to 20. You must reach 20 before opening another pack.",
+    "weight": 12,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Hunter",
+        "cap": 20
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Hunter",
+      "level": 20
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Hunter",
+        "cap": 10
+      }
+    ]
+  },
+  {
+    "id": "unlock-hunter-021-030",
+    "type": "UNLOCK",
+    "title": "Hunter 21 → 30",
+    "description": "Increase your Hunter cap to 30. You must reach 30 before opening another pack.",
+    "weight": 10,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Hunter",
+        "cap": 30
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Hunter",
+      "level": 30
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Hunter",
+        "cap": 20
+      }
+    ]
+  },
+  {
+    "id": "unlock-hunter-031-040",
+    "type": "UNLOCK",
+    "title": "Hunter 31 → 40",
+    "description": "Increase your Hunter cap to 40. You must reach 40 before opening another pack.",
+    "weight": 9,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Hunter",
+        "cap": 40
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Hunter",
+      "level": 40
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Hunter",
+        "cap": 30
+      }
+    ]
+  },
+  {
+    "id": "unlock-hunter-041-050",
+    "type": "UNLOCK",
+    "title": "Hunter 41 → 50",
+    "description": "Increase your Hunter cap to 50. You must reach 50 before opening another pack.",
+    "weight": 8,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Hunter",
+        "cap": 50
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Hunter",
+      "level": 50
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Hunter",
+        "cap": 40
+      }
+    ]
+  },
+  {
+    "id": "unlock-hunter-051-060",
+    "type": "UNLOCK",
+    "title": "Hunter 51 → 60",
+    "description": "Increase your Hunter cap to 60. You must reach 60 before opening another pack.",
+    "weight": 7,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Hunter",
+        "cap": 60
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Hunter",
+      "level": 60
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Hunter",
+        "cap": 50
+      }
+    ]
+  },
+  {
+    "id": "unlock-hunter-061-070",
+    "type": "UNLOCK",
+    "title": "Hunter 61 → 70",
+    "description": "Increase your Hunter cap to 70. You must reach 70 before opening another pack.",
+    "weight": 6,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Hunter",
+        "cap": 70
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Hunter",
+      "level": 70
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Hunter",
+        "cap": 60
+      }
+    ]
+  },
+  {
+    "id": "unlock-hunter-071-080",
+    "type": "UNLOCK",
+    "title": "Hunter 71 → 80",
+    "description": "Increase your Hunter cap to 80. You must reach 80 before opening another pack.",
+    "weight": 5,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Hunter",
+        "cap": 80
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Hunter",
+      "level": 80
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Hunter",
+        "cap": 70
+      }
+    ]
+  },
+  {
+    "id": "unlock-hunter-081-090",
+    "type": "UNLOCK",
+    "title": "Hunter 81 → 90",
+    "description": "Increase your Hunter cap to 90. You must reach 90 before opening another pack.",
+    "weight": 4,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Hunter",
+        "cap": 90
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Hunter",
+      "level": 90
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Hunter",
+        "cap": 80
+      }
+    ]
+  },
+  {
+    "id": "unlock-hunter-091-099",
+    "type": "UNLOCK",
+    "title": "Hunter 91 → 99",
+    "description": "Increase your Hunter cap to 99. You must reach 99 before opening another pack.",
+    "weight": 3,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Hunter",
+        "cap": 99
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Hunter",
+      "level": 99
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Hunter",
+        "cap": 90
+      }
+    ]
+  },
+  {
+    "id": "unlock-mining-001-010",
+    "type": "UNLOCK",
+    "title": "Mining 1 → 10",
+    "description": "Increase your Mining cap to 10. You must reach 10 before opening another pack.",
+    "weight": 14,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Mining",
+        "cap": 10
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Mining",
+      "level": 10
+    },
+    "_generated": "skill_unlock_v1"
+  },
+  {
+    "id": "unlock-mining-011-020",
+    "type": "UNLOCK",
+    "title": "Mining 11 → 20",
+    "description": "Increase your Mining cap to 20. You must reach 20 before opening another pack.",
+    "weight": 12,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Mining",
+        "cap": 20
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Mining",
+      "level": 20
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Mining",
+        "cap": 10
+      }
+    ]
+  },
+  {
+    "id": "unlock-mining-021-030",
+    "type": "UNLOCK",
+    "title": "Mining 21 → 30",
+    "description": "Increase your Mining cap to 30. You must reach 30 before opening another pack.",
+    "weight": 10,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Mining",
+        "cap": 30
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Mining",
+      "level": 30
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Mining",
+        "cap": 20
+      }
+    ]
+  },
+  {
+    "id": "unlock-mining-031-040",
+    "type": "UNLOCK",
+    "title": "Mining 31 → 40",
+    "description": "Increase your Mining cap to 40. You must reach 40 before opening another pack.",
+    "weight": 9,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Mining",
+        "cap": 40
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Mining",
+      "level": 40
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Mining",
+        "cap": 30
+      }
+    ]
+  },
+  {
+    "id": "unlock-mining-041-050",
+    "type": "UNLOCK",
+    "title": "Mining 41 → 50",
+    "description": "Increase your Mining cap to 50. You must reach 50 before opening another pack.",
+    "weight": 8,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Mining",
+        "cap": 50
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Mining",
+      "level": 50
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Mining",
+        "cap": 40
+      }
+    ]
+  },
+  {
+    "id": "unlock-mining-051-060",
+    "type": "UNLOCK",
+    "title": "Mining 51 → 60",
+    "description": "Increase your Mining cap to 60. You must reach 60 before opening another pack.",
+    "weight": 7,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Mining",
+        "cap": 60
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Mining",
+      "level": 60
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Mining",
+        "cap": 50
+      }
+    ]
+  },
+  {
+    "id": "unlock-mining-061-070",
+    "type": "UNLOCK",
+    "title": "Mining 61 → 70",
+    "description": "Increase your Mining cap to 70. You must reach 70 before opening another pack.",
+    "weight": 6,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Mining",
+        "cap": 70
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Mining",
+      "level": 70
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Mining",
+        "cap": 60
+      }
+    ]
+  },
+  {
+    "id": "unlock-mining-071-080",
+    "type": "UNLOCK",
+    "title": "Mining 71 → 80",
+    "description": "Increase your Mining cap to 80. You must reach 80 before opening another pack.",
+    "weight": 5,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Mining",
+        "cap": 80
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Mining",
+      "level": 80
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Mining",
+        "cap": 70
+      }
+    ]
+  },
+  {
+    "id": "unlock-mining-081-090",
+    "type": "UNLOCK",
+    "title": "Mining 81 → 90",
+    "description": "Increase your Mining cap to 90. You must reach 90 before opening another pack.",
+    "weight": 4,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Mining",
+        "cap": 90
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Mining",
+      "level": 90
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Mining",
+        "cap": 80
+      }
+    ]
+  },
+  {
+    "id": "unlock-mining-091-099",
+    "type": "UNLOCK",
+    "title": "Mining 91 → 99",
+    "description": "Increase your Mining cap to 99. You must reach 99 before opening another pack.",
+    "weight": 3,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Mining",
+        "cap": 99
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Mining",
+      "level": 99
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Mining",
+        "cap": 90
+      }
+    ]
+  },
+  {
+    "id": "unlock-runecraft-001-010",
+    "type": "UNLOCK",
+    "title": "Runecraft 1 → 10",
+    "description": "Increase your Runecraft cap to 10. You must reach 10 before opening another pack.",
+    "weight": 14,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Runecraft",
+        "cap": 10
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Runecraft",
+      "level": 10
+    },
+    "_generated": "skill_unlock_v1"
+  },
+  {
+    "id": "unlock-runecraft-011-020",
+    "type": "UNLOCK",
+    "title": "Runecraft 11 → 20",
+    "description": "Increase your Runecraft cap to 20. You must reach 20 before opening another pack.",
+    "weight": 12,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Runecraft",
+        "cap": 20
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Runecraft",
+      "level": 20
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Runecraft",
+        "cap": 10
+      }
+    ]
+  },
+  {
+    "id": "unlock-runecraft-021-030",
+    "type": "UNLOCK",
+    "title": "Runecraft 21 → 30",
+    "description": "Increase your Runecraft cap to 30. You must reach 30 before opening another pack.",
+    "weight": 10,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Runecraft",
+        "cap": 30
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Runecraft",
+      "level": 30
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Runecraft",
+        "cap": 20
+      }
+    ]
+  },
+  {
+    "id": "unlock-runecraft-031-040",
+    "type": "UNLOCK",
+    "title": "Runecraft 31 → 40",
+    "description": "Increase your Runecraft cap to 40. You must reach 40 before opening another pack.",
+    "weight": 9,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Runecraft",
+        "cap": 40
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Runecraft",
+      "level": 40
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Runecraft",
+        "cap": 30
+      }
+    ]
+  },
+  {
+    "id": "unlock-runecraft-041-050",
+    "type": "UNLOCK",
+    "title": "Runecraft 41 → 50",
+    "description": "Increase your Runecraft cap to 50. You must reach 50 before opening another pack.",
+    "weight": 8,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Runecraft",
+        "cap": 50
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Runecraft",
+      "level": 50
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Runecraft",
+        "cap": 40
+      }
+    ]
+  },
+  {
+    "id": "unlock-runecraft-051-060",
+    "type": "UNLOCK",
+    "title": "Runecraft 51 → 60",
+    "description": "Increase your Runecraft cap to 60. You must reach 60 before opening another pack.",
+    "weight": 7,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Runecraft",
+        "cap": 60
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Runecraft",
+      "level": 60
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Runecraft",
+        "cap": 50
+      }
+    ]
+  },
+  {
+    "id": "unlock-runecraft-061-070",
+    "type": "UNLOCK",
+    "title": "Runecraft 61 → 70",
+    "description": "Increase your Runecraft cap to 70. You must reach 70 before opening another pack.",
+    "weight": 6,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Runecraft",
+        "cap": 70
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Runecraft",
+      "level": 70
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Runecraft",
+        "cap": 60
+      }
+    ]
+  },
+  {
+    "id": "unlock-runecraft-071-080",
+    "type": "UNLOCK",
+    "title": "Runecraft 71 → 80",
+    "description": "Increase your Runecraft cap to 80. You must reach 80 before opening another pack.",
+    "weight": 5,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Runecraft",
+        "cap": 80
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Runecraft",
+      "level": 80
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Runecraft",
+        "cap": 70
+      }
+    ]
+  },
+  {
+    "id": "unlock-runecraft-081-090",
+    "type": "UNLOCK",
+    "title": "Runecraft 81 → 90",
+    "description": "Increase your Runecraft cap to 90. You must reach 90 before opening another pack.",
+    "weight": 4,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Runecraft",
+        "cap": 90
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Runecraft",
+      "level": 90
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Runecraft",
+        "cap": 80
+      }
+    ]
+  },
+  {
+    "id": "unlock-runecraft-091-099",
+    "type": "UNLOCK",
+    "title": "Runecraft 91 → 99",
+    "description": "Increase your Runecraft cap to 99. You must reach 99 before opening another pack.",
+    "weight": 3,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Runecraft",
+        "cap": 99
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Runecraft",
+      "level": 99
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Runecraft",
+        "cap": 90
+      }
+    ]
+  },
+  {
+    "id": "unlock-sailing-001-010",
+    "type": "UNLOCK",
+    "title": "Sailing 1 → 10",
+    "description": "Increase your Sailing cap to 10. You must reach 10 before opening another pack.",
+    "weight": 14,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Sailing",
+        "cap": 10
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Sailing",
+      "level": 10
+    },
+    "_generated": "skill_unlock_v1"
+  },
+  {
+    "id": "unlock-sailing-011-020",
+    "type": "UNLOCK",
+    "title": "Sailing 11 → 20",
+    "description": "Increase your Sailing cap to 20. You must reach 20 before opening another pack.",
+    "weight": 12,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Sailing",
+        "cap": 20
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Sailing",
+      "level": 20
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Sailing",
+        "cap": 10
+      }
+    ]
+  },
+  {
+    "id": "unlock-sailing-021-030",
+    "type": "UNLOCK",
+    "title": "Sailing 21 → 30",
+    "description": "Increase your Sailing cap to 30. You must reach 30 before opening another pack.",
+    "weight": 10,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Sailing",
+        "cap": 30
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Sailing",
+      "level": 30
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Sailing",
+        "cap": 20
+      }
+    ]
+  },
+  {
+    "id": "unlock-sailing-031-040",
+    "type": "UNLOCK",
+    "title": "Sailing 31 → 40",
+    "description": "Increase your Sailing cap to 40. You must reach 40 before opening another pack.",
+    "weight": 9,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Sailing",
+        "cap": 40
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Sailing",
+      "level": 40
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Sailing",
+        "cap": 30
+      }
+    ]
+  },
+  {
+    "id": "unlock-sailing-041-050",
+    "type": "UNLOCK",
+    "title": "Sailing 41 → 50",
+    "description": "Increase your Sailing cap to 50. You must reach 50 before opening another pack.",
+    "weight": 8,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Sailing",
+        "cap": 50
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Sailing",
+      "level": 50
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Sailing",
+        "cap": 40
+      }
+    ]
+  },
+  {
+    "id": "unlock-sailing-051-060",
+    "type": "UNLOCK",
+    "title": "Sailing 51 → 60",
+    "description": "Increase your Sailing cap to 60. You must reach 60 before opening another pack.",
+    "weight": 7,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Sailing",
+        "cap": 60
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Sailing",
+      "level": 60
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Sailing",
+        "cap": 50
+      }
+    ]
+  },
+  {
+    "id": "unlock-sailing-061-070",
+    "type": "UNLOCK",
+    "title": "Sailing 61 → 70",
+    "description": "Increase your Sailing cap to 70. You must reach 70 before opening another pack.",
+    "weight": 6,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Sailing",
+        "cap": 70
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Sailing",
+      "level": 70
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Sailing",
+        "cap": 60
+      }
+    ]
+  },
+  {
+    "id": "unlock-sailing-071-080",
+    "type": "UNLOCK",
+    "title": "Sailing 71 → 80",
+    "description": "Increase your Sailing cap to 80. You must reach 80 before opening another pack.",
+    "weight": 5,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Sailing",
+        "cap": 80
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Sailing",
+      "level": 80
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Sailing",
+        "cap": 70
+      }
+    ]
+  },
+  {
+    "id": "unlock-sailing-081-090",
+    "type": "UNLOCK",
+    "title": "Sailing 81 → 90",
+    "description": "Increase your Sailing cap to 90. You must reach 90 before opening another pack.",
+    "weight": 4,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Sailing",
+        "cap": 90
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Sailing",
+      "level": 90
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Sailing",
+        "cap": 80
+      }
+    ]
+  },
+  {
+    "id": "unlock-sailing-091-099",
+    "type": "UNLOCK",
+    "title": "Sailing 91 → 99",
+    "description": "Increase your Sailing cap to 99. You must reach 99 before opening another pack.",
+    "weight": 3,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Sailing",
+        "cap": 99
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Sailing",
+      "level": 99
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Sailing",
+        "cap": 90
+      }
+    ]
+  },
+  {
+    "id": "unlock-smithing-001-010",
+    "type": "UNLOCK",
+    "title": "Smithing 1 → 10",
+    "description": "Increase your Smithing cap to 10. You must reach 10 before opening another pack.",
+    "weight": 14,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Smithing",
+        "cap": 10
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Smithing",
+      "level": 10
+    },
+    "_generated": "skill_unlock_v1"
+  },
+  {
+    "id": "unlock-smithing-011-020",
+    "type": "UNLOCK",
+    "title": "Smithing 11 → 20",
+    "description": "Increase your Smithing cap to 20. You must reach 20 before opening another pack.",
+    "weight": 12,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Smithing",
+        "cap": 20
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Smithing",
+      "level": 20
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Smithing",
+        "cap": 10
+      }
+    ]
+  },
+  {
+    "id": "unlock-smithing-021-030",
+    "type": "UNLOCK",
+    "title": "Smithing 21 → 30",
+    "description": "Increase your Smithing cap to 30. You must reach 30 before opening another pack.",
+    "weight": 10,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Smithing",
+        "cap": 30
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Smithing",
+      "level": 30
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Smithing",
+        "cap": 20
+      }
+    ]
+  },
+  {
+    "id": "unlock-smithing-031-040",
+    "type": "UNLOCK",
+    "title": "Smithing 31 → 40",
+    "description": "Increase your Smithing cap to 40. You must reach 40 before opening another pack.",
+    "weight": 9,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Smithing",
+        "cap": 40
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Smithing",
+      "level": 40
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Smithing",
+        "cap": 30
+      }
+    ]
+  },
+  {
+    "id": "unlock-smithing-041-050",
+    "type": "UNLOCK",
+    "title": "Smithing 41 → 50",
+    "description": "Increase your Smithing cap to 50. You must reach 50 before opening another pack.",
+    "weight": 8,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Smithing",
+        "cap": 50
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Smithing",
+      "level": 50
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Smithing",
+        "cap": 40
+      }
+    ]
+  },
+  {
+    "id": "unlock-smithing-051-060",
+    "type": "UNLOCK",
+    "title": "Smithing 51 → 60",
+    "description": "Increase your Smithing cap to 60. You must reach 60 before opening another pack.",
+    "weight": 7,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Smithing",
+        "cap": 60
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Smithing",
+      "level": 60
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Smithing",
+        "cap": 50
+      }
+    ]
+  },
+  {
+    "id": "unlock-smithing-061-070",
+    "type": "UNLOCK",
+    "title": "Smithing 61 → 70",
+    "description": "Increase your Smithing cap to 70. You must reach 70 before opening another pack.",
+    "weight": 6,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Smithing",
+        "cap": 70
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Smithing",
+      "level": 70
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Smithing",
+        "cap": 60
+      }
+    ]
+  },
+  {
+    "id": "unlock-smithing-071-080",
+    "type": "UNLOCK",
+    "title": "Smithing 71 → 80",
+    "description": "Increase your Smithing cap to 80. You must reach 80 before opening another pack.",
+    "weight": 5,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Smithing",
+        "cap": 80
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Smithing",
+      "level": 80
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Smithing",
+        "cap": 70
+      }
+    ]
+  },
+  {
+    "id": "unlock-smithing-081-090",
+    "type": "UNLOCK",
+    "title": "Smithing 81 → 90",
+    "description": "Increase your Smithing cap to 90. You must reach 90 before opening another pack.",
+    "weight": 4,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Smithing",
+        "cap": 90
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Smithing",
+      "level": 90
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Smithing",
+        "cap": 80
+      }
+    ]
+  },
+  {
+    "id": "unlock-smithing-091-099",
+    "type": "UNLOCK",
+    "title": "Smithing 91 → 99",
+    "description": "Increase your Smithing cap to 99. You must reach 99 before opening another pack.",
+    "weight": 3,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Smithing",
+        "cap": 99
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Smithing",
+      "level": 99
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Smithing",
+        "cap": 90
+      }
+    ]
+  },
+  {
+    "id": "unlock-thieving-001-010",
+    "type": "UNLOCK",
+    "title": "Thieving 1 → 10",
+    "description": "Increase your Thieving cap to 10. You must reach 10 before opening another pack.",
+    "weight": 14,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Thieving",
+        "cap": 10
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Thieving",
+      "level": 10
+    },
+    "_generated": "skill_unlock_v1"
+  },
+  {
+    "id": "unlock-thieving-011-020",
+    "type": "UNLOCK",
+    "title": "Thieving 11 → 20",
+    "description": "Increase your Thieving cap to 20. You must reach 20 before opening another pack.",
+    "weight": 12,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Thieving",
+        "cap": 20
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Thieving",
+      "level": 20
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Thieving",
+        "cap": 10
+      }
+    ]
+  },
+  {
+    "id": "unlock-thieving-021-030",
+    "type": "UNLOCK",
+    "title": "Thieving 21 → 30",
+    "description": "Increase your Thieving cap to 30. You must reach 30 before opening another pack.",
+    "weight": 10,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Thieving",
+        "cap": 30
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Thieving",
+      "level": 30
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Thieving",
+        "cap": 20
+      }
+    ]
+  },
+  {
+    "id": "unlock-thieving-031-040",
+    "type": "UNLOCK",
+    "title": "Thieving 31 → 40",
+    "description": "Increase your Thieving cap to 40. You must reach 40 before opening another pack.",
+    "weight": 9,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Thieving",
+        "cap": 40
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Thieving",
+      "level": 40
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Thieving",
+        "cap": 30
+      }
+    ]
+  },
+  {
+    "id": "unlock-thieving-041-050",
+    "type": "UNLOCK",
+    "title": "Thieving 41 → 50",
+    "description": "Increase your Thieving cap to 50. You must reach 50 before opening another pack.",
+    "weight": 8,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Thieving",
+        "cap": 50
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Thieving",
+      "level": 50
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Thieving",
+        "cap": 40
+      }
+    ]
+  },
+  {
+    "id": "unlock-thieving-051-060",
+    "type": "UNLOCK",
+    "title": "Thieving 51 → 60",
+    "description": "Increase your Thieving cap to 60. You must reach 60 before opening another pack.",
+    "weight": 7,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Thieving",
+        "cap": 60
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Thieving",
+      "level": 60
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Thieving",
+        "cap": 50
+      }
+    ]
+  },
+  {
+    "id": "unlock-thieving-061-070",
+    "type": "UNLOCK",
+    "title": "Thieving 61 → 70",
+    "description": "Increase your Thieving cap to 70. You must reach 70 before opening another pack.",
+    "weight": 6,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Thieving",
+        "cap": 70
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Thieving",
+      "level": 70
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Thieving",
+        "cap": 60
+      }
+    ]
+  },
+  {
+    "id": "unlock-thieving-071-080",
+    "type": "UNLOCK",
+    "title": "Thieving 71 → 80",
+    "description": "Increase your Thieving cap to 80. You must reach 80 before opening another pack.",
+    "weight": 5,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Thieving",
+        "cap": 80
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Thieving",
+      "level": 80
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Thieving",
+        "cap": 70
+      }
+    ]
+  },
+  {
+    "id": "unlock-thieving-081-090",
+    "type": "UNLOCK",
+    "title": "Thieving 81 → 90",
+    "description": "Increase your Thieving cap to 90. You must reach 90 before opening another pack.",
+    "weight": 4,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Thieving",
+        "cap": 90
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Thieving",
+      "level": 90
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Thieving",
+        "cap": 80
+      }
+    ]
+  },
+  {
+    "id": "unlock-thieving-091-099",
+    "type": "UNLOCK",
+    "title": "Thieving 91 → 99",
+    "description": "Increase your Thieving cap to 99. You must reach 99 before opening another pack.",
+    "weight": 3,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Thieving",
+        "cap": 99
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Thieving",
+      "level": 99
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Thieving",
+        "cap": 90
+      }
+    ]
+  },
+  {
+    "id": "unlock-woodcutting-001-010",
+    "type": "UNLOCK",
+    "title": "Woodcutting 1 → 10",
+    "description": "Increase your Woodcutting cap to 10. You must reach 10 before opening another pack.",
+    "weight": 14,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Woodcutting",
+        "cap": 10
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Woodcutting",
+      "level": 10
+    },
+    "_generated": "skill_unlock_v1"
+  },
+  {
+    "id": "unlock-woodcutting-011-020",
+    "type": "UNLOCK",
+    "title": "Woodcutting 11 → 20",
+    "description": "Increase your Woodcutting cap to 20. You must reach 20 before opening another pack.",
+    "weight": 12,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Woodcutting",
+        "cap": 20
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Woodcutting",
+      "level": 20
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Woodcutting",
+        "cap": 10
+      }
+    ]
+  },
+  {
+    "id": "unlock-woodcutting-021-030",
+    "type": "UNLOCK",
+    "title": "Woodcutting 21 → 30",
+    "description": "Increase your Woodcutting cap to 30. You must reach 30 before opening another pack.",
+    "weight": 10,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Woodcutting",
+        "cap": 30
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Woodcutting",
+      "level": 30
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Woodcutting",
+        "cap": 20
+      }
+    ]
+  },
+  {
+    "id": "unlock-woodcutting-031-040",
+    "type": "UNLOCK",
+    "title": "Woodcutting 31 → 40",
+    "description": "Increase your Woodcutting cap to 40. You must reach 40 before opening another pack.",
+    "weight": 9,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Woodcutting",
+        "cap": 40
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Woodcutting",
+      "level": 40
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Woodcutting",
+        "cap": 30
+      }
+    ]
+  },
+  {
+    "id": "unlock-woodcutting-041-050",
+    "type": "UNLOCK",
+    "title": "Woodcutting 41 → 50",
+    "description": "Increase your Woodcutting cap to 50. You must reach 50 before opening another pack.",
+    "weight": 8,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Woodcutting",
+        "cap": 50
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Woodcutting",
+      "level": 50
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Woodcutting",
+        "cap": 40
+      }
+    ]
+  },
+  {
+    "id": "unlock-woodcutting-051-060",
+    "type": "UNLOCK",
+    "title": "Woodcutting 51 → 60",
+    "description": "Increase your Woodcutting cap to 60. You must reach 60 before opening another pack.",
+    "weight": 7,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Woodcutting",
+        "cap": 60
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Woodcutting",
+      "level": 60
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Woodcutting",
+        "cap": 50
+      }
+    ]
+  },
+  {
+    "id": "unlock-woodcutting-061-070",
+    "type": "UNLOCK",
+    "title": "Woodcutting 61 → 70",
+    "description": "Increase your Woodcutting cap to 70. You must reach 70 before opening another pack.",
+    "weight": 6,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Woodcutting",
+        "cap": 70
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Woodcutting",
+      "level": 70
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Woodcutting",
+        "cap": 60
+      }
+    ]
+  },
+  {
+    "id": "unlock-woodcutting-071-080",
+    "type": "UNLOCK",
+    "title": "Woodcutting 71 → 80",
+    "description": "Increase your Woodcutting cap to 80. You must reach 80 before opening another pack.",
+    "weight": 5,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Woodcutting",
+        "cap": 80
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Woodcutting",
+      "level": 80
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Woodcutting",
+        "cap": 70
+      }
+    ]
+  },
+  {
+    "id": "unlock-woodcutting-081-090",
+    "type": "UNLOCK",
+    "title": "Woodcutting 81 → 90",
+    "description": "Increase your Woodcutting cap to 90. You must reach 90 before opening another pack.",
+    "weight": 4,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Woodcutting",
+        "cap": 90
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Woodcutting",
+      "level": 90
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Woodcutting",
+        "cap": 80
+      }
+    ]
+  },
+  {
+    "id": "unlock-woodcutting-091-099",
+    "type": "UNLOCK",
+    "title": "Woodcutting 91 → 99",
+    "description": "Increase your Woodcutting cap to 99. You must reach 99 before opening another pack.",
+    "weight": 3,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Woodcutting",
+        "cap": 99
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Woodcutting",
+      "level": 99
+    },
+    "_generated": "skill_unlock_v1",
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Woodcutting",
+        "cap": 90
+      }
+    ]
+  }
+]

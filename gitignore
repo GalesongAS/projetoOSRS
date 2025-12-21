@@ -1,0 +1,18 @@
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+.venv/
+venv/
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+
+# Your app save data (important!)
+.runecards/
+save.json

@@ -1,0 +1,54 @@
+[
+  {
+    "id": "unlock-woodcutting-10",
+    "type": "UNLOCK",
+    "title": "Woodcutting 1 → 10",
+    "description": "You may train Woodcutting up to level 10. You must reach 10 before opening another pack.",
+    "weight": 10,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Woodcutting",
+        "cap": 10
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Woodcutting",
+      "level": 10
+    }
+  },
+  {
+    "id": "unlock-mining-10",
+    "type": "UNLOCK",
+    "title": "Mining 1 → 10",
+    "description": "You may train Mining up to level 10. You must reach 10 before opening another pack.",
+    "weight": 10,
+    "effects": [
+      {
+        "kind": "SET_SKILL_CAP",
+        "skill": "Mining",
+        "cap": 10
+      }
+    ],
+    "gate": {
+      "kind": "REACH_LEVEL",
+      "skill": "Mining",
+      "level": 10
+    }
+  },
+  {
+    "id": "task-slayer-5",
+    "type": "TASK",
+    "title": "On the Board",
+    "description": "Complete 5 slayer tasks (manual).",
+    "weight": 7
+  },
+  {
+    "id": "task-cows-50",
+    "type": "TASK",
+    "title": "Beefy Beginnings",
+    "description": "Kill 50 cows (manual).",
+    "weight": 7
+  }
+]
