@@ -38,20 +38,6 @@
     }
   },
   {
-    "id": "task-slayer-5",
-    "type": "TASK",
-    "title": "On the Board",
-    "description": "Complete 5 slayer tasks (manual).",
-    "weight": 7
-  },
-  {
-    "id": "task-cows-50",
-    "type": "TASK",
-    "title": "Beefy Beginnings",
-    "description": "Kill 50 cows (manual).",
-    "weight": 7
-  },
-  {
     "id": "unlock-agility-001-010",
     "type": "UNLOCK",
     "title": "Agility 1 → 10",
@@ -4258,5 +4244,25 @@
         "cap": 90
       }
     ]
-  }
+  },
+  {
+  "id": "task-any-quest",
+  "type": "TASK",
+  "title": "Do any quest",
+  "description": "Complete any quest and choose it when you press Completed.",
+  "repeatable": true,
+  "weight": 1,
+  "gate": { "kind": "ANY_QUEST" }
+},
+{
+  "id": "task-marks-of-grace",
+  "type": "TASK",
+  "title": "Marks of grace",
+  "description": "Do rooftops and collect Marks of grace.",
+  "repeatable": true,
+  "weight": 3,
+  "gate": { "kind": "MARKS_OF_GRACE", "min": 1, "max": 5 }
+}
+
+
 ]

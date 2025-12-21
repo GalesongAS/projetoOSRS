@@ -1,5 +1,5 @@
 {
-  "packChancePerSlayerTask": 0.20,
+  "packChancePerSlayerTask": 0.22,
   "cardsPerPack": 3,
   "startingCaps": {
     "Attack": 99,
@@ -10,7 +10,6 @@
     "Magic": 99,
     "Prayer": 99,
     "Slayer": 99,
-
     "Woodcutting": 1,
     "Mining": 1,
     "Fishing": 1,
@@ -29,14 +28,59 @@
     "Sailing": 1
   },
   "slayerMasters": [
-  { "id": "turael",    "name": "Turael",    "maxPacks": 21, "portrait": "slayer_masters/turael.png" },
-  { "id": "spria",     "name": "Spria",     "maxPacks": 30, "portrait": "slayer_masters/spria.png" },
-  { "id": "mazchna",   "name": "Mazchna",   "maxPacks": 40, "portrait": "slayer_masters/mazchna.png" },
-  { "id": "vannaka",   "name": "Vannaka",   "maxPacks": 50, "portrait": "slayer_masters/vannaka.png" },
-  { "id": "krystilia", "name": "Krystilia", "maxPacks": 50, "portrait": "slayer_masters/krystilia.png" },
-  { "id": "chaeldar",  "name": "Chaeldar",  "maxPacks": 50, "portrait": "slayer_masters/chaeldar.png" },
-  { "id": "nieve",     "name": "Nieve",     "maxPacks": 50, "portrait": "slayer_masters/nieve.png" },
-  { "id": "duradel",   "name": "Duradel",   "maxPacks": 50, "portrait": "slayer_masters/duradel.png" },
-  { "id": "konar",     "name": "Konar",     "maxPacks": 50, "portrait": "slayer_masters/konar.png" }
-]
+    {
+      "id": "turael",
+      "name": "Turael",
+      "maxPacks": 21,
+      "portrait": "slayer_masters/turael.png"
+    },
+    {
+      "id": "spria",
+      "name": "Spria",
+      "maxPacks": 30,
+      "portrait": "slayer_masters/spria.png"
+    },
+    {
+      "id": "mazchna",
+      "name": "Mazchna",
+      "maxPacks": 40,
+      "portrait": "slayer_masters/mazchna.png"
+    },
+    {
+      "id": "vannaka",
+      "name": "Vannaka",
+      "maxPacks": 50,
+      "portrait": "slayer_masters/vannaka.png"
+    },
+    {
+      "id": "krystilia",
+      "name": "Krystilia",
+      "maxPacks": 50,
+      "portrait": "slayer_masters/krystilia.png"
+    },
+    {
+      "id": "chaeldar",
+      "name": "Chaeldar",
+      "maxPacks": 50,
+      "portrait": "slayer_masters/chaeldar.png"
+    },
+    {
+      "id": "nieve",
+      "name": "Nieve",
+      "maxPacks": 50,
+      "portrait": "slayer_masters/nieve.png"
+    },
+    {
+      "id": "duradel",
+      "name": "Duradel",
+      "maxPacks": 50,
+      "portrait": "slayer_masters/duradel.png"
+    },
+    {
+      "id": "konar",
+      "name": "Konar",
+      "maxPacks": 50,
+      "portrait": "slayer_masters/konar.png"
+    }
+  ]
 }

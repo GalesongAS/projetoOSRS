@@ -3,7 +3,7 @@
     "id": "quest_a_kingdom_divided",
     "type": "QUEST",
     "title": "A Kingdom Divided",
-    "description": "Complete the OSRS quest: A Kingdom Divided.",
+    "description": "Complete the quest: A Kingdom Divided.",
     "weight": 2,
     "requires": [
       {
@@ -88,7 +88,7 @@
     "id": "quest_a_porcine_of_interest",
     "type": "QUEST",
     "title": "A Porcine of Interest",
-    "description": "Complete the OSRS quest: A Porcine of Interest.",
+    "description": "Complete the quest: A Porcine of Interest.",
     "weight": 12,
     "requires": [],
     "meta": {
@@ -102,7 +102,7 @@
     "id": "quest_a_tail_of_two_cats",
     "type": "QUEST",
     "title": "A Tail of Two Cats",
-    "description": "Complete the OSRS quest: A Tail of Two Cats.",
+    "description": "Complete the quest: A Tail of Two Cats.",
     "weight": 8,
     "requires": [],
     "meta": {
@@ -116,7 +116,7 @@
     "id": "quest_a_taste_of_hope",
     "type": "QUEST",
     "title": "A Taste of Hope",
-    "description": "Complete the OSRS quest: A Taste of Hope.",
+    "description": "Complete the quest: A Taste of Hope.",
     "weight": 5,
     "requires": [],
     "meta": {
@@ -130,7 +130,7 @@
     "id": "quest_a_theatre_of_blood",
     "type": "QUEST",
     "title": "A Theatre of Blood",
-    "description": "Complete the OSRS quest: A Theatre of Blood.",
+    "description": "Complete the quest: A Theatre of Blood.",
     "weight": 2,
     "requires": [],
     "meta": {
@@ -144,7 +144,7 @@
     "id": "quest_animal_magnetism",
     "type": "QUEST",
     "title": "Animal Magnetism",
-    "description": "Complete the OSRS quest: Animal Magnetism.",
+    "description": "Complete the quest: Animal Magnetism.",
     "weight": 8,
     "requires": [],
     "meta": {
@@ -158,7 +158,7 @@
     "id": "quest_another_slice_of_h_a_m",
     "type": "QUEST",
     "title": "Another Slice of H.A.M.",
-    "description": "Complete the OSRS quest: Another Slice of H.A.M..",
+    "description": "Complete the quest: Another Slice of H.A.M..",
     "weight": 8,
     "requires": [],
     "meta": {
@@ -172,7 +172,7 @@
     "id": "quest_below_ice_mountain",
     "type": "QUEST",
     "title": "Below Ice Mountain",
-    "description": "Complete the OSRS quest: Below Ice Mountain.",
+    "description": "Complete the quest: Below Ice Mountain.",
     "weight": 12,
     "requires": [],
     "meta": {
@@ -186,7 +186,7 @@
     "id": "quest_between_a_rock",
     "type": "QUEST",
     "title": "Between a Rock...",
-    "description": "Complete the OSRS quest: Between a Rock....",
+    "description": "Complete the quest: Between a Rock....",
     "weight": 5,
     "requires": [],
     "meta": {
@@ -200,7 +200,7 @@
     "id": "quest_big_chompy_bird_hunting",
     "type": "QUEST",
     "title": "Big Chompy Bird Hunting",
-    "description": "Complete the OSRS quest: Big Chompy Bird Hunting.",
+    "description": "Complete the quest: Big Chompy Bird Hunting.",
     "weight": 8,
     "requires": [],
     "meta": {
@@ -214,7 +214,7 @@
     "id": "quest_biohazard",
     "type": "QUEST",
     "title": "Biohazard",
-    "description": "Complete the OSRS quest: Biohazard.",
+    "description": "Complete the quest: Biohazard.",
     "weight": 12,
     "requires": [
             {
@@ -233,7 +233,7 @@
     "id": "quest_bone_voyage",
     "type": "QUEST",
     "title": "Bone Voyage",
-    "description": "Complete the OSRS quest: Bone Voyage.",
+    "description": "Complete the quest: Bone Voyage.",
     "weight": 8,
     "requires": [],
     "meta": {
@@ -247,7 +247,7 @@
     "id": "quest_bronze_med_helm_iron_chainbody_cabbage",
     "type": "QUEST",
     "title": "Bronze med helm, iron chainbody, cabbage",
-    "description": "Complete the OSRS quest: Bronze med helm, iron chainbody, cabbage.",
+    "description": "Complete the quest: Bronze med helm, iron chainbody, cabbage.",
     "weight": 12,
     "requires": [],
     "meta": {
@@ -261,7 +261,7 @@
     "id": "quest_cabin_fever",
     "type": "QUEST",
     "title": "Cabin Fever",
-    "description": "Complete the OSRS quest: Cabin Fever.",
+    "description": "Complete the quest: Cabin Fever.",
     "weight": 5,
     "requires": [],
     "meta": {
@@ -275,7 +275,7 @@
     "id": "quest_client_of_kourend",
     "type": "QUEST",
     "title": "Client of Kourend",
-    "description": "Complete the OSRS quest: Client of Kourend.",
+    "description": "Complete the quest: Client of Kourend.",
     "weight": 12,
     "requires": [],
     "meta": {
@@ -289,7 +289,7 @@
     "id": "quest_clock_tower",
     "type": "QUEST",
     "title": "Clock Tower",
-    "description": "Complete the OSRS quest: Clock Tower.",
+    "description": "Complete the quest: Clock Tower.",
     "weight": 12,
     "requires": [],
     "meta": {
@@ -303,7 +303,7 @@
     "id": "quest_cold_war",
     "type": "QUEST",
     "title": "Cold War",
-    "description": "Complete the OSRS quest: Cold War.",
+    "description": "Complete the quest: Cold War.",
     "weight": 8,
     "requires": [],
     "meta": {
@@ -317,7 +317,7 @@
     "id": "quest_combat_level_10_combat_level",
     "type": "QUEST",
     "title": "Combat level 10 Combat level",
-    "description": "Complete the OSRS quest: Combat level 10 Combat level.",
+    "description": "Complete the quest: Combat level 10 Combat level.",
     "weight": 8,
     "requires": [
       {
@@ -336,7 +336,7 @@
     "id": "quest_contact",
     "type": "QUEST",
     "title": "Contact!",
-    "description": "Complete the OSRS quest: Contact!.",
+    "description": "Complete the quest: Contact!.",
     "weight": 2,
     "requires": [],
     "meta": {
@@ -350,7 +350,7 @@
     "id": "quest_cooks_assistant",
     "type": "QUEST",
     "title": "Cook's Assistant",
-    "description": "Complete the OSRS quest: Cook's Assistant.",
+    "description": "Complete the quest: Cook's Assistant.",
     "weight": 12,
     "requires": [],
     "meta": {
@@ -364,7 +364,7 @@
     "id": "quest_creature_of_fenkenstrain",
     "type": "QUEST",
     "title": "Creature of Fenkenstrain",
-    "description": "Complete the OSRS quest: Creature of Fenkenstrain.",
+    "description": "Complete the quest: Creature of Fenkenstrain.",
     "weight": 8,
     "requires": [],
     "meta": {
@@ -378,7 +378,7 @@
     "id": "quest_current_affairs",
     "type": "QUEST",
     "title": "Current Affairs",
-    "description": "Complete the OSRS quest: Current Affairs.",
+    "description": "Complete the quest: Current Affairs.",
     "weight": 12,
     "requires": [
       {
@@ -397,7 +397,7 @@
     "id": "quest_darkness_of_hallowvale",
     "type": "QUEST",
     "title": "Darkness of Hallowvale",
-    "description": "Complete the OSRS quest: Darkness of Hallowvale.",
+    "description": "Complete the quest: Darkness of Hallowvale.",
     "weight": 8,
     "requires": [],
     "meta": {
@@ -411,7 +411,7 @@
     "id": "quest_death_plateau",
     "type": "QUEST",
     "title": "Death Plateau",
-    "description": "Complete the OSRS quest: Death Plateau.",
+    "description": "Complete the quest: Death Plateau.",
     "weight": 12,
     "requires": [],
     "meta": {
@@ -425,7 +425,7 @@
     "id": "quest_death_to_the_dorgeshuun",
     "type": "QUEST",
     "title": "Death to the Dorgeshuun",
-    "description": "Complete the OSRS quest: Death to the Dorgeshuun.",
+    "description": "Complete the quest: Death to the Dorgeshuun.",
     "weight": 8,
     "requires": [],
     "meta": {
@@ -439,7 +439,7 @@
     "id": "quest_demon_slayer",
     "type": "QUEST",
     "title": "Demon Slayer",
-    "description": "Complete the OSRS quest: Demon Slayer.",
+    "description": "Complete the quest: Demon Slayer.",
     "weight": 12,
     "requires": [],
     "meta": {
@@ -453,7 +453,7 @@
     "id": "quest_desert_treasure_i",
     "type": "QUEST",
     "title": "Desert Treasure I",
-    "description": "Complete the OSRS quest: Desert Treasure I.",
+    "description": "Complete the quest: Desert Treasure I.",
     "weight": 2,
     "requires": [],
     "meta": {
@@ -467,7 +467,7 @@
     "id": "quest_devious_minds",
     "type": "QUEST",
     "title": "Devious Minds",
-    "description": "Complete the OSRS quest: Devious Minds.",
+    "description": "Complete the quest: Devious Minds.",
     "weight": 5,
     "requires": [],
     "meta": {
@@ -481,7 +481,7 @@
     "id": "quest_dorics_quest",
     "type": "QUEST",
     "title": "Doric's Quest",
-    "description": "Complete the OSRS quest: Doric's Quest.",
+    "description": "Complete the quest: Doric's Quest.",
     "weight": 12,
     "requires": [],
     "meta": {
@@ -495,7 +495,7 @@
     "id": "quest_dragon_slayer_i",
     "type": "QUEST",
     "title": "Dragon Slayer I",
-    "description": "Complete the OSRS quest: Dragon Slayer I.",
+    "description": "Complete the quest: Dragon Slayer I.",
     "weight": 5,
     "requires": [
       {
@@ -530,7 +530,7 @@
     "id": "quest_dragon_slayer_ii",
     "type": "QUEST",
     "title": "Dragon Slayer II",
-    "description": "Complete the OSRS quest: Dragon Slayer II.",
+    "description": "Complete the quest: Dragon Slayer II.",
     "weight": 1,
     "requires": [],
     "meta": {
@@ -544,7 +544,7 @@
     "id": "quest_dream_mentor",
     "type": "QUEST",
     "title": "Dream Mentor",
-    "description": "Complete the OSRS quest: Dream Mentor.",
+    "description": "Complete the quest: Dream Mentor.",
     "weight": 2,
     "requires": [],
     "meta": {
@@ -558,7 +558,7 @@
     "id": "quest_druidic_ritual",
     "type": "QUEST",
     "title": "Druidic Ritual",
-    "description": "Complete the OSRS quest: Druidic Ritual.",
+    "description": "Complete the quest: Druidic Ritual.",
     "weight": 12,
     "requires": [],
     "meta": {
@@ -572,7 +572,7 @@
     "id": "quest_dwarf_cannon",
     "type": "QUEST",
     "title": "Dwarf Cannon",
-    "description": "Complete the OSRS quest: Dwarf Cannon.",
+    "description": "Complete the quest: Dwarf Cannon.",
     "weight": 12,
     "requires": [],
     "meta": {
@@ -586,7 +586,7 @@
     "id": "quest_eadgars_ruse",
     "type": "QUEST",
     "title": "Eadgar's Ruse",
-    "description": "Complete the OSRS quest: Eadgar's Ruse.",
+    "description": "Complete the quest: Eadgar's Ruse.",
     "weight": 5,
     "requires": [],
     "meta": {
@@ -600,7 +600,7 @@
     "id": "quest_eagles_peak",
     "type": "QUEST",
     "title": "Eagles' Peak",
-    "description": "Complete the OSRS quest: Eagles' Peak.",
+    "description": "Complete the quest: Eagles' Peak.",
     "weight": 12,
     "requires": [],
     "meta": {
@@ -614,7 +614,7 @@
     "id": "quest_elemental_workshop_i",
     "type": "QUEST",
     "title": "Elemental Workshop I",
-    "description": "Complete the OSRS quest: Elemental Workshop I.",
+    "description": "Complete the quest: Elemental Workshop I.",
     "weight": 12,
     "requires": [],
     "meta": {
@@ -628,7 +628,7 @@
     "id": "quest_elemental_workshop_ii",
     "type": "QUEST",
     "title": "Elemental Workshop II",
-    "description": "Complete the OSRS quest: Elemental Workshop II.",
+    "description": "Complete the quest: Elemental Workshop II.",
     "weight": 8,
     "requires": [],
     "meta": {
@@ -642,7 +642,7 @@
     "id": "quest_enakhras_lament",
     "type": "QUEST",
     "title": "Enakhra's Lament",
-    "description": "Complete the OSRS quest: Enakhra's Lament.",
+    "description": "Complete the quest: Enakhra's Lament.",
     "weight": 5,
     "requires": [],
     "meta": {
@@ -656,7 +656,7 @@
     "id": "quest_enlightened_journey",
     "type": "QUEST",
     "title": "Enlightened Journey",
-    "description": "Complete the OSRS quest: Enlightened Journey.",
+    "description": "Complete the quest: Enlightened Journey.",
     "weight": 8,
     "requires": [],
     "meta": {
@@ -670,7 +670,7 @@
     "id": "quest_fairytale_i_growing_pains",
     "type": "QUEST",
     "title": "Fairytale I - Growing Pains",
-    "description": "Complete the OSRS quest: Fairytale I - Growing Pains.",
+    "description": "Complete the quest: Fairytale I - Growing Pains.",
     "weight": 5,
     "requires": [],
     "meta": {
@@ -684,7 +684,7 @@
     "id": "quest_fairytale_ii_cure_a_queen",
     "type": "QUEST",
     "title": "Fairytale II - Cure a Queen",
-    "description": "Complete the OSRS quest: Fairytale II - Cure a Queen.",
+    "description": "Complete the quest: Fairytale II - Cure a Queen.",
     "weight": 5,
     "requires": [],
     "meta": {
@@ -698,7 +698,7 @@
     "id": "quest_family_crest",
     "type": "QUEST",
     "title": "Family Crest",
-    "description": "Complete the OSRS quest: Family Crest.",
+    "description": "Complete the quest: Family Crest.",
     "weight": 5,
     "requires": [],
     "meta": {
@@ -712,7 +712,7 @@
     "id": "quest_fight_arena",
     "type": "QUEST",
     "title": "Fight Arena",
-    "description": "Complete the OSRS quest: Fight Arena.",
+    "description": "Complete the quest: Fight Arena.",
     "weight": 5,
     "requires": [],
     "meta": {
@@ -726,7 +726,7 @@
     "id": "quest_fishing_contest",
     "type": "QUEST",
     "title": "Fishing Contest",
-    "description": "Complete the OSRS quest: Fishing Contest.",
+    "description": "Complete the quest: Fishing Contest.",
     "weight": 12,
     "requires": [],
     "meta": {
@@ -740,7 +740,7 @@
     "id": "quest_food",
     "type": "QUEST",
     "title": "Food",
-    "description": "Complete the OSRS quest: Food.",
+    "description": "Complete the quest: Food.",
     "weight": 12,
     "requires": [],
     "meta": {
@@ -754,7 +754,7 @@
     "id": "quest_forgettable_tale",
     "type": "QUEST",
     "title": "Forgettable Tale...",
-    "description": "Complete the OSRS quest: Forgettable Tale....",
+    "description": "Complete the quest: Forgettable Tale....",
     "weight": 8,
     "requires": [],
     "meta": {
@@ -768,7 +768,7 @@
     "id": "quest_garden_of_tranquillity",
     "type": "QUEST",
     "title": "Garden of Tranquillity",
-    "description": "Complete the OSRS quest: Garden of Tranquillity.",
+    "description": "Complete the quest: Garden of Tranquillity.",
     "weight": 8,
     "requires": [],
     "meta": {
@@ -782,7 +782,7 @@
     "id": "quest_gertrudes_cat",
     "type": "QUEST",
     "title": "Gertrude's Cat",
-    "description": "Complete the OSRS quest: Gertrude's Cat.",
+    "description": "Complete the quest: Gertrude's Cat.",
     "weight": 12,
     "requires": [],
     "meta": {
@@ -796,7 +796,7 @@
     "id": "quest_getting_ahead",
     "type": "QUEST",
     "title": "Getting Ahead",
-    "description": "Complete the OSRS quest: Getting Ahead.",
+    "description": "Complete the quest: Getting Ahead.",
     "weight": 8,
     "requires": [],
     "meta": {
@@ -810,7 +810,7 @@
     "id": "quest_ghosts_ahoy",
     "type": "QUEST",
     "title": "Ghosts Ahoy",
-    "description": "Complete the OSRS quest: Ghosts Ahoy.",
+    "description": "Complete the quest: Ghosts Ahoy.",
     "weight": 8,
     "requires": [],
     "meta": {
@@ -824,7 +824,7 @@
     "id": "quest_goblin_diplomacy",
     "type": "QUEST",
     "title": "Goblin Diplomacy",
-    "description": "Complete the OSRS quest: Goblin Diplomacy.",
+    "description": "Complete the quest: Goblin Diplomacy.",
     "weight": 12,
     "requires": [],
     "meta": {
@@ -838,7 +838,7 @@
     "id": "quest_grim_tales",
     "type": "QUEST",
     "title": "Grim Tales",
-    "description": "Complete the OSRS quest: Grim Tales.",
+    "description": "Complete the quest: Grim Tales.",
     "weight": 2,
     "requires": [],
     "meta": {
@@ -852,7 +852,7 @@
     "id": "quest_haunted_mine",
     "type": "QUEST",
     "title": "Haunted Mine",
-    "description": "Complete the OSRS quest: Haunted Mine.",
+    "description": "Complete the quest: Haunted Mine.",
     "weight": 5,
     "requires": [],
     "meta": {
@@ -866,7 +866,7 @@
     "id": "quest_hazeel_cult",
     "type": "QUEST",
     "title": "Hazeel Cult",
-    "description": "Complete the OSRS quest: Hazeel Cult.",
+    "description": "Complete the quest: Hazeel Cult.",
     "weight": 12,
     "requires": [],
     "meta": {
@@ -880,7 +880,7 @@
     "id": "quest_heroes_quest",
     "type": "QUEST",
     "title": "Heroes' Quest",
-    "description": "Complete the OSRS quest: Heroes' Quest.",
+    "description": "Complete the quest: Heroes' Quest.",
     "weight": 5,
     "requires": [
       {
@@ -903,7 +903,7 @@
     "id": "quest_holy_grail",
     "type": "QUEST",
     "title": "Holy Grail",
-    "description": "Complete the OSRS quest: Holy Grail.",
+    "description": "Complete the quest: Holy Grail.",
     "weight": 8,
     "requires": [],
     "meta": {
@@ -917,7 +917,7 @@
     "id": "quest_horror_from_the_deep",
     "type": "QUEST",
     "title": "Horror from the Deep",
-    "description": "Complete the OSRS quest: Horror from the Deep.",
+    "description": "Complete the quest: Horror from the Deep.",
     "weight": 5,
     "requires": [],
     "meta": {
@@ -931,7 +931,7 @@
     "id": "quest_icthlarins_little_helper",
     "type": "QUEST",
     "title": "Icthlarin's Little Helper",
-    "description": "Complete the OSRS quest: Icthlarin's Little Helper.",
+    "description": "Complete the quest: Icthlarin's Little Helper.",
     "weight": 8,
     "requires": [],
     "meta": {
@@ -945,7 +945,7 @@
     "id": "quest_imp_catcher",
     "type": "QUEST",
     "title": "Imp Catcher",
-    "description": "Complete the OSRS quest: Imp Catcher.",
+    "description": "Complete the quest: Imp Catcher.",
     "weight": 12,
     "requires": [],
     "meta": {
@@ -959,7 +959,7 @@
     "id": "quest_in_aid_of_the_myreque",
     "type": "QUEST",
     "title": "In Aid of the Myreque",
-    "description": "Complete the OSRS quest: In Aid of the Myreque.",
+    "description": "Complete the quest: In Aid of the Myreque.",
     "weight": 8,
     "requires": [
       {
@@ -993,7 +993,7 @@
     "id": "quest_in_search_of_the_myreque",
     "type": "QUEST",
     "title": "In Search of the Myreque",
-    "description": "Complete the OSRS quest: In Search of the Myreque.",
+    "description": "Complete the quest: In Search of the Myreque.",
     "weight": 8,
     "requires": [
       {
@@ -1017,7 +1017,7 @@
     "id": "quest_jungle_potion",
     "type": "QUEST",
     "title": "Jungle Potion",
-    "description": "Complete the OSRS quest: Jungle Potion.",
+    "description": "Complete the quest: Jungle Potion.",
     "weight": 12,
     "requires": [
       {
@@ -1037,7 +1037,7 @@
     "id": "quest_kings_ransom",
     "type": "QUEST",
     "title": "King's Ransom",
-    "description": "Complete the OSRS quest: King's Ransom.",
+    "description": "Complete the quest: King's Ransom.",
     "weight": 5,
     "requires": [
       {
@@ -1074,7 +1074,7 @@
     "id": "quest_legends_quest",
     "type": "QUEST",
     "title": "Legends' Quest",
-    "description": "Complete the OSRS quest: Legends' Quest.",
+    "description": "Complete the quest: Legends' Quest.",
     "weight": 2,
     "requires": [
       {
@@ -1155,7 +1155,7 @@
     "id": "quest_lost_city",
     "type": "QUEST",
     "title": "Lost City",
-    "description": "Complete the OSRS quest: Lost City.",
+    "description": "Complete the quest: Lost City.",
     "weight": 8,
     "requires": [
       {
@@ -1175,7 +1175,7 @@
     "id": "quest_lunar_diplomacy",
     "type": "QUEST",
     "title": "Lunar Diplomacy",
-    "description": "Complete the OSRS quest: Lunar Diplomacy.",
+    "description": "Complete the quest: Lunar Diplomacy.",
     "weight": 2,
     "requires": [
       {
@@ -1237,7 +1237,7 @@
     "id": "quest_making_history",
     "type": "QUEST",
     "title": "Making History",
-    "description": "Complete the OSRS quest: Making History.",
+    "description": "Complete the quest: Making History.",
     "weight": 8,
     "requires": [
       {
@@ -1256,7 +1256,7 @@
     "id": "quest_meat_and_greet",
     "type": "QUEST",
     "title": "Meat and Greet",
-    "description": "Complete the OSRS quest: Meat and Greet.",
+    "description": "Complete the quest: Meat and Greet.",
     "weight": 12,
     "requires": [],
     "meta": {
@@ -1270,7 +1270,7 @@
     "id": "quest_merlins_crystal",
     "type": "QUEST",
     "title": "Merlin's Crystal",
-    "description": "Complete the OSRS quest: Merlin's Crystal.",
+    "description": "Complete the quest: Merlin's Crystal.",
     "weight": 8,
     "requires": [],
     "meta": {
@@ -1284,7 +1284,7 @@
     "id": "quest_monks_friend",
     "type": "QUEST",
     "title": "Monk's Friend",
-    "description": "Complete the OSRS quest: Monk's Friend.",
+    "description": "Complete the quest: Monk's Friend.",
     "weight": 12,
     "requires": [],
     "meta": {
@@ -1298,7 +1298,7 @@
     "id": "quest_monkey_madness",
     "type": "QUEST",
     "title": "Monkey Madness",
-    "description": "Complete the OSRS quest: Monkey Madness.",
+    "description": "Complete the quest: Monkey Madness.",
     "weight": 2,
     "requires": [
       {
@@ -1321,7 +1321,7 @@
     "id": "quest_monkey_madness_ii",
     "type": "QUEST",
     "title": "Monkey Madness II",
-    "description": "Complete the OSRS quest: Monkey Madness II.",
+    "description": "Complete the quest: Monkey Madness II.",
     "weight": 1,
     "requires": [
       {
@@ -1381,7 +1381,7 @@
     "id": "quest_murder_mystery",
     "type": "QUEST",
     "title": "Murder Mystery",
-    "description": "Complete the OSRS quest: Murder Mystery.",
+    "description": "Complete the quest: Murder Mystery.",
     "weight": 8,
     "requires": [],
     "meta": {
@@ -1395,7 +1395,7 @@
     "id": "quest_my_arms_big_adventure",
     "type": "QUEST",
     "title": "My Arm's Big Adventure",
-    "description": "Complete the OSRS quest: My Arm's Big Adventure.",
+    "description": "Complete the quest: My Arm's Big Adventure.",
     "weight": 5,
     "requires": [
       {
@@ -1415,7 +1415,7 @@
     "id": "quest_nature_spirit",
     "type": "QUEST",
     "title": "Nature Spirit",
-    "description": "Complete the OSRS quest: Nature Spirit.",
+    "description": "Complete the quest: Nature Spirit.",
     "weight": 8,
     "requires": [
       {
@@ -1434,7 +1434,7 @@
     "id": "quest_observatory_quest",
     "type": "QUEST",
     "title": "Observatory Quest",
-    "description": "Complete the OSRS quest: Observatory Quest.",
+    "description": "Complete the quest: Observatory Quest.",
     "weight": 12,
     "requires": [],
     "meta": {
@@ -1448,7 +1448,7 @@
     "id": "quest_olafs_quest",
     "type": "QUEST",
     "title": "Olaf's Quest",
-    "description": "Complete the OSRS quest: Olaf's Quest.",
+    "description": "Complete the quest: Olaf's Quest.",
     "weight": 8,
     "requires": [
       {
@@ -1477,7 +1477,7 @@
     "id": "quest_one_small_favour",
     "type": "QUEST",
     "title": "One Small Favour",
-    "description": "Complete the OSRS quest: One Small Favour.",
+    "description": "Complete the quest: One Small Favour.",
     "weight": 5,
     "requires": [
       {
@@ -1516,7 +1516,7 @@
     "id": "quest_pandemonium",
     "type": "QUEST",
     "title": "Pandemonium",
-    "description": "Complete the OSRS quest: Pandemonium.",
+    "description": "Complete the quest: Pandemonium.",
     "weight": 12,
     "requires": [],
     "meta": {
@@ -1527,24 +1527,10 @@
     }
   },
   {
-    "id": "quest_pickaxe",
-    "type": "QUEST",
-    "title": "Pickaxe",
-    "description": "Complete the OSRS quest: Pickaxe.",
-    "weight": 12,
-    "requires": [],
-    "meta": {
-      "members": false,
-      "difficulty": "Novice",
-      "questPoints": 1,
-      "url": "https://oldschool.runescape.wiki/w/Anvil"
-    }
-  },
-  {
     "id": "quest_plague_city",
     "type": "QUEST",
     "title": "Plague City",
-    "description": "Complete the OSRS quest: Plague City.",
+    "description": "Complete the quest: Plague City.",
     "weight": 12,
     "requires": [],
     "meta": {
@@ -1558,7 +1544,7 @@
     "id": "quest_priest_in_peril",
     "type": "QUEST",
     "title": "Priest in Peril",
-    "description": "Complete the OSRS quest: Priest in Peril.",
+    "description": "Complete the quest: Priest in Peril.",
     "weight": 12,
     "requires": [],
     "meta": {
@@ -1572,7 +1558,7 @@
     "id": "quest_rag_and_bone_man",
     "type": "QUEST",
     "title": "Rag and Bone Man",
-    "description": "Complete the OSRS quest: Rag and Bone Man.",
+    "description": "Complete the quest: Rag and Bone Man.",
     "weight": 12,
     "requires": [],
     "meta": {
@@ -1586,7 +1572,7 @@
     "id": "quest_ratcatchers",
     "type": "QUEST",
     "title": "Ratcatchers",
-    "description": "Complete the OSRS quest: Ratcatchers.",
+    "description": "Complete the quest: Ratcatchers.",
     "weight": 8,
     "requires": [],
     "meta": {
@@ -1600,7 +1586,7 @@
     "id": "quest_recipe_for_disaster",
     "type": "QUEST",
     "title": "Recipe for Disaster",
-    "description": "Complete the OSRS quest: Recipe for Disaster.",
+    "description": "Complete the quest: Recipe for Disaster.",
     "weight": 2,
     "requires": [
       {
@@ -1683,7 +1669,7 @@
     "id": "quest_recruitment_drive",
     "type": "QUEST",
     "title": "Recruitment Drive",
-    "description": "Complete the OSRS quest: Recruitment Drive.",
+    "description": "Complete the quest: Recruitment Drive.",
     "weight": 12,
     "requires": [
       {
@@ -1702,7 +1688,7 @@
     "id": "quest_regicide",
     "type": "QUEST",
     "title": "Regicide",
-    "description": "Complete the OSRS quest: Regicide.",
+    "description": "Complete the quest: Regicide.",
     "weight": 2,
     "requires": [
       {
@@ -1726,7 +1712,7 @@
     "id": "quest_roving_elves",
     "type": "QUEST",
     "title": "Roving Elves",
-    "description": "Complete the OSRS quest: Roving Elves.",
+    "description": "Complete the quest: Roving Elves.",
     "weight": 8,
     "requires": [
       {
@@ -1749,7 +1735,7 @@
     "id": "quest_royal_trouble",
     "type": "QUEST",
     "title": "Royal Trouble",
-    "description": "Complete the OSRS quest: Royal Trouble.",
+    "description": "Complete the quest: Royal Trouble.",
     "weight": 5,
     "requires": [
       {
@@ -1778,7 +1764,7 @@
     "id": "quest_rum_deal",
     "type": "QUEST",
     "title": "Rum Deal",
-    "description": "Complete the OSRS quest: Rum Deal.",
+    "description": "Complete the quest: Rum Deal.",
     "weight": 5,
     "requires": [
       {
@@ -1822,7 +1808,7 @@
     "id": "quest_scorpion_catcher",
     "type": "QUEST",
     "title": "Scorpion Catcher",
-    "description": "Complete the OSRS quest: Scorpion Catcher.",
+    "description": "Complete the quest: Scorpion Catcher.",
     "weight": 8,
     "requires": [],
     "meta": {
@@ -1836,7 +1822,7 @@
     "id": "quest_scrambled",
     "type": "QUEST",
     "title": "Scrambled!",
-    "description": "Complete the OSRS quest: Scrambled!.",
+    "description": "Complete the quest: Scrambled!.",
     "weight": 12,
     "requires": [],
     "meta": {
@@ -1850,7 +1836,7 @@
     "id": "quest_sea_slug",
     "type": "QUEST",
     "title": "Sea Slug",
-    "description": "Complete the OSRS quest: Sea Slug.",
+    "description": "Complete the quest: Sea Slug.",
     "weight": 12,
     "requires": [],
     "meta": {
@@ -1864,7 +1850,7 @@
     "id": "quest_shades_of_mortton",
     "type": "QUEST",
     "title": "Shades of Mortton",
-    "description": "Complete the OSRS quest: Shades of Mortton.",
+    "description": "Complete the quest: Shades of Mortton.",
     "weight": 8,
     "requires": [
       {
@@ -1889,7 +1875,7 @@
     "id": "quest_shadow_of_the_storm",
     "type": "QUEST",
     "title": "Shadow of the Storm",
-    "description": "Complete the OSRS quest: Shadow of the Storm.",
+    "description": "Complete the quest: Shadow of the Storm.",
     "weight": 8,
     "requires": [
       {
@@ -1917,7 +1903,7 @@
     "id": "quest_shadows_of_custodia",
     "type": "QUEST",
     "title": "Shadows of Custodia",
-    "description": "Complete the OSRS quest: Shadows of Custodia.",
+    "description": "Complete the quest: Shadows of Custodia.",
     "weight": 12,
     "requires": [],
     "meta": {
@@ -1931,7 +1917,7 @@
     "id": "quest_sheep_herder",
     "type": "QUEST",
     "title": "Sheep Herder",
-    "description": "Complete the OSRS quest: Sheep Herder.",
+    "description": "Complete the quest: Sheep Herder.",
     "weight": 12,
     "requires": [],
     "meta": {
@@ -1945,7 +1931,7 @@
     "id": "quest_shilo_village",
     "type": "QUEST",
     "title": "Shilo Village",
-    "description": "Complete the OSRS quest: Shilo Village.",
+    "description": "Complete the quest: Shilo Village.",
     "weight": 5,
     "requires": [
       {
@@ -1969,7 +1955,7 @@
     "id": "quest_slug_menace",
     "type": "QUEST",
     "title": "Slug Menace",
-    "description": "Complete the OSRS quest: Slug Menace.",
+    "description": "Complete the quest: Slug Menace.",
     "weight": 8,
     "requires": [
       {
@@ -2016,7 +2002,7 @@
     "id": "quest_song_of_the_elves",
     "type": "QUEST",
     "title": "Song of the Elves",
-    "description": "Complete the OSRS quest: Song of the Elves.",
+    "description": "Complete the quest: Song of the Elves.",
     "weight": 1,
     "requires": [
       {
@@ -2071,7 +2057,7 @@
     "id": "quest_spirits_of_the_elid",
     "type": "QUEST",
     "title": "Spirits of the Elid",
-    "description": "Complete the OSRS quest: Spirits of the Elid.",
+    "description": "Complete the quest: Spirits of the Elid.",
     "weight": 8,
     "requires": [
       {
@@ -2096,7 +2082,7 @@
     "id": "quest_swan_song",
     "type": "QUEST",
     "title": "Swan Song",
-    "description": "Complete the OSRS quest: Swan Song.",
+    "description": "Complete the quest: Swan Song.",
     "weight": 5,
     "requires": [
       {
@@ -2140,7 +2126,7 @@
     "id": "quest_tai_bwo_wannai_trio",
     "type": "QUEST",
     "title": "Tai Bwo Wannai Trio",
-    "description": "Complete the OSRS quest: Tai Bwo Wannai Trio.",
+    "description": "Complete the quest: Tai Bwo Wannai Trio.",
     "weight": 5,
     "requires": [
       {
@@ -2174,7 +2160,7 @@
     "id": "quest_temple_of_ikov",
     "type": "QUEST",
     "title": "Temple of Ikov",
-    "description": "Complete the OSRS quest: Temple of Ikov.",
+    "description": "Complete the quest: Temple of Ikov.",
     "weight": 5,
     "requires": [
       {
@@ -2194,7 +2180,7 @@
     "id": "quest_the_ascent_of_arceuus",
     "type": "QUEST",
     "title": "The Ascent of Arceuus",
-    "description": "Complete the OSRS quest: The Ascent of Arceuus.",
+    "description": "Complete the quest: The Ascent of Arceuus.",
     "weight": 12,
     "requires": [],
     "meta": {
@@ -2208,7 +2194,7 @@
     "id": "quest_the_depths_of_despair",
     "type": "QUEST",
     "title": "The Depths of Despair",
-    "description": "Complete the OSRS quest: The Depths of Despair.",
+    "description": "Complete the quest: The Depths of Despair.",
     "weight": 8,
     "requires": [
       {
@@ -2232,7 +2218,7 @@
     "id": "quest_the_final_dawn",
     "type": "QUEST",
     "title": "The Final Dawn",
-    "description": "Complete the OSRS quest: The Final Dawn.",
+    "description": "Complete the quest: The Final Dawn.",
     "weight": 1,
     "requires": [
       {
@@ -2251,7 +2237,7 @@
     "id": "quest_the_forsaken_tower",
     "type": "QUEST",
     "title": "The Forsaken Tower",
-    "description": "Complete the OSRS quest: The Forsaken Tower.",
+    "description": "Complete the quest: The Forsaken Tower.",
     "weight": 12,
     "requires": [
       {
@@ -2270,7 +2256,7 @@
     "id": "quest_the_fremennik_exiles",
     "type": "QUEST",
     "title": "The Fremennik Exiles",
-    "description": "Complete the OSRS quest: The Fremennik Exiles.",
+    "description": "Complete the quest: The Fremennik Exiles.",
     "weight": 5,
     "requires": [
       {
@@ -2314,7 +2300,7 @@
     "id": "quest_the_fremennik_isles",
     "type": "QUEST",
     "title": "The Fremennik Isles",
-    "description": "Complete the OSRS quest: The Fremennik Isles.",
+    "description": "Complete the quest: The Fremennik Isles.",
     "weight": 5,
     "requires": [
       {
@@ -2344,7 +2330,7 @@
     "id": "quest_the_fremennik_trials",
     "type": "QUEST",
     "title": "The Fremennik Trials",
-    "description": "Complete the OSRS quest: The Fremennik Trials.",
+    "description": "Complete the quest: The Fremennik Trials.",
     "weight": 5,
     "requires": [],
     "meta": {
@@ -2358,7 +2344,7 @@
     "id": "quest_the_giant_dwarf",
     "type": "QUEST",
     "title": "The Giant Dwarf",
-    "description": "Complete the OSRS quest: The Giant Dwarf.",
+    "description": "Complete the quest: The Giant Dwarf.",
     "weight": 8,
     "requires": [
       {
@@ -2388,7 +2374,7 @@
     "id": "quest_the_golem",
     "type": "QUEST",
     "title": "The Golem",
-    "description": "Complete the OSRS quest: The Golem.",
+    "description": "Complete the quest: The Golem.",
     "weight": 8,
     "requires": [],
     "meta": {
@@ -2402,7 +2388,7 @@
     "id": "quest_the_grand_tree",
     "type": "QUEST",
     "title": "The Grand Tree",
-    "description": "Complete the OSRS quest: The Grand Tree.",
+    "description": "Complete the quest: The Grand Tree.",
     "weight": 5,
     "requires": [],
     "meta": {
@@ -2416,7 +2402,7 @@
     "id": "quest_the_great_brain_robbery",
     "type": "QUEST",
     "title": "The Great Brain Robbery",
-    "description": "Complete the OSRS quest: The Great Brain Robbery.",
+    "description": "Complete the quest: The Great Brain Robbery.",
     "weight": 5,
     "requires": [
       {
@@ -2455,7 +2441,7 @@
     "id": "quest_the_hand_in_the_sand",
     "type": "QUEST",
     "title": "The Hand in the Sand",
-    "description": "Complete the OSRS quest: The Hand in the Sand.",
+    "description": "Complete the quest: The Hand in the Sand.",
     "weight": 8,
     "requires": [
       {
@@ -2480,7 +2466,7 @@
     "id": "quest_the_knights_sword",
     "type": "QUEST",
     "title": "The Knight's Sword",
-    "description": "Complete the OSRS quest: The Knight's Sword.",
+    "description": "Complete the quest: The Knight's Sword.",
     "weight": 12,
     "requires": [],
     "meta": {
@@ -2494,7 +2480,7 @@
     "id": "quest_the_lost_tribe",
     "type": "QUEST",
     "title": "The Lost Tribe",
-    "description": "Complete the OSRS quest: The Lost Tribe.",
+    "description": "Complete the quest: The Lost Tribe.",
     "weight": 12,
     "requires": [
       {
@@ -2513,7 +2499,7 @@
     "id": "quest_the_queen_of_thieves",
     "type": "QUEST",
     "title": "The Queen of Thieves",
-    "description": "Complete the OSRS quest: The Queen of Thieves.",
+    "description": "Complete the quest: The Queen of Thieves.",
     "weight": 12,
     "requires": [
       {
@@ -2537,7 +2523,7 @@
     "id": "quest_the_slug_menace",
     "type": "QUEST",
     "title": "The Slug Menace",
-    "description": "Complete the OSRS quest: The Slug Menace.",
+    "description": "Complete the quest: The Slug Menace.",
     "weight": 8,
     "requires": [
       {
@@ -2584,7 +2570,7 @@
     "id": "quest_the_tale_of_the_righteous",
     "type": "QUEST",
     "title": "The Tale of the Righteous",
-    "description": "Complete the OSRS quest: The Tale of the Righteous.",
+    "description": "Complete the quest: The Tale of the Righteous.",
     "weight": 12,
     "requires": [
       {
@@ -2608,7 +2594,7 @@
     "id": "quest_the_tourist_trap",
     "type": "QUEST",
     "title": "The Tourist Trap",
-    "description": "Complete the OSRS quest: The Tourist Trap.",
+    "description": "Complete the quest: The Tourist Trap.",
     "weight": 8,
     "requires": [
       {
@@ -2633,7 +2619,7 @@
     "id": "quest_throne_of_miscellania",
     "type": "QUEST",
     "title": "Throne of Miscellania",
-    "description": "Complete the OSRS quest: Throne of Miscellania.",
+    "description": "Complete the quest: Throne of Miscellania.",
     "weight": 5,
     "requires": [
       {
@@ -2667,7 +2653,7 @@
     "id": "quest_tower_of_life",
     "type": "QUEST",
     "title": "Tower of Life",
-    "description": "Complete the OSRS quest: Tower of Life.",
+    "description": "Complete the quest: Tower of Life.",
     "weight": 8,
     "requires": [
       {
@@ -2687,7 +2673,7 @@
     "id": "quest_tree_gnome_village",
     "type": "QUEST",
     "title": "Tree Gnome Village",
-    "description": "Complete the OSRS quest: Tree Gnome Village.",
+    "description": "Complete the quest: Tree Gnome Village.",
     "weight": 12,
     "requires": [],
     "meta": {
@@ -2701,7 +2687,7 @@
     "id": "quest_tribal_totem",
     "type": "QUEST",
     "title": "Tribal Totem",
-    "description": "Complete the OSRS quest: Tribal Totem.",
+    "description": "Complete the quest: Tribal Totem.",
     "weight": 8,
     "requires": [],
     "meta": {
@@ -2715,7 +2701,7 @@
     "id": "quest_troll_romance",
     "type": "QUEST",
     "title": "Troll Romance",
-    "description": "Complete the OSRS quest: Troll Romance.",
+    "description": "Complete the quest: Troll Romance.",
     "weight": 8,
     "requires": [
       {
@@ -2739,7 +2725,7 @@
     "id": "quest_troll_stronghold",
     "type": "QUEST",
     "title": "Troll Stronghold",
-    "description": "Complete the OSRS quest: Troll Stronghold.",
+    "description": "Complete the quest: Troll Stronghold.",
     "weight": 5,
     "requires": [
       {
@@ -2758,7 +2744,7 @@
     "id": "quest_troubled_tortugans",
     "type": "QUEST",
     "title": "Troubled Tortugans",
-    "description": "Complete the OSRS quest: Troubled Tortugans.",
+    "description": "Complete the quest: Troubled Tortugans.",
     "weight": 5,
     "requires": [
       {
@@ -2777,7 +2763,7 @@
     "id": "quest_underground_pass",
     "type": "QUEST",
     "title": "Underground Pass",
-    "description": "Complete the OSRS quest: Underground Pass.",
+    "description": "Complete the quest: Underground Pass.",
     "weight": 5,
     "requires": [
       {
@@ -2801,7 +2787,7 @@
     "id": "quest_vampyre_slayer",
     "type": "QUEST",
     "title": "Vampyre Slayer",
-    "description": "Complete the OSRS quest: Vampyre Slayer.",
+    "description": "Complete the quest: Vampyre Slayer.",
     "weight": 12,
     "requires": [],
     "meta": {
@@ -2815,7 +2801,7 @@
     "id": "quest_wanted",
     "type": "QUEST",
     "title": "Wanted!",
-    "description": "Complete the OSRS quest: Wanted!.",
+    "description": "Complete the quest: Wanted!.",
     "weight": 8,
     "requires": [
       {
@@ -2855,7 +2841,7 @@
     "id": "quest_watchtower",
     "type": "QUEST",
     "title": "Watchtower",
-    "description": "Complete the OSRS quest: Watchtower.",
+    "description": "Complete the quest: Watchtower.",
     "weight": 5,
     "requires": [
       {
@@ -2890,7 +2876,7 @@
     "id": "quest_waterfall_quest",
     "type": "QUEST",
     "title": "Waterfall Quest",
-    "description": "Complete the OSRS quest: Waterfall Quest.",
+    "description": "Complete the quest: Waterfall Quest.",
     "weight": 8,
     "requires": [],
     "meta": {
@@ -2904,7 +2890,7 @@
     "id": "quest_what_lies_below",
     "type": "QUEST",
     "title": "What Lies Below",
-    "description": "Complete the OSRS quest: What Lies Below.",
+    "description": "Complete the quest: What Lies Below.",
     "weight": 8,
     "requires": [
       {
@@ -2924,7 +2910,7 @@
     "id": "quest_witchs_house",
     "type": "QUEST",
     "title": "Witch's House",
-    "description": "Complete the OSRS quest: Witch's House.",
+    "description": "Complete the quest: Witch's House.",
     "weight": 8,
     "requires": [],
     "meta": {
@@ -2938,7 +2924,7 @@
     "id": "quest_witchs_potion",
     "type": "QUEST",
     "title": "Witch's Potion",
-    "description": "Complete the OSRS quest: Witch's Potion.",
+    "description": "Complete the quest: Witch's Potion.",
     "weight": 12,
     "requires": [],
     "meta": {
@@ -2952,7 +2938,7 @@
     "id": "quest_zogre_flesh_eaters",
     "type": "QUEST",
     "title": "Zogre Flesh Eaters",
-    "description": "Complete the OSRS quest: Zogre Flesh Eaters.",
+    "description": "Complete the quest: Zogre Flesh Eaters.",
     "weight": 8,
     "requires": [
       {
