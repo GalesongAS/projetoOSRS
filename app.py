@@ -719,19 +719,437 @@ def main(page: ft.Page):
 
     # Minimal placeholders for dialogs (keep yours if you want)
     def open_task_log_window(_):
-        dlg = ft.AlertDialog(modal=True, content=ft.Text("Task Log (unchanged)", color=TEXT_DIM))
+        dlg = ft.AlertDialog(modal=True)
+        list_view = ft.ListView(expand=True, spacing=6, padding=10)
+
+        header_stats = ft.Text("", color=TEXT_DIM, size=11)
+
+        def rebuild():
+            list_view.controls.clear()
+            logs = list(state.get("taskLog", []))
+
+            if not logs:
+                header_stats.value = "No entries yet."
+                list_view.controls.append(ft.Text("No completed tasks yet.", color=TEXT_DIM))
+                page.update()
+                return
+
+            # Keep FULL history in save.json,
+            # but only render the last N to keep UI snappy.
+            render_limit = 500
+            shown = logs[-render_limit:]
+            header_stats.value = f"Showing last {len(shown)} of {len(logs)} entries"
+
+            for e in reversed(shown):  # newest first
+                ts = e.get("ts", "")
+                title = e.get("title", e.get("cardId", "?"))
+                typ = e.get("type", "?")
+                detail = e.get("detail", "")
+
+                list_view.controls.append(
+                    ft.Container(
+                        padding=ft.padding.symmetric(horizontal=10, vertical=8),
+                        border_radius=10,
+                        bgcolor="#15110d",
+                        border=ft.border.all(1, BORDER_LIGHT),
+                        content=ft.Column(
+                            spacing=2,
+                            controls=[
+                                ft.Text(title, color=TEXT_MAIN, weight=ft.FontWeight.BOLD),
+                                ft.Text(f"{ts} • {typ}", color=TEXT_DIM, size=11),
+                                ft.Text(detail, color=ACCENT, size=11) if detail else ft.Container(height=0),
+                            ],
+                        ),
+                    )
+                )
+
+            page.update()
+
+        rebuild()
+
+        dlg.content = ft.Container(
+            width=560,
+            height=560,
+            bgcolor=PANEL_BG,
+            border=ft.border.all(1, BORDER_DARK),
+            border_radius=14,
+            padding=12,
+            content=ft.Column(
+                spacing=10,
+                controls=[
+                    ft.Row(
+                        alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+                        controls=[
+                            ft.Column(
+                                spacing=2,
+                                controls=[
+                                    ft.Text("Task Log", size=18, weight=ft.FontWeight.BOLD, color=TEXT_MAIN),
+                                    header_stats,
+                                ],
+                            ),
+                            ft.Container(
+                                padding=6,
+                                border_radius=8,
+                                border=ft.border.all(1, BORDER_LIGHT),
+                                bgcolor="#2b241a",
+                                on_click=lambda e: close_dialog(dlg),
+                                content=ft.Text("X", color=TEXT_MAIN, weight=ft.FontWeight.BOLD),
+                            ),
+                        ],
+                    ),
+                    ft.Container(
+                        expand=True,
+                        bgcolor=PANEL_INNER,
+                        border=ft.border.all(1, BORDER_LIGHT),
+                        border_radius=12,
+                        content=list_view,
+                    ),
+                ],
+            ),
+        )
+
         open_dialog(dlg)
+
+        # ---------- Skills window ----------
+    def asset_exists(rel_path: str) -> bool:
+        return os.path.exists(os.path.join(ASSETS_DIR, rel_path.replace("/", os.sep)))
+
+    def tracked_skills():
+        items = []
+        for skill, cap in (state.get("skillCaps", {}) or {}).items():
+            cap_i = int(cap)
+            if cap_i >= 99:
+                continue
+            items.append((skill, cap_i))
+        items.sort(key=lambda x: x[0].lower())
+        return items
+
+    def skill_tile(skill: str, cap: int):
+        icon_rel = f"skills/{skill.lower()}.png"
+        has_icon = asset_exists(icon_rel)
+
+        icon = (
+            ft.Image(
+                src=icon_rel,
+                width=34,
+                height=34,
+                fit=ft.ImageFit.CONTAIN,
+                opacity=1.0 if cap > 1 else 0.35,
+            )
+            if has_icon
+            else ft.Text(
+                skill[:2].upper(),
+                color=TEXT_MAIN,
+                opacity=1.0 if cap > 1 else 0.35,
+                weight=ft.FontWeight.BOLD,
+            )
+        )
+
+        lock_rel = "ui/lock.png"
+        lock_control = (
+            ft.Image(src=lock_rel, width=22, height=22, opacity=0.95)
+            if asset_exists(lock_rel)
+            else ft.Text("🔒", size=16, opacity=0.95)
+        )
+
+        cap_badge = ft.Container(
+            padding=ft.padding.symmetric(horizontal=6, vertical=2),
+            bgcolor="#2a241a",
+            border=ft.border.all(1, BORDER_LIGHT),
+            border_radius=6,
+            content=ft.Text(str(cap), size=12, weight=ft.FontWeight.BOLD, color=TEXT_MAIN),
+        )
+
+        return ft.Container(
+            width=84,
+            height=60,
+            border_radius=8,
+            bgcolor="#1a1510",
+            border=ft.border.all(1, BORDER_LIGHT),
+            content=ft.Stack(
+                controls=[
+                    ft.Container(expand=True, alignment=ft.alignment.center, content=icon),
+                    ft.Container(expand=True, alignment=ft.alignment.center, content=lock_control, visible=(cap <= 1)),
+                    ft.Container(expand=True, alignment=ft.alignment.top_right, padding=6, content=cap_badge, visible=(cap > 1)),
+                ]
+            ),
+        )
 
     def open_skills_window(_):
-        dlg = ft.AlertDialog(modal=True, content=ft.Text("Skills (unchanged)", color=TEXT_DIM))
+        tiles = [skill_tile(skill, cap) for skill, cap in tracked_skills()]
+
+        if hasattr(ft, "GridView"):
+            grid = ft.GridView(
+                expand=True,
+                max_extent=90,
+                child_aspect_ratio=1.35,
+                spacing=8,
+                run_spacing=8,
+            )
+            grid.controls = tiles
+            grid_content = grid
+        else:
+            grid_content = ft.Row(controls=tiles, wrap=True, spacing=8, run_spacing=8)
+
+        dlg = ft.AlertDialog(modal=True)
+        dlg.content = ft.Container(
+            width=420,
+            height=360,
+            bgcolor=PANEL_BG,
+            border=ft.border.all(1, BORDER_DARK),
+            border_radius=14,
+            padding=12,
+            content=ft.Column(
+                spacing=10,
+                controls=[
+                    ft.Row(
+                        alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+                        controls=[
+                            ft.Text("Unlocked Skills", size=18, weight=ft.FontWeight.BOLD, color=TEXT_MAIN),
+                            ft.Container(
+                                padding=6,
+                                border_radius=8,
+                                border=ft.border.all(1, BORDER_LIGHT),
+                                bgcolor="#2b241a",
+                                on_click=lambda e: close_dialog(dlg),
+                                content=ft.Text("X", color=TEXT_MAIN, weight=ft.FontWeight.BOLD),
+                            ),
+                        ],
+                    ),
+                    ft.Container(
+                        expand=True,
+                        bgcolor=PANEL_INNER,
+                        border=ft.border.all(1, BORDER_LIGHT),
+                        border_radius=12,
+                        padding=12,
+                        content=grid_content,
+                    ),
+                ],
+            ),
+        )
         open_dialog(dlg)
+
+    def is_repeatable(card: dict) -> bool:
+        return bool(card.get("repeatable", False))
+
+    def resolve_gate(gate: dict) -> dict:
+        if not gate:
+            return None
+        g = dict(gate)
+
+        if g.get("kind") == "MARKS_OF_GRACE":
+            mn = int(g.get("min", 1))
+            mx = int(g.get("max", mn))
+            if mx < mn:
+                mx = mn
+            g["amount"] = mn + secrets.randbelow(mx - mn + 1)
+
+        return g
+
+    def draw_pack_options(eligible: list[dict], draw_n: int) -> list[dict]:
+        pool = eligible[:]
+        options = []
+
+        def remove_from_pool(picked_id: str):
+            nonlocal pool
+            pool = [x for x in pool if x["id"] != picked_id]
+
+        # If drawing 3 and have non-quests, force at least 1 non-quest
+        if draw_n == 3:
+            nonquests = [c for c in pool if c.get("type") != "QUEST"]
+            if nonquests:
+                first = weighted_pick(nonquests)
+                options.append(first)
+                remove_from_pool(first["id"])
+
+        while len(options) < draw_n and pool:
+            quest_count = sum(1 for o in options if o.get("type") == "QUEST")
+            remaining = draw_n - len(options)
+
+            nonquests_left = [c for c in pool if c.get("type") != "QUEST"]
+
+            # If last slot would make 3 quests and we have non-quests, force non-quest
+            if draw_n == 3 and remaining == 1 and quest_count >= 2 and nonquests_left:
+                pick = weighted_pick(nonquests_left)
+            else:
+                pick = weighted_pick(pool)
+                if draw_n == 3 and pick.get("type") == "QUEST" and quest_count >= 2 and nonquests_left:
+                    pick = weighted_pick(nonquests_left)
+
+            options.append(pick)
+            remove_from_pool(pick["id"])
+
+        return options
+
+    # ---------- Quest log ----------
+    quest_filter = {"mode": "ALL"}  # ALL | ACTIVE | COMPLETE | INCOMPLETE
+
+    def all_quests():
+        qs = [c for c in all_cards if c.get("type") == "QUEST"]
+        qs.sort(key=lambda x: x.get("title", "").lower())
+        return qs
+
+    def quest_status(qid: str) -> str:
+        if qid in state.get("completedCardIds", []):
+            return "COMPLETE"
+        if state.get("activeCardId") == qid:
+            return "ACTIVE"
+        return "INCOMPLETE"
+
+    def quest_color(status: str) -> str:
+        if status == "COMPLETE":
+            return QUEST_GREEN
+        if status == "ACTIVE":
+            return QUEST_YELLOW
+        return QUEST_RED
 
     def open_quests_window(_):
-        dlg = ft.AlertDialog(modal=True, content=ft.Text("Quests (unchanged)", color=TEXT_DIM))
+        dlg = ft.AlertDialog(modal=True)
+        list_view = ft.ListView(expand=True, spacing=2, padding=10)
+
+        header_title = ft.Text("Quest List", size=18, weight=ft.FontWeight.BOLD, color=TEXT_MAIN)
+        header_stats = ft.Text("", color=TEXT_DIM)
+
+        def rebuild():
+            qs = all_quests()
+            completed_ids = set(state.get("completedCardIds", []))
+
+            completed_count = sum(1 for q in qs if q["id"] in completed_ids)
+            header_stats.value = f"Completed: {completed_count}/{len(qs)}"
+
+            list_view.controls.clear()
+
+            for q in qs:
+                qid = q["id"]
+                status = quest_status(qid)
+
+                mode = quest_filter["mode"]
+                if mode == "COMPLETE" and status != "COMPLETE":
+                    continue
+                if mode == "ACTIVE" and status != "ACTIVE":
+                    continue
+                if mode == "INCOMPLETE" and status == "COMPLETE":
+                    continue
+
+                meta = q.get("meta", {}) or {}
+                meta_bits = []
+                if meta.get("difficulty"):
+                    meta_bits.append(str(meta["difficulty"]))
+                if isinstance(meta.get("questPoints"), int) and meta["questPoints"] > 0:
+                    meta_bits.append(f'{meta["questPoints"]} QP')
+                if meta.get("members") is True:
+                    meta_bits.append("Members")
+                meta_line = " • ".join(meta_bits)
+
+                list_view.controls.append(
+                    ft.Container(
+                        padding=ft.padding.symmetric(horizontal=10, vertical=6),
+                        border_radius=8,
+                        bgcolor="#15110d",
+                        border=ft.border.all(1, BORDER_LIGHT),
+                        content=ft.Column(
+                            spacing=1,
+                            controls=[
+                                ft.Text(q.get("title", qid), color=quest_color(status), size=16, weight=ft.FontWeight.BOLD),
+                                ft.Text(meta_line, color=TEXT_DIM, size=11) if meta_line else ft.Container(height=0),
+                            ],
+                        ),
+                    )
+                )
+
+            page.update()
+
+        def set_filter(mode: str):
+            quest_filter["mode"] = mode
+            rebuild()
+
+        filters_row = ft.Row(
+            spacing=10,
+            controls=[
+                osrs_button("All", lambda e: set_filter("ALL")),
+                osrs_button("Active", lambda e: set_filter("ACTIVE")),
+                osrs_button("Completed", lambda e: set_filter("COMPLETE")),
+                osrs_button("Incomplete", lambda e: set_filter("INCOMPLETE")),
+            ],
+        )
+
+        rebuild()
+
+        dlg.content = ft.Container(
+            width=520,
+            height=540,
+            bgcolor=PANEL_BG,
+            border=ft.border.all(1, BORDER_DARK),
+            border_radius=14,
+            padding=12,
+            content=ft.Column(
+                spacing=10,
+                controls=[
+                    ft.Row(
+                        alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+                        controls=[
+                            ft.Column(spacing=2, controls=[header_title, header_stats]),
+                            ft.Container(
+                                padding=6,
+                                border_radius=8,
+                                border=ft.border.all(1, BORDER_LIGHT),
+                                bgcolor="#2b241a",
+                                on_click=lambda e: close_dialog(dlg),
+                                content=ft.Text("X", color=TEXT_MAIN, weight=ft.FontWeight.BOLD),
+                            ),
+                        ],
+                    ),
+                    filters_row,
+                    ft.Container(
+                        expand=True,
+                        bgcolor=PANEL_INNER,
+                        border=ft.border.all(1, BORDER_LIGHT),
+                        border_radius=12,
+                        content=list_view,
+                    ),
+                ],
+            ),
+        )
+
         open_dialog(dlg)
 
+    # ---------- Notes dialog ----------
     def open_notes_window(_):
-        dlg = ft.AlertDialog(modal=True, content=ft.Text(NOTES_TEXT, color=TEXT_DIM))
+        dlg = ft.AlertDialog(modal=True)
+        dlg.content = ft.Container(
+            width=520,
+            bgcolor=PANEL_BG,
+            border=ft.border.all(1, BORDER_DARK),
+            border_radius=14,
+            padding=12,
+            content=ft.Column(
+                tight=True,
+                spacing=10,
+                controls=[
+                    ft.Row(
+                        alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+                        controls=[
+                            ft.Text("Notes", size=18, weight=ft.FontWeight.BOLD, color=TEXT_MAIN),
+                            ft.Container(
+                                padding=6,
+                                border_radius=8,
+                                border=ft.border.all(1, BORDER_LIGHT),
+                                bgcolor="#2b241a",
+                                on_click=lambda e: close_dialog(dlg),
+                                content=ft.Text("X", color=TEXT_MAIN, weight=ft.FontWeight.BOLD),
+                            ),
+                        ],
+                    ),
+                    ft.Container(
+                        bgcolor=PANEL_INNER,
+                        border=ft.border.all(1, BORDER_LIGHT),
+                        border_radius=12,
+                        padding=12,
+                        content=ft.Text(NOTES_TEXT, color=TEXT_DIM),
+                    ),
+                ],
+            ),
+        )
         open_dialog(dlg)
 
     def complete_current_card(_):
@@ -753,12 +1171,30 @@ def main(page: ft.Page):
         def rebuild():
             list_view.controls.clear()
             for mm in config.get("slayerMasters", []):
+                portrait = mm.get("portrait")
                 mid = mm["id"]
                 name = mm["name"]
-                st = state["slayerMasters"].get(mid, {"tasks": 0, "packsFound": 0, "maxPacks": int(mm["maxPacks"])})
+
+                st = state["slayerMasters"].get(
+                    mid, {"tasks": 0, "packsFound": 0, "maxPacks": int(mm["maxPacks"])}
+                )
                 tasks = int(st.get("tasks", 0))
                 found = int(st.get("packsFound", 0))
                 maxp = int(st.get("maxPacks", mm["maxPacks"]))
+
+                # ✅ ADD THIS BLOCK HERE (before `row = ...`)
+                if portrait and os.path.exists(os.path.join(ASSETS_DIR, portrait.replace("/", os.sep))):
+                    img = ft.Image(src=portrait, width=44, height=44, fit=ft.ImageFit.CONTAIN)
+                else:
+                    img = ft.Container(
+                        width=44,
+                        height=44,
+                        alignment=ft.alignment.center,
+                        bgcolor="#1a1510",
+                        border=ft.border.all(1, BORDER_LIGHT),
+                        border_radius=8,
+                        content=ft.Text(name[:1], color=TEXT_MAIN, weight=ft.FontWeight.BOLD),
+                    )
 
                 row = ft.Container(
                     padding=12,
@@ -767,13 +1203,22 @@ def main(page: ft.Page):
                     border=ft.border.all(1, BORDER_LIGHT),
                     content=ft.Row(
                         alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+                        vertical_alignment=ft.CrossAxisAlignment.CENTER,
                         controls=[
-                            ft.Column(
-                                spacing=2,
+                            # ✅ CHANGE THIS LEFT SIDE to include the portrait + text
+                            ft.Row(
+                                spacing=12,
+                                vertical_alignment=ft.CrossAxisAlignment.CENTER,
                                 controls=[
-                                    ft.Text(name, size=18, weight=ft.FontWeight.BOLD, color=TEXT_MAIN),
-                                    ft.Text(f"Lifetime Tasks: {tasks}", color=TEXT_DIM),
-                                    ft.Text(f"Packs Found: {found}/{maxp}", color=ACCENT),
+                                    img,
+                                    ft.Column(
+                                        spacing=2,
+                                        controls=[
+                                            ft.Text(name, size=18, weight=ft.FontWeight.BOLD, color=TEXT_MAIN),
+                                            ft.Text(f"Lifetime Tasks: {tasks}", color=TEXT_DIM),
+                                            ft.Text(f"Packs Found: {found}/{maxp}", color=ACCENT),
+                                        ],
+                                    ),
                                 ],
                             ),
                             ft.Container(
