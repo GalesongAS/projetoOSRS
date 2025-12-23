@@ -548,6 +548,7 @@ def main(page: ft.Page):
         pack_options_row.controls.clear()
 
 
+
         if not ids:
             pack_options_row.visible = False
             pack_empty.visible = True
