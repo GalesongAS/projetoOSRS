@@ -798,7 +798,14 @@
     "title": "Getting Ahead",
     "description": "Complete the quest: Getting Ahead.",
     "weight": 8,
-    "requires": [],
+    "requires": [
+       {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Thieving",
+        "cap": 54
+      }
+
+    ],
     "meta": {
       "members": true,
       "difficulty": "Intermediate",

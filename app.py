@@ -309,7 +309,12 @@ def main(page: ft.Page):
     page.title = "RuneCards"
     page.bgcolor = OSRS_BG
     page.window_width = 1200
-    page.window_height = 760
+    page.window_height = 800
+    
+    for attr in ("text_scale_factor", "text_scale"):
+        if hasattr(page, attr):
+            setattr(page, attr, 1.2)
+            break
 
     config = read_json(CONFIG_PATH)
 
@@ -385,9 +390,15 @@ def main(page: ft.Page):
     top_packs = ft.Text(color=TEXT_MAIN, weight=ft.FontWeight.BOLD)
     top_tasks = ft.Text(color=TEXT_MAIN, weight=ft.FontWeight.BOLD)
     top_opened = ft.Text(color=TEXT_MAIN, weight=ft.FontWeight.BOLD)
-
-    left_packs = ft.Text(color=TEXT_MAIN, weight=ft.FontWeight.BOLD)
-    left_tasks = ft.Text(color=TEXT_MAIN, weight=ft.FontWeight.BOLD)
+ 
+    show_save_path = False
+    save_path_text = ft.Text("", color=TEXT_DIM, size=11)
+    save_toggle_text = ft.Text("Show", size=11, color=TEXT_MAIN, weight=ft.FontWeight.BOLD)
+    
+    def toggle_save_path(_):
+        nonlocal show_save_path
+        show_save_path = not show_save_path
+        refresh()
 
     def is_repeatable(card: dict) -> bool:
         return bool(card.get("repeatable", False))
@@ -439,8 +450,22 @@ def main(page: ft.Page):
     pack_hint = ft.Text("Pick one card. After picking, the other 2 remain (dimmed).", color=TEXT_DIM, size=11)
 
     # “empty” state: keep it empty like you asked
-    pack_empty = ft.Container(height=0)
+    empty_title = ft.Text("", size=22, weight=ft.FontWeight.BOLD, color=TEXT_MAIN)
+    empty_desc = ft.Text("", size=13, color=TEXT_DIM)
+
+    pack_empty = ft.Container(
+        padding=0,
+        content=ft.Column(
+            tight=True,
+            spacing=6,
+            controls=[
+                empty_title,
+                empty_desc,
+            ],
+        ),
+    )
     pack_empty.visible = True
+
 
     pack_options_row = ft.Row(
         spacing=12,
@@ -475,10 +500,11 @@ def main(page: ft.Page):
         top_opened.value = str(int(state.get("packsOpened", 0)))
         
         complete_btn_section.visible = bool(state.get("activeCardId"))
+        
+        save_path_text.value = f"Save: {SAVE_PATH}" if show_save_path else "Save path: (hidden)"
+        save_toggle_text.value = "Hide" if show_save_path else "Show"
 
-
-        left_packs.value = top_packs.value
-        left_tasks.value = top_tasks.value        
+              
 
         page.update()
 
@@ -523,10 +549,35 @@ def main(page: ft.Page):
 
 
         if not ids:
-            pack_empty.visible = True
             pack_options_row.visible = False
+            pack_empty.visible = True
+            pack_title.value = "No packs yet"
+            pack_hint.value = "" 
+            empty_title.value = "No packs yet."
+            empty_desc.value = "Go to Slayer Masters and log tasks to roll for packs."
+
+
+            # Dynamic empty state
+            if state.get("activeCardId"):
+                c = cards_by_id.get(state["activeCardId"], {"title": "Active task"})
+                pack_title.value = "Task in progress"
+                pack_hint.value = "Complete your current task to open another pack."
+                empty_title.value = c.get("title", "Active task")
+                empty_desc.value = c.get("description", "")
+            else:
+                pack_title.value = ""
+                if state.get("unopenedPacks", 0) > 0:
+                    pack_hint.value = ""
+                    empty_title.value = "You have packs ready."
+                    empty_desc.value = "Open a pack to get new tasks and unlocks."
+                else:
+                    pack_hint.value = ""
+                    empty_title.value = "No packs yet."
+                    empty_desc.value = "Go to Slayer Masters and log tasks to roll for packs."
+
             page.update()
             return
+
 
         options = [cards_by_id[cid] for cid in ids if cid in cards_by_id]
         if not options:
@@ -537,6 +588,10 @@ def main(page: ft.Page):
 
         pack_empty.visible = False
         pack_options_row.visible = True
+        
+        pack_title.value = f"Pack opening — pick 1 of {len(options)}"
+        pack_hint.value = "Pick one card."
+
 
         has_picked = bool(picked_id)
 
@@ -1032,14 +1087,8 @@ def main(page: ft.Page):
                     continue
 
                 meta = q.get("meta", {}) or {}
-                meta_bits = []
-                if meta.get("difficulty"):
-                    meta_bits.append(str(meta["difficulty"]))
-                if isinstance(meta.get("questPoints"), int) and meta["questPoints"] > 0:
-                    meta_bits.append(f'{meta["questPoints"]} QP')
-                if meta.get("members") is True:
-                    meta_bits.append("Members")
-                meta_line = " • ".join(meta_bits)
+                difficulty = str(meta.get("difficulty") or "").strip()
+                meta_line = difficulty 
 
                 list_view.controls.append(
                     ft.Container(
@@ -1067,7 +1116,6 @@ def main(page: ft.Page):
             spacing=10,
             controls=[
                 osrs_button("All", lambda e: set_filter("ALL")),
-                osrs_button("Active", lambda e: set_filter("ACTIVE")),
                 osrs_button("Completed", lambda e: set_filter("COMPLETE")),
                 osrs_button("Incomplete", lambda e: set_filter("INCOMPLETE")),
             ],
@@ -1283,7 +1331,7 @@ def main(page: ft.Page):
             alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
             vertical_alignment=ft.CrossAxisAlignment.CENTER,
             controls=[
-                ft.Text("RuneCards", size=22, weight=ft.FontWeight.BOLD, color=TEXT_MAIN),
+                ft.Text("Welcome to RuneCards!", size=22, weight=ft.FontWeight.BOLD, color=TEXT_MAIN),
                 ft.Row(
                     spacing=10,
                     controls=[
@@ -1327,6 +1375,7 @@ def main(page: ft.Page):
                                 ],
                             ),
                         ),
+                        
                         icon_button("ui/log.png", open_task_log_window, tooltip="Task Log", size=22),
                         icon_button("ui/skills.png", open_skills_window, tooltip="Skills", size=22),
                         icon_button("ui/quests.png", open_quests_window, tooltip="Quests", size=22),
@@ -1347,25 +1396,39 @@ def main(page: ft.Page):
                     "Open pack",
                     "Pick 1 of 3 cards",
                     open_pack,
-                    badge=stat_pill("Packs", left_packs),
+                    
                     icon_src="ui/PackIco.png",
                     emoji_fallback="🎴",
-                    primary=True,
+                    primary=True
                 ),
 
                 action_tile(
                     "Slayer Masters",
                     "Log a task (rolls for a pack)",
                     open_slayer_masters_window,
-                    badge=stat_pill("Tasks", left_tasks),
+                    
                     icon_src="ui/slayer.png",
                     emoji_fallback="⚔",
                 ),
 
                 ft.Container(height=6),
-                ft.Text(f"Save: {SAVE_PATH}", size=11, color=TEXT_DIM),
+                ft.Row(
+                    spacing=10,
+                    vertical_alignment=ft.CrossAxisAlignment.CENTER,
+                    controls=[
+                        save_path_text,
+                        ft.Container(
+                                     padding=ft.padding.symmetric(horizontal=10, vertical=6),
+                                     border_radius=10,
+                                     bgcolor="#2b241a",
+                                     border=ft.border.all(1, BORDER_LIGHT),
+                                     on_click=toggle_save_path,
+                                     content=save_toggle_text, 
+                ),
             ],
         )
+            ]
+    )
     )
 
     right_panel = panel(
@@ -1377,8 +1440,6 @@ def main(page: ft.Page):
             pack_hint,
             pack_empty,
             pack_options_row,
-
-            # ✅ centered and bigger
             complete_btn_section,
         ],
     )
