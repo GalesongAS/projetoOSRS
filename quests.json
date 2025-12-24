@@ -194,7 +194,21 @@
       "url": "https://oldschool.runescape.wiki/w/Ernest_the_Chicken"
     }
   },
-  
+  {
+    "id": "quest_children_of_the_sun",
+    "type": "QUEST",
+    "title": "Children of the Sun",
+    "description": "Complete the quest: Children of the Sun.",
+    "weight": 1,
+    "requires": [],
+    "meta": {
+      "members": true,
+      "difficulty": "Novice",
+      "questPoints": 1,
+      "url": "https://oldschool.runescape.wiki/w/Children_of_the_Sun"
+    }
+  },
+
   {
     "id": "quest_animal_magnetism",
     "type": "QUEST",
@@ -312,10 +326,10 @@
     }
   },
   {
-    "id": "quest_bronze_med_helm_iron_chainbody_cabbage",
+    "id": "quest_black_knights_fortress",
     "type": "QUEST",
-    "title": "Bronze med helm, iron chainbody, cabbage",
-    "description": "Complete the quest: Bronze med helm, iron chainbody, cabbage.",
+    "title": "Black Knights' Fortress",
+    "description": "Complete the quest: Black Knights' Fortress.",
     "weight": 12,
     "requires": [],
     "meta": {
@@ -900,7 +914,7 @@
     "type": "QUEST",
     "title": "Goblin Diplomacy",
     "description": "Complete the quest: Goblin Diplomacy.",
-    "weight": 12,
+    "weight": 1,
     "requires": [],
     "meta": {
       "members": false,
@@ -980,7 +994,12 @@
     "title": "Holy Grail",
     "description": "Complete the quest: Holy Grail.",
     "weight": 8,
-    "requires": [],
+    "requires": [
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_merlins_crystal"
+      }
+    ],
     "meta": {
       "members": true,
       "difficulty": "Intermediate",
@@ -2003,6 +2022,20 @@
     }
   },
   {
+    "id": "quest_sheep_Shearer",
+    "type": "QUEST",
+    "title": "Sheep Shearer",
+    "description": "Complete the quest: Sheep Shearer.",
+    "weight": 12,
+    "requires": [],
+    "meta": {
+      "members": true,
+      "difficulty": "Novice",
+      "questPoints": 4,
+      "url": "https://oldschool.runescape.wiki/w/Sheep_Shearer"
+    }
+  },
+  {
     "id": "quest_shilo_village",
     "type": "QUEST",
     "title": "Shilo Village",
@@ -2372,6 +2405,26 @@
     }
   },
   {
+    "id":"quest_sleeping_giants",
+    "type": "QUEST",
+    "title": "Sleeping Giants",
+    "description": "Complete the quest: Sleeping Giants.",
+    "weight": 3,
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Smithing",
+        "cap": 20
+      }
+    ],
+    "meta": {
+      "members": true,
+      "difficulty": "Novice",
+      "questPoints": 1,
+      "url": "https://oldschool.runescape.wiki/w/Sleeping_Giants"
+    }
+  },
+  {
     "id": "quest_the_fremennik_isles",
     "type": "QUEST",
     "title": "The Fremennik Isles",
@@ -2465,7 +2518,13 @@
     "title": "The Grand Tree",
     "description": "Complete the quest: The Grand Tree.",
     "weight": 5,
-    "requires": [],
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Agility",
+        "cap": 25
+      }
+    ],
     "meta": {
       "members": true,
       "difficulty": "Experienced",
@@ -2691,6 +2750,48 @@
     }
   },
   {
+    "id": "quest_misthalin_mystery",
+    "type": "QUEST",
+    "title": "Misthalin Mystery",
+    "description": "Complete the quest: Misthalin Mystery.",
+    "weight": 1,
+    "requires": [],
+    "meta": {
+      "members": true,
+      "difficulty": "Novice",
+      "questPoints": 1,
+      "url": "https://oldschool.runescape.wiki/w/Misthalin_Mystery"
+    }
+  },
+  {
+    "id": "quest_rune_mysteries",
+    "type": "QUEST",
+    "title": "Rune Mysteries",
+    "description": "Complete the quest: Rune Mysteries.",
+    "weight": 1,
+    "requires": [],
+    "meta": {
+      "members": false,
+      "difficulty": "Novice",
+      "questPoints": 1,
+      "url": "https://oldschool.runescape.wiki/w/Rune_Mysteries"
+    }
+  },
+  {
+    "id": "quest_prince_ali_rescue",
+    "type": "QUEST",
+    "title": "Prince Ali Rescue",
+    "description": "Complete the quest: Prince Ali Rescue.",
+    "weight": 1,
+    "requires": [],
+    "meta": {
+      "members": false,
+      "difficulty": "Novice",
+      "questPoints": 3,
+      "url": "https://oldschool.runescape.wiki/w/Prince_Ali_Rescue"
+    }
+  },
+  {
     "id": "quest_throne_of_miscellania",
     "type": "QUEST",
     "title": "Throne of Miscellania",
@@ -2764,7 +2865,13 @@
     "title": "Tribal Totem",
     "description": "Complete the quest: Tribal Totem.",
     "weight": 8,
-    "requires": [],
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Thieving",
+        "cap": 30
+      }
+    ],
     "meta": {
       "members": true,
       "difficulty": "Intermediate",
