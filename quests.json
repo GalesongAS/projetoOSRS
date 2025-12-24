@@ -90,7 +90,9 @@
     "title": "A Porcine of Interest",
     "description": "Complete the quest: A Porcine of Interest.",
     "weight": 12,
-    "requires": [],
+    "requires": [
+            
+    ],
     "meta": {
       "members": true,
       "difficulty": "Novice",
@@ -104,7 +106,16 @@
     "title": "A Tail of Two Cats",
     "description": "Complete the quest: A Tail of Two Cats.",
     "weight": 8,
-    "requires": [],
+    "requires": [
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_icthlarins_little_helper"
+      },
+       {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_gertrudes_cat"
+      }
+    ],
     "meta": {
       "members": true,
       "difficulty": "Intermediate",
@@ -118,7 +129,36 @@
     "title": "A Taste of Hope",
     "description": "Complete the quest: A Taste of Hope.",
     "weight": 5,
-    "requires": [],
+    "requires": [
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_darkness_of_hallowvale"
+      },
+       {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_in_aid_of_the_myreque"
+      },
+       {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_in_search_of_the_myreque"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_icthlarins_little_helper"
+      },
+       {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_nature_spirit"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_priest_in_peril"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_the_restless_ghost"
+        }
+    ],
     "meta": {
       "members": true,
       "difficulty": "Experienced",
@@ -127,26 +167,54 @@
     }
   },
   {
-    "id": "quest_a_theatre_of_blood",
-    "type": "QUEST",
-    "title": "A Theatre of Blood",
-    "description": "Complete the quest: A Theatre of Blood.",
-    "weight": 2,
+    "id": "quest_the_restless_ghost",
+    "type":"QUEST",
+    "title": "The Restless Ghost",
+    "description": "Complete the quest: The Restless Ghost.",
+    "weight": 1,
     "requires": [],
     "meta": {
-      "members": true,
-      "difficulty": "Master",
+      "members": false,
+      "difficulty": "Novice",
       "questPoints": 1,
-      "url": "https://oldschool.runescape.wiki/w/Theatre_of_Blood"
+      "url": "https://oldschool.runescape.wiki/w/The_Restless_Ghost"
     }
   },
+  {
+    "id": "quest_ernest_the_chicken",
+    "type": "QUEST",
+    "title": "Ernest the Chicken",
+    "description": "Complete the quest: Ernest the Chicken.",
+    "weight": 1,
+    "requires": [],
+    "meta": {
+      "members": false,
+      "difficulty": "Novice",
+      "questPoints": 1,
+      "url": "https://oldschool.runescape.wiki/w/Ernest_the_Chicken"
+    }
+  },
+  
   {
     "id": "quest_animal_magnetism",
     "type": "QUEST",
     "title": "Animal Magnetism",
     "description": "Complete the quest: Animal Magnetism.",
     "weight": 8,
-    "requires": [],
+    "requires": [
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_the_restless_ghost"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_priest_in_peril"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_ernest_the_chicken"
+      }
+    ],
     "meta": {
       "members": true,
       "difficulty": "Intermediate",

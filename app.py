@@ -211,7 +211,7 @@ def osrs_button(text: str, on_click, primary=False):
         bgcolor=("#3a2f1f" if primary else "#2b241a"),
         padding=ft.padding.symmetric(horizontal=14, vertical=10),
         on_click=on_click,
-        content=ft.Text(text, color=TEXT_MAIN, weight=ft.FontWeight.BOLD),
+        content=ft.Text(text,size=14, color=TEXT_MAIN, weight=ft.FontWeight.BOLD),
     )
 
 def icon_button(img_src: str, on_click, tooltip: str = "", size: int = 22):
@@ -237,7 +237,7 @@ def stat_pill(label: str, value_control: ft.Control):
             tight=True,
             spacing=6,
             controls=[
-                ft.Text(label, color=TEXT_DIM, size=11),
+                ft.Text(label, color=TEXT_DIM, size=12),
                 value_control,
             ],
         ),
@@ -291,7 +291,7 @@ def action_tile(
                         ft.Column(
                             spacing=1,
                             controls=[
-                                ft.Text(title, color=TEXT_MAIN, weight=ft.FontWeight.BOLD),
+                                ft.Text(title, size=14,color=TEXT_MAIN, weight=ft.FontWeight.BOLD),
                                 ft.Text(subtitle, color=TEXT_DIM, size=11),
                             ],
                         ),
@@ -310,6 +310,8 @@ def main(page: ft.Page):
     page.bgcolor = OSRS_BG
     page.window_width = 1200
     page.window_height = 800
+    
+    selected_pack_id = None
     
     for attr in ("text_scale_factor", "text_scale"):
         if hasattr(page, attr):
@@ -387,7 +389,7 @@ def main(page: ft.Page):
                 return mm.get("name", master_id)
         return master_id
 
-    top_packs = ft.Text(color=TEXT_MAIN, weight=ft.FontWeight.BOLD)
+    top_packs = ft.Text(color=TEXT_MAIN, size=14, weight=ft.FontWeight.BOLD)
     top_tasks = ft.Text(color=TEXT_MAIN, weight=ft.FontWeight.BOLD)
     top_opened = ft.Text(color=TEXT_MAIN, weight=ft.FontWeight.BOLD)
  
@@ -492,28 +494,59 @@ def main(page: ft.Page):
             ),
         ),
     )
-
+    
+    pick_btn_section = ft.Container(
+        alignment=ft.alignment.center,
+        padding=ft.padding.only(top=10),
+        visible=False,
+        content=ft.Container(
+            border_radius=14,
+            border=ft.border.all(1, BORDER_LIGHT),
+            bgcolor="#3a2f1f",
+            padding=ft.padding.symmetric(horizontal=34, vertical=18),
+            on_click=lambda e: confirm_pick(e),
+            content=ft.Text(
+                "Pick task",
+                color=TEXT_MAIN,
+                size=16,
+                weight=ft.FontWeight.BOLD,
+            ),
+        ),
+    )
 
     def refresh():
         top_packs.value = str(state["unopenedPacks"])
         top_tasks.value = str(total_slayer_tasks())
         top_opened.value = str(int(state.get("packsOpened", 0)))
         
-        complete_btn_section.visible = bool(state.get("activeCardId"))
-        
         save_path_text.value = f"Save: {SAVE_PATH}" if show_save_path else "Save path: (hidden)"
         save_toggle_text.value = "Hide" if show_save_path else "Show"
+        
+        has_options = bool(state.get("lastPackOptionIds"))
+        has_confirmed_pick = bool(state.get("lastPackPickedId"))
+        has_active = bool(state.get("activeCardId"))
+        
+        pick_btn_section.visible = has_options and (not has_confirmed_pick) and (not has_active) and (selected_pack_id is not None)
 
-              
-
+        complete_btn_section.visible = has_active
+        
         page.update()
 
-    def pick_card(card: dict):
+    def select_card(card: dict):
+        nonlocal selected_pack_id
         if state.get("lastPackPickedId"):
-            return
+            return  # already confirmed
+        selected_pack_id = card["id"]
+        refresh()
+        render_pack_from_state()
 
+    def commit_pick(card: dict):
+        nonlocal selected_pack_id
+
+        # lock it in
         state["activeCardId"] = card["id"]
         state["lastPackPickedId"] = card["id"]
+        selected_pack_id = card["id"]
 
         # Pick completes the pack selection -> clear pending safety
         state["pendingPackOptionIds"] = []
@@ -532,7 +565,20 @@ def main(page: ft.Page):
         save()
         refresh()
         render_pack_from_state()
-        snack("Card selected!")
+        snack("Task picked!")
+
+    def confirm_pick(_):
+        if state.get("lastPackPickedId"):
+            return  # already confirmed
+        if not selected_pack_id:
+            snack("Select a card first.")
+            return
+        card = cards_by_id.get(selected_pack_id)
+        if not card:
+            snack("Selected card missing from data.")
+            return
+        commit_pick(card)
+
 
 
     def render_pack_from_state():
@@ -553,7 +599,7 @@ def main(page: ft.Page):
             pack_options_row.visible = False
             pack_empty.visible = True
             pack_title.value = "No packs yet"
-            pack_hint.value = "" 
+            pack_hint.value = "Select a card, then click Pick task."
             empty_title.value = "No packs yet."
             empty_desc.value = "Go to Slayer Masters and log tasks to roll for packs."
 
@@ -598,28 +644,39 @@ def main(page: ft.Page):
 
         def make_tile(card: dict) -> ft.Control:
             cid = card.get("id")
+            
+            has_confirmed = bool(picked_id)
+            is_selected = (selected_pack_id == cid)  
             is_picked = (picked_id == cid)
 
-            tile_opacity = 1.0 if (not has_picked or is_picked) else 0.33
-            tile_border = ft.border.all(2 if is_picked else 1, ACCENT if is_picked else BORDER_LIGHT)
-            tile_bg = "#3a2f1f" if is_picked else "#2b241a"
-
-            click_handler = (lambda e, c=card: pick_card(c)) if not has_picked else None
-
+            if has_confirmed:
+                tile_opacity = 1.0 if is_picked else 0.33
+                tile_border = ft.border.all(2 if is_picked else 1, ACCENT if is_picked else BORDER_LIGHT)
+                tile_bg = "#3a2f1f" if is_picked else "#2b241a"
+                click_handler = None
+                badge_text = "PICKED" if is_picked else None
+                hint_text = ""
+            else:
+                tile_opacity = 1.0
+                tile_border = ft.border.all(2 if is_selected else 1, ACCENT if is_selected else BORDER_LIGHT)
+                tile_bg = "#3a2f1f" if is_selected else "#2b241a"
+                click_handler = (lambda e, c=card: select_card(c))
+                badge_text = "SELECTED" if is_selected else None
+                hint_text = "Click to select"
+                
             badge = None
-            if is_picked:
+            if badge_text:
                 badge = ft.Container(
-                    padding=ft.padding.symmetric(horizontal=8, vertical=3),
-                    border_radius=999,
-                    bgcolor="#1a1510",
-                    border=ft.border.all(1, ACCENT),
-                    content=ft.Text("PICKED", color=ACCENT, size=11, weight=ft.FontWeight.BOLD),
-                )
+                padding=ft.padding.symmetric(horizontal=8, vertical=3),
+                border_radius=999,
+                bgcolor="#1a1510",
+                border=ft.border.all(1, ACCENT),
+                content=ft.Text(badge_text, color=ACCENT, size=11, weight=ft.FontWeight.BOLD),
+            )
 
-            # ✅ NO ft.Expanded() — use expand=1 on Container instead (works on older Flet)
             return ft.Container(
                 expand=1,
-                height=260,          # taller / less wide feel
+                height=260,
                 opacity=tile_opacity,
                 padding=14,
                 border_radius=12,
@@ -643,7 +700,7 @@ def main(page: ft.Page):
                         ),
                         ft.Text(f"[{card.get('type','?')}]", color=ACCENT),
                         ft.Text(card.get("description", ""), color=TEXT_DIM),
-                        ft.Text("Click to choose" if not has_picked else "", size=12, color=TEXT_DIM),
+                        ft.Text(hint_text, size=12, color=TEXT_DIM),
                     ],
                 ),
             )
@@ -686,6 +743,7 @@ def main(page: ft.Page):
         return options
 
     def open_pack(_):
+        nonlocal selected_pack_id
         if state.get("activeCardId"):
             snack("You already have an active card.")
             return
@@ -695,6 +753,7 @@ def main(page: ft.Page):
         if pending_ids:
             state["lastPackOptionIds"] = pending_ids[:]
             state["lastPackPickedId"] = None
+            selected_pack_id = None
             save()
             refresh()
             render_pack_from_state()
@@ -723,6 +782,7 @@ def main(page: ft.Page):
         if not eligible:
             snack("No eligible cards left.")
             return
+        
 
         draw_n = min(int(config.get("cardsPerPack", 3)), len(eligible))
         options = draw_pack_options(eligible, draw_n)
@@ -737,6 +797,7 @@ def main(page: ft.Page):
         # visible pack
         state["lastPackOptionIds"] = option_ids[:]
         state["lastPackPickedId"] = None
+        selected_pack_id = None
 
         save()
         refresh()
@@ -1391,8 +1452,6 @@ def main(page: ft.Page):
         ft.Column(
             spacing=10,
             controls=[
-                ft.Text("Quick actions", size=16, weight=ft.FontWeight.BOLD, color=TEXT_MAIN),
-
                 action_tile(
                     "Open pack",
                     "Pick 1 of 3 cards",
@@ -1441,7 +1500,8 @@ def main(page: ft.Page):
             pack_hint,
             pack_empty,
             pack_options_row,
-            complete_btn_section,
+            pick_btn_section,
+            complete_btn_section
         ],
     )
 )

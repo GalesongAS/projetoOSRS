@@ -4262,6 +4262,15 @@
   "repeatable": true,
   "weight": 3,
   "gate": { "kind": "MARKS_OF_GRACE", "min": 1, "max": 5 }
+},
+{
+  "id": "task-stronghold-of-security",
+  "type": "TASK",
+  "title": "Stronghold of Security",
+  "description": "Go grab that 10k!.",
+  "repeatable": false,
+  "weight": 1,
+  "gate": { "kind": "STRONGHOLD_OF_SECURITY" }
 }
 
 
