@@ -816,8 +816,25 @@
     "type": "QUEST",
     "title": "Enlightened Journey",
     "description": "Complete the quest: Enlightened Journey.",
-    "weight": 8,
-    "requires": [],
+    "weight": 25,
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Firemaking",
+        "cap": 20
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Crafting",
+        "cap": 4
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Farming",
+        "cap": 30
+      }
+
+    ],
     "meta": {
       "members": true,
       "difficulty": "Intermediate",

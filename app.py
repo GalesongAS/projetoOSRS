@@ -485,6 +485,7 @@ def main(page: ft.Page):
 
     pack_options_row = ft.Row(
         spacing=12,
+        
         alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
     )
     pack_options_row.visible = False
@@ -766,7 +767,7 @@ def main(page: ft.Page):
             return
         
 
-        draw_n = min(int(config.get("cardsPerPack", 3)), len(eligible))
+        draw_n = min(int(config.get("cardsPerPack", 4)), len(eligible))
         options = draw_pack_options(eligible, draw_n)
         option_ids = [c["id"] for c in options]
 
@@ -1047,30 +1048,34 @@ def main(page: ft.Page):
 
     def draw_pack_options(eligible: list[dict], draw_n: int) -> list[dict]:
         pool = eligible[:]
-        options = []
+        options: list[dict] = []
 
         def remove_from_pool(picked_id: str):
             nonlocal pool
             pool = [x for x in pool if x["id"] != picked_id]
 
-        if draw_n == 3:
+        # If drawing 3+ and there are non-quests available, guarantee at least 1 non-quest
+        if draw_n >= 3:
             nonquests = [c for c in pool if c.get("type") != "QUEST"]
             if nonquests:
                 first = weighted_pick(nonquests)
                 options.append(first)
                 remove_from_pool(first["id"])
 
+        # Allow quests, but try to keep at least 1 slot for a non-quest if possible
+        max_quests_if_possible = draw_n - 1
+
         while len(options) < draw_n and pool:
             quest_count = sum(1 for o in options if o.get("type") == "QUEST")
-            remaining = draw_n - len(options)
             nonquests_left = [c for c in pool if c.get("type") != "QUEST"]
 
-            # If last slot would make 3 quests and we have non-quests, force non-quest
-            if draw_n == 3 and remaining == 1 and quest_count >= 2 and nonquests_left:
+            # If we already have "too many quests" and we still have non-quests, force a non-quest
+            if nonquests_left and quest_count >= max_quests_if_possible:
                 pick = weighted_pick(nonquests_left)
             else:
                 pick = weighted_pick(pool)
-                if draw_n == 3 and pick.get("type") == "QUEST" and quest_count >= 2 and nonquests_left:
+                # Safety: if we accidentally picked a quest while already at cap and nonquests exist, repick
+                if pick.get("type") == "QUEST" and nonquests_left and quest_count >= max_quests_if_possible:
                     pick = weighted_pick(nonquests_left)
 
             options.append(pick)
@@ -1434,7 +1439,7 @@ def main(page: ft.Page):
             controls=[
                 action_tile(
                     "Open pack",
-                    "Pick 1 of 3 cards",
+                    f"Pick 1 of {int(config.get('cardsPerPack', 3))} cards",
                     open_pack,
                     
                     icon_src="ui/PackIco.png",
