@@ -324,7 +324,21 @@ def main(page: ft.Page):
     if os.path.exists(QUESTS_PATH):
         all_cards.extend(read_json(QUESTS_PATH))
     cards_by_id = {c["id"]: c for c in all_cards}
+    all_cards = list(cards_by_id.values())  # dedupe
 
+    def validate_cards(cards: list[dict]):
+        bad = 0 
+        for c in cards:
+            for r in (c.get("requires") or []):
+                if r.get("kind") == "SKILL_CAP_AT_LEAST" and "cap" not in r:
+                    bad += 1
+                    print("\n[INVALID requires] Missing 'cap'")
+                    print("  card id:", c.get("id"))
+                    print("  title  :", c.get("title"))
+                    print("  requires entry:", r)
+        if bad:
+            print(f"\nFound {bad} invalid requires entries.\n")
+    validate_cards(all_cards)
     if os.path.exists(SAVE_PATH):
         state = migrate_save(read_json(SAVE_PATH), config)
     else:
@@ -710,38 +724,6 @@ def main(page: ft.Page):
 
         page.update()
 
-    def draw_pack_options(eligible: list[dict], draw_n: int) -> list[dict]:
-        pool = eligible[:]
-        options = []
-
-        def remove_from_pool(picked_id: str):
-            nonlocal pool
-            pool = [x for x in pool if x["id"] != picked_id]
-
-        if draw_n == 3:
-            nonquests = [c for c in pool if c.get("type") != "QUEST"]
-            if nonquests:
-                first = weighted_pick(nonquests)
-                options.append(first)
-                remove_from_pool(first["id"])
-
-        while len(options) < draw_n and pool:
-            quest_count = sum(1 for o in options if o.get("type") == "QUEST")
-            remaining = draw_n - len(options)
-            nonquests_left = [c for c in pool if c.get("type") != "QUEST"]
-
-            if draw_n == 3 and remaining == 1 and quest_count >= 2 and nonquests_left:
-                pick = weighted_pick(nonquests_left)
-            else:
-                pick = weighted_pick(pool)
-                if draw_n == 3 and pick.get("type") == "QUEST" and quest_count >= 2 and nonquests_left:
-                    pick = weighted_pick(nonquests_left)
-
-            options.append(pick)
-            remove_from_pool(pick["id"])
-
-        return options
-
     def open_pack(_):
         nonlocal selected_pack_id
         if state.get("activeCardId"):
@@ -1071,7 +1053,6 @@ def main(page: ft.Page):
             nonlocal pool
             pool = [x for x in pool if x["id"] != picked_id]
 
-        # If drawing 3 and have non-quests, force at least 1 non-quest
         if draw_n == 3:
             nonquests = [c for c in pool if c.get("type") != "QUEST"]
             if nonquests:
@@ -1082,7 +1063,6 @@ def main(page: ft.Page):
         while len(options) < draw_n and pool:
             quest_count = sum(1 for o in options if o.get("type") == "QUEST")
             remaining = draw_n - len(options)
-
             nonquests_left = [c for c in pool if c.get("type") != "QUEST"]
 
             # If last slot would make 3 quests and we have non-quests, force non-quest

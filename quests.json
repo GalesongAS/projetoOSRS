@@ -9,17 +9,17 @@
       {
         "kind": "SKILL_CAP_AT_LEAST",
         "skill": "Thieving",
-        "cap": 54
+        "cap": 60
       },
       {
         "kind": "SKILL_CAP_AT_LEAST",
         "skill": "Agility",
-        "cap": 52
+        "cap": 60
       },
       {
         "kind": "SKILL_CAP_AT_LEAST",
         "skill": "Woodcutting",
-        "cap": 52
+        "cap": 60
       },
       {
         "kind": "SKILL_CAP_AT_LEAST",
@@ -29,32 +29,32 @@
       {
         "kind": "SKILL_CAP_AT_LEAST",
         "skill": "Mining",
-        "cap": 42
+        "cap": 50
       },
       {
         "kind": "SKILL_CAP_AT_LEAST",
         "skill": "Smithing",
-        "cap": 42
+        "cap": 50
       },
       {
         "kind": "SKILL_CAP_AT_LEAST",
         "skill": "Farming",
-        "cap": 35
+        "cap": 40
       },
       {
         "kind": "SKILL_CAP_AT_LEAST",
         "skill": "Crafting",
-        "cap": 38
+        "cap": 40
       },
       {
         "kind": "SKILL_CAP_AT_LEAST",
         "skill": "Hunter",
-        "cap": 42
+        "cap": 50
       },
       {
         "kind": "SKILL_CAP_AT_LEAST",
         "skill": "Herblore",
-        "cap": 45
+        "cap": 50
       },
       {
         "kind": "CARD_COMPLETED",
@@ -75,13 +75,17 @@
       {
         "kind": "CARD_COMPLETED",
         "cardId": "quest_the_forsaken_tower"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_tale_of_the_righteous"
       }
     ],
     "meta": {
       "members": true,
       "difficulty": "Master",
       "questPoints": 2,
-      "url": "https://oldschool.runescape.wiki/w/Arceuus_spellbook"
+      "url": "https://oldschool.runescape.wiki/w/A_Kingdom_Divided"
     }
   },
   {
@@ -90,9 +94,7 @@
     "title": "A Porcine of Interest",
     "description": "Complete the quest: A Porcine of Interest.",
     "weight": 12,
-    "requires": [
-            
-    ],
+    "requires": [],
     "meta": {
       "members": true,
       "difficulty": "Novice",
@@ -111,7 +113,7 @@
         "kind": "CARD_COMPLETED",
         "cardId": "quest_icthlarins_little_helper"
       },
-       {
+      {
         "kind": "CARD_COMPLETED",
         "cardId": "quest_gertrudes_cat"
       }
@@ -121,6 +123,20 @@
       "difficulty": "Intermediate",
       "questPoints": 2,
       "url": "https://oldschool.runescape.wiki/w/A_Tail_of_Two_Cats"
+    }
+  },
+  {
+    "id": "quest_pandemonium",
+    "type": "QUEST",
+    "title": "Pandemonium",
+    "description": "Complete the quest: Pandemonium.",
+    "weight": 1,
+    "requires": [],
+    "meta": {
+      "members": true,
+      "difficulty": "Novice",
+      "questPoints": 1,
+      "url": ""
     }
   },
   {
@@ -134,11 +150,11 @@
         "kind": "CARD_COMPLETED",
         "cardId": "quest_darkness_of_hallowvale"
       },
-       {
+      {
         "kind": "CARD_COMPLETED",
         "cardId": "quest_in_aid_of_the_myreque"
       },
-       {
+      {
         "kind": "CARD_COMPLETED",
         "cardId": "quest_in_search_of_the_myreque"
       },
@@ -146,7 +162,7 @@
         "kind": "CARD_COMPLETED",
         "cardId": "quest_icthlarins_little_helper"
       },
-       {
+      {
         "kind": "CARD_COMPLETED",
         "cardId": "quest_nature_spirit"
       },
@@ -157,7 +173,7 @@
       {
         "kind": "CARD_COMPLETED",
         "cardId": "quest_the_restless_ghost"
-        }
+      }
     ],
     "meta": {
       "members": true,
@@ -168,7 +184,7 @@
   },
   {
     "id": "quest_the_restless_ghost",
-    "type":"QUEST",
+    "type": "QUEST",
     "title": "The Restless Ghost",
     "description": "Complete the quest: The Restless Ghost.",
     "weight": 1,
@@ -178,6 +194,20 @@
       "difficulty": "Novice",
       "questPoints": 1,
       "url": "https://oldschool.runescape.wiki/w/The_Restless_Ghost"
+    }
+  },
+  {
+    "id": "quest_shield_of_arrav",
+    "type": "QUEST",
+    "title": "Shield of Arrav",
+    "description": "Complete the quest: Shield of Arrav.",
+    "weight": 1,
+    "requires": [],
+    "meta": {
+      "members": false,
+      "difficulty": "Novice",
+      "questPoints": 1,
+      "url": "https://oldschool.runescape.wiki/w/Shield_of_Arrav"
     }
   },
   {
@@ -208,7 +238,6 @@
       "url": "https://oldschool.runescape.wiki/w/Children_of_the_Sun"
     }
   },
-
   {
     "id": "quest_animal_magnetism",
     "type": "QUEST",
@@ -242,7 +271,20 @@
     "title": "Another Slice of H.A.M.",
     "description": "Complete the quest: Another Slice of H.A.M..",
     "weight": 8,
-    "requires": [],
+    "requires": [
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_death_to_the_dorgeshuun"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_the_giant_dwarf"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_the_dig_site"
+      }
+    ],
     "meta": {
       "members": true,
       "difficulty": "Intermediate",
@@ -251,11 +293,41 @@
     }
   },
   {
+    "id": "quest_the_dig_site",
+    "type": "QUEST",
+    "title": "The Dig Site",
+    "description": "Complete the quest: The Dig Site.",
+    "weight": 16,
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Agility",
+        "cap": 10
+      },
+      {
+         "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Thieving",
+        "cap": 30
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Herblore",
+        "cap": 10
+      }
+    ],
+    "meta": {
+      "members": true,
+      "difficulty": "Intermediate",
+      "questPoints": 1,
+      "url": "https://oldschool.runescape.wiki/w/The_Dig_Site"
+    }
+  },
+  {
     "id": "quest_below_ice_mountain",
     "type": "QUEST",
     "title": "Below Ice Mountain",
     "description": "Complete the quest: Below Ice Mountain.",
-    "weight": 12,
+    "weight": 16,
     "requires": [],
     "meta": {
       "members": true,
@@ -270,7 +342,12 @@
     "title": "Between a Rock...",
     "description": "Complete the quest: Between a Rock....",
     "weight": 5,
-    "requires": [],
+    "requires": [
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_dwarf_cannon"
+      }
+    ],
     "meta": {
       "members": true,
       "difficulty": "Experienced",
@@ -299,7 +376,7 @@
     "description": "Complete the quest: Biohazard.",
     "weight": 12,
     "requires": [
-            {
+      {
         "kind": "CARD_COMPLETED",
         "cardId": "quest_plague_city"
       }
@@ -655,7 +732,7 @@
     "type": "QUEST",
     "title": "Dwarf Cannon",
     "description": "Complete the quest: Dwarf Cannon.",
-    "weight": 12,
+    "weight": 1,
     "requires": [],
     "meta": {
       "members": true,
@@ -810,7 +887,13 @@
     "title": "Fishing Contest",
     "description": "Complete the quest: Fishing Contest.",
     "weight": 12,
-    "requires": [],
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Fishing",
+        "cap": 10
+      }
+    ],
     "meta": {
       "members": true,
       "difficulty": "Novice",
@@ -819,10 +902,10 @@
     }
   },
   {
-    "id": "quest_food",
+    "id": "quest_a_souls_bane",
     "type": "QUEST",
-    "title": "Food",
-    "description": "Complete the quest: Food.",
+    "title": "A Soul's Bane",
+    "description": "Complete the quest: A Soul's Bane.",
     "weight": 12,
     "requires": [],
     "meta": {
@@ -838,7 +921,26 @@
     "title": "Forgettable Tale...",
     "description": "Complete the quest: Forgettable Tale....",
     "weight": 8,
-    "requires": [],
+    "requires": [
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_the_giant_dwarf"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_fishing_contest"
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Farming",
+        "cap": 20
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Cooking",
+        "cap": 30
+      }
+    ],
     "meta": {
       "members": true,
       "difficulty": "Intermediate",
@@ -852,7 +954,25 @@
     "title": "Garden of Tranquillity",
     "description": "Complete the quest: Garden of Tranquillity.",
     "weight": 8,
-    "requires": [],
+    "requires": [
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_creature_of_fenkenstrain"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_priest_in_peril"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_the_restless_ghost"
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Farming",
+        "cap": 25
+      }
+    ],
     "meta": {
       "members": true,
       "difficulty": "Intermediate",
@@ -881,12 +1001,16 @@
     "description": "Complete the quest: Getting Ahead.",
     "weight": 8,
     "requires": [
-       {
+      {
         "kind": "SKILL_CAP_AT_LEAST",
-        "skill": "Thieving",
-        "cap": 54
+        "skill": "Crafting",
+        "cap": 30
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Construction",
+        "cap": 30
       }
-
     ],
     "meta": {
       "members": true,
@@ -901,7 +1025,26 @@
     "title": "Ghosts Ahoy",
     "description": "Complete the quest: Ghosts Ahoy.",
     "weight": 8,
-    "requires": [],
+    "requires": [
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_the_restless_ghost"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_priest_in_peril"
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Agility",
+        "cap": 25
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Cooking",
+        "cap": 20
+      }
+    ],
     "meta": {
       "members": true,
       "difficulty": "Intermediate",
@@ -928,8 +1071,38 @@
     "type": "QUEST",
     "title": "Grim Tales",
     "description": "Complete the quest: Grim Tales.",
-    "weight": 2,
-    "requires": [],
+    "weight": 12,
+    "requires": [
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_witchs_house"
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Farming",
+        "cap": 50
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Herblore",
+        "cap": 60
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Thieving",
+        "cap": 60
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Agility",
+        "cap": 60
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Woodcutting",
+        "cap": 80
+      }
+    ],
     "meta": {
       "members": true,
       "difficulty": "Master",
@@ -943,7 +1116,27 @@
     "title": "Haunted Mine",
     "description": "Complete the quest: Haunted Mine.",
     "weight": 5,
-    "requires": [],
+    "requires": [
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_priest_in_peril"
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Crafting",
+        "cap": 40
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Prayer",
+        "cap": 40
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Agility",
+        "cap": 20
+      }
+    ],
     "meta": {
       "members": true,
       "difficulty": "Experienced",
@@ -970,15 +1163,43 @@
     "type": "QUEST",
     "title": "Heroes' Quest",
     "description": "Complete the quest: Heroes' Quest.",
-    "weight": 5,
+    "weight": 55,
     "requires": [
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_shield_of_arrav"
+      },
       {
         "kind": "CARD_COMPLETED",
         "cardId": "quest_lost_city"
       },
       {
         "kind": "CARD_COMPLETED",
-        "cardId": "quest_druidic_ritual"
+        "cardId": "quest_merlins_crystal"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_dragon_slayer_i"
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Cooking",
+        "cap": 60
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Fishing",
+        "cap": 60
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Herblore",
+        "cap": 30
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Mining",
+        "cap": 50
       }
     ],
     "meta": {
@@ -1013,7 +1234,13 @@
     "title": "Horror from the Deep",
     "description": "Complete the quest: Horror from the Deep.",
     "weight": 5,
-    "requires": [],
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Agility",
+        "cap": 40
+      }
+    ],
     "meta": {
       "members": true,
       "difficulty": "Experienced",
@@ -1027,7 +1254,12 @@
     "title": "Icthlarin's Little Helper",
     "description": "Complete the quest: Icthlarin's Little Helper.",
     "weight": 8,
-    "requires": [],
+    "requires": [
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_gertrudes_cat"
+      }
+    ],
     "meta": {
       "members": true,
       "difficulty": "Intermediate",
@@ -1117,7 +1349,11 @@
       {
         "kind": "SKILL_CAP_AT_LEAST",
         "skill": "Herblore",
-        "cap": 3
+        "cap": 10
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_druidic_ritual"
       }
     ],
     "meta": {
@@ -1137,16 +1373,25 @@
       {
         "kind": "SKILL_CAP_AT_LEAST",
         "skill": "Magic",
-        "cap": 45
+        "cap": 50
       },
       {
         "kind": "SKILL_CAP_AT_LEAST",
         "skill": "Defence",
-        "cap": 65
+        "cap": 70
+      },
+      {
+        "kind":"CARD_COMPLETED"
+        ,"cardId":"quest_black_knights_fortress"
+
       },
       {
         "kind": "CARD_COMPLETED",
         "cardId": "quest_holy_grail"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_merlins_crystal"
       },
       {
         "kind": "CARD_COMPLETED",
@@ -1155,7 +1400,7 @@
       {
         "kind": "CARD_COMPLETED",
         "cardId": "quest_one_small_favour"
-      }
+      } 
     ],
     "meta": {
       "members": true,
@@ -1255,8 +1500,14 @@
       {
         "kind": "SKILL_CAP_AT_LEAST",
         "skill": "Woodcutting",
-        "cap": 36
+        "cap": 40
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Crafting",
+        "cap": 40
       }
+
     ],
     "meta": {
       "members": true,
@@ -2405,7 +2656,7 @@
     }
   },
   {
-    "id":"quest_sleeping_giants",
+    "id": "quest_sleeping_giants",
     "type": "QUEST",
     "title": "Sleeping Giants",
     "description": "Complete the quest: Sleeping Giants.",

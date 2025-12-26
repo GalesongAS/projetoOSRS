@@ -2936,6 +2936,12 @@
     "title": "Runecraft 1 → 10",
     "description": "Increase your Runecraft cap to 10. You must reach 10 before opening another pack.",
     "weight": 14,
+    "requires":[
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_rune_mysteries"
+      }
+    ],
     "effects": [
       {
         "kind": "SET_SKILL_CAP",
@@ -3199,6 +3205,12 @@
     "title": "Sailing 1 → 10",
     "description": "Increase your Sailing cap to 10. You must reach 10 before opening another pack.",
     "weight": 14,
+    "requires": [
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_pandemonium"
+      }
+    ],
     "effects": [
       {
         "kind": "SET_SKILL_CAP",
@@ -4272,6 +4284,4 @@
   "weight": 1,
   "gate": { "kind": "STRONGHOLD_OF_SECURITY" }
 }
-
-
 ]
