@@ -1,43 +1,5 @@
 [
   {
-    "id": "unlock-woodcutting-10",
-    "type": "UNLOCK",
-    "title": "Woodcutting 1 → 10",
-    "description": "You may train Woodcutting up to level 10. You must reach 10 before opening another pack.",
-    "weight": 10,
-    "effects": [
-      {
-        "kind": "SET_SKILL_CAP",
-        "skill": "Woodcutting",
-        "cap": 10
-      }
-    ],
-    "gate": {
-      "kind": "REACH_LEVEL",
-      "skill": "Woodcutting",
-      "level": 10
-    }
-  },
-  {
-    "id": "unlock-mining-10",
-    "type": "UNLOCK",
-    "title": "Mining 1 → 10",
-    "description": "You may train Mining up to level 10. You must reach 10 before opening another pack.",
-    "weight": 10,
-    "effects": [
-      {
-        "kind": "SET_SKILL_CAP",
-        "skill": "Mining",
-        "cap": 10
-      }
-    ],
-    "gate": {
-      "kind": "REACH_LEVEL",
-      "skill": "Mining",
-      "level": 10
-    }
-  },
-  {
     "id": "unlock-agility-001-010",
     "type": "UNLOCK",
     "title": "Agility 1 → 10",
@@ -2159,7 +2121,13 @@
       "skill": "Herblore",
       "level": 10
     },
-    "_generated": "skill_unlock_v1"
+    "_generated": "skill_unlock_v1",
+    "requires":[
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_druidic_ritual"
+      }
+    ]
   },
   {
     "id": "unlock-herblore-011-020",
@@ -4272,8 +4240,17 @@
   "title": "Marks of grace",
   "description": "Do rooftops and collect Marks of grace.",
   "repeatable": true,
-  "weight": 3,
+  "weight": 2,
   "gate": { "kind": "MARKS_OF_GRACE", "min": 1, "max": 5 }
+},
+{
+  "id": "task-achievement_diaries",
+  "type": "TASK",
+  "title": "Achievement Diaries",
+  "description": "Complete any achievement diary.",
+  "repeatable": true,
+  "weight": 2,
+  "gate": { "kind": "ACHIEVEMENT_DIARY", "min": 1, "max": 3 }
 },
 {
   "id": "task-stronghold-of-security",

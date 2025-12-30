@@ -346,6 +346,20 @@
       {
         "kind": "CARD_COMPLETED",
         "cardId": "quest_dwarf_cannon"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_fishing_contest"
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Mining",
+        "cap": 40
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Smithing",
+        "cap": 50
       }
     ],
     "meta": {
@@ -436,7 +450,12 @@
     "title": "Client of Kourend",
     "description": "Complete the quest: Client of Kourend.",
     "weight": 12,
-    "requires": [],
+    "requires": [
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_x_marks_the_spot"
+      }
+    ],
     "meta": {
       "members": true,
       "difficulty": "Novice",
@@ -449,7 +468,7 @@
     "type": "QUEST",
     "title": "Clock Tower",
     "description": "Complete the quest: Clock Tower.",
-    "weight": 12,
+    "weight": 2,
     "requires": [],
     "meta": {
       "members": true,
@@ -464,7 +483,33 @@
     "title": "Cold War",
     "description": "Complete the quest: Cold War.",
     "weight": 8,
-    "requires": [],
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Hunter",
+        "cap": 10
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Agility",
+        "cap": 30
+      },{
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Crafting",
+        "cap": 30
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Construction",
+        "cap": 40
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Thieving",
+        "cap": 20
+      }
+
+    ],
     "meta": {
       "members": true,
       "difficulty": "Intermediate",
@@ -473,10 +518,10 @@
     }
   },
   {
-    "id": "quest_combat_level_10_combat_level",
+    "id": "quest_prying_times",
     "type": "QUEST",
-    "title": "Combat level 10 Combat level",
-    "description": "Complete the quest: Combat level 10 Combat level.",
+    "title": "Prying Times",
+    "description": "Complete the quest: Prying Times.",
     "weight": 8,
     "requires": [
       {
@@ -525,7 +570,27 @@
     "title": "Creature of Fenkenstrain",
     "description": "Complete the quest: Creature of Fenkenstrain.",
     "weight": 8,
-    "requires": [],
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Crafting",
+        "cap": 20
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Thieving",
+        "cap": 30
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_the_restless_ghost"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_priest_in_peril"
+      }
+
+    ],
     "meta": {
       "members": true,
       "difficulty": "Intermediate",
@@ -558,7 +623,37 @@
     "title": "Darkness of Hallowvale",
     "description": "Complete the quest: Darkness of Hallowvale.",
     "weight": 8,
-    "requires": [],
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Construction",
+        "cap": 10
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Mining",
+        "cap": 20
+      },
+       {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Thieving",
+        "cap": 30
+      },
+       {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Agility",
+        "cap": 30
+      },
+       {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Crafting",
+        "cap": 40
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_in_aid_of_the_myreque"
+      }
+    ],
     "meta": {
       "members": true,
       "difficulty": "Intermediate",
@@ -586,7 +681,22 @@
     "title": "Death to the Dorgeshuun",
     "description": "Complete the quest: Death to the Dorgeshuun.",
     "weight": 8,
-    "requires": [],
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Agility",
+        "cap": 30
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Thieving",
+        "cap": 30
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_the_lost_tribe"
+      }
+    ],
     "meta": {
       "members": true,
       "difficulty": "Intermediate",
@@ -613,8 +723,43 @@
     "type": "QUEST",
     "title": "Desert Treasure I",
     "description": "Complete the quest: Desert Treasure I.",
-    "weight": 2,
-    "requires": [],
+    "weight": 22,
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Thieving",
+        "cap": 60
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Firemaking",
+        "cap": 50
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_the_dig_site"
+      },
+       {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_temple_of_ikov"
+      },
+       {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_the_tourist_trap"
+      },
+       {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_troll_stronghold"
+      },
+      {
+        "kind": "CARD_COMPLETED",  
+        "cardId": "quest_priest_in_peril"   
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_waterfall_quest"
+      }
+    ],
     "meta": {
       "members": true,
       "difficulty": "Master",
@@ -642,7 +787,13 @@
     "title": "Doric's Quest",
     "description": "Complete the quest: Doric's Quest.",
     "weight": 12,
-    "requires": [],
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Mining",
+        "cap": 20
+      }
+    ],
     "meta": {
       "members": false,
       "difficulty": "Novice",
@@ -761,7 +912,13 @@
     "title": "Eagles' Peak",
     "description": "Complete the quest: Eagles' Peak.",
     "weight": 12,
-    "requires": [],
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Hunter",
+        "cap": 30
+      }
+    ],
     "meta": {
       "members": true,
       "difficulty": "Novice",
@@ -775,7 +932,23 @@
     "title": "Elemental Workshop I",
     "description": "Complete the quest: Elemental Workshop I.",
     "weight": 12,
-    "requires": [],
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Crafting",
+        "cap": 20
+      },
+       {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Smithing",
+        "cap": 20
+      },
+       {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Mining",
+        "cap": 20
+      }
+    ],
     "meta": {
       "members": true,
       "difficulty": "Novice",
@@ -788,8 +961,18 @@
     "type": "QUEST",
     "title": "Elemental Workshop II",
     "description": "Complete the quest: Elemental Workshop II.",
-    "weight": 8,
-    "requires": [],
+    "weight": 16,
+    "requires": [
+       {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Smithing",
+        "cap": 30
+      },
+       {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_elemental_workshop_i"
+       }
+    ],
     "meta": {
       "members": true,
       "difficulty": "Intermediate",
@@ -803,7 +986,18 @@
     "title": "Enakhra's Lament",
     "description": "Complete the quest: Enakhra's Lament.",
     "weight": 5,
-    "requires": [],
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Crafting",
+        "cap": 50
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Firemaking",
+        "cap": 50
+      }
+    ],
     "meta": {
       "members": true,
       "difficulty": "Experienced",
@@ -848,7 +1042,16 @@
     "title": "Fairytale I - Growing Pains",
     "description": "Complete the quest: Fairytale I - Growing Pains.",
     "weight": 5,
-    "requires": [],
+    "requires": [
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_lost_city"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_nature_spirit"
+      }
+    ],
     "meta": {
       "members": true,
       "difficulty": "Experienced",
@@ -862,7 +1065,28 @@
     "title": "Fairytale II - Cure a Queen",
     "description": "Complete the quest: Fairytale II - Cure a Queen.",
     "weight": 5,
-    "requires": [],
+    "requires": [
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_fairytale_i_growing_pains"
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Farming",
+        "cap": 50
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Herblore",
+        "cap": 60
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Thieving",
+        "cap": 40
+      }
+
+    ],
     "meta": {
       "members": true,
       "difficulty": "Experienced",
@@ -876,7 +1100,23 @@
     "title": "Family Crest",
     "description": "Complete the quest: Family Crest.",
     "weight": 5,
-    "requires": [],
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Mining",
+        "cap": 40
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Smithing",
+        "cap": 40
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Crafting",
+        "cap": 40
+      }
+    ],
     "meta": {
       "members": true,
       "difficulty": "Experienced",
@@ -1357,6 +1597,20 @@
     }
   },
   {
+    "id": "quest_x_marks_the_spot",
+    "type": "QUEST",
+    "title": "X Marks the Spot",
+    "description": "Complete the quest: X Marks the Spot.",
+    "weight": 1,
+    "requires": [],
+    "meta": {
+      "members": false,
+      "difficulty": "Novice",
+      "questPoints": 1,
+      "url": "https://oldschool.runescape.wiki/w/X_Marks_the_Spot"
+    }
+  },
+  {
     "id": "quest_jungle_potion",
     "type": "QUEST",
     "title": "Jungle Potion",
@@ -1620,7 +1874,12 @@
     "title": "Meat and Greet",
     "description": "Complete the quest: Meat and Greet.",
     "weight": 12,
-    "requires": [],
+    "requires": [
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_children_of_the_sun"
+      }
+    ],
     "meta": {
       "members": false,
       "difficulty": "Novice",
@@ -1936,7 +2195,16 @@
     "title": "Ratcatchers",
     "description": "Complete the quest: Ratcatchers.",
     "weight": 8,
-    "requires": [],
+    "requires": [
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_icthlarins_little_helper"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_the_giant_dwarf"
+      }
+    ],
     "meta": {
       "members": true,
       "difficulty": "Intermediate",
@@ -2186,7 +2454,28 @@
     "title": "Scrambled!",
     "description": "Complete the quest: Scrambled!.",
     "weight": 12,
-    "requires": [],
+    "requires": [
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_children_of_the_sun"
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Construction",
+        "cap": 40
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Cooking",
+        "cap": 40
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Smithing",
+        "cap": 40
+      }
+
+    ],
     "meta": {
       "members": false,
       "difficulty": "Novice",
@@ -2727,8 +3016,24 @@
     "type": "QUEST",
     "title": "The Fremennik Trials",
     "description": "Complete the quest: The Fremennik Trials.",
-    "weight": 5,
-    "requires": [],
+    "weight": 12,
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Fletching",
+        "cap": 30
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Woodcutting",
+        "cap": 40
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Crafting",
+        "cap": 40
+      }
+    ],
     "meta": {
       "members": true,
       "difficulty": "Experienced",
@@ -2772,7 +3077,18 @@
     "title": "The Golem",
     "description": "Complete the quest: The Golem.",
     "weight": 8,
-    "requires": [],
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Crafting",
+        "cap": 20
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Thieving",
+        "cap": 30
+      }
+    ],
     "meta": {
       "members": true,
       "difficulty": "Intermediate",
@@ -2870,7 +3186,13 @@
     "title": "The Knight's Sword",
     "description": "Complete the quest: The Knight's Sword.",
     "weight": 12,
-    "requires": [],
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Mining",
+        "cap": 10
+      }
+    ],
     "meta": {
       "members": false,
       "difficulty": "Novice",
