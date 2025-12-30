@@ -305,7 +305,7 @@
         "cap": 10
       },
       {
-         "kind": "SKILL_CAP_AT_LEAST",
+        "kind": "SKILL_CAP_AT_LEAST",
         "skill": "Thieving",
         "cap": 30
       },
@@ -375,7 +375,18 @@
     "title": "Big Chompy Bird Hunting",
     "description": "Complete the quest: Big Chompy Bird Hunting.",
     "weight": 8,
-    "requires": [],
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Cooking",
+        "cap": 30
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Fletching",
+        "cap": 10
+      }
+    ],
     "meta": {
       "members": true,
       "difficulty": "Intermediate",
@@ -408,7 +419,12 @@
     "title": "Bone Voyage",
     "description": "Complete the quest: Bone Voyage.",
     "weight": 8,
-    "requires": [],
+    "requires": [
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_the_dig_site"
+      }
+    ],
     "meta": {
       "members": true,
       "difficulty": "Intermediate",
@@ -436,12 +452,50 @@
     "title": "Cabin Fever",
     "description": "Complete the quest: Cabin Fever.",
     "weight": 5,
-    "requires": [],
+    "requires": [
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_pirates_treasure"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_rum_deal"
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Agility",
+        "cap": 50
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Crafting",
+        "cap": 50
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Smithing",
+        "cap": 50
+      }
+    ],
     "meta": {
       "members": true,
       "difficulty": "Experienced",
       "questPoints": 2,
       "url": "https://oldschool.runescape.wiki/w/Cabin_Fever"
+    }
+  },
+  {
+    "id": "quest_pirates_treasure",
+    "type": "QUEST",
+    "title": "Pirate's Treasure",
+    "description": "Complete the quest: Pirate's Treasure",
+    "weight": 3,
+    "requires": [],
+    "meta": {
+      "members": false,
+      "difficulty": "Novice",
+      "questPoints": 2,
+      "url": "https://oldschool.runescape.wiki/w/Pirate%27s_Treasure"
     }
   },
   {
@@ -493,7 +547,8 @@
         "kind": "SKILL_CAP_AT_LEAST",
         "skill": "Agility",
         "cap": 30
-      },{
+      },
+      {
         "kind": "SKILL_CAP_AT_LEAST",
         "skill": "Crafting",
         "cap": 30
@@ -508,7 +563,6 @@
         "skill": "Thieving",
         "cap": 20
       }
-
     ],
     "meta": {
       "members": true,
@@ -527,6 +581,20 @@
       {
         "kind": "CARD_COMPLETED",
         "cardId": "quest_pandemonium"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_the_knights_sword"
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Sailing",
+        "cap": 20
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Smithing",
+        "cap": 30
       }
     ],
     "meta": {
@@ -542,7 +610,26 @@
     "title": "Contact!",
     "description": "Complete the quest: Contact!.",
     "weight": 2,
-    "requires": [],
+    "requires": [
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_prince_ali_rescue"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_icthlarins_little_helper"
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Agility",
+        "cap": 50
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Thieving",
+        "cap": 50
+      }
+    ],
     "meta": {
       "members": true,
       "difficulty": "Master",
@@ -589,7 +676,6 @@
         "kind": "CARD_COMPLETED",
         "cardId": "quest_priest_in_peril"
       }
-
     ],
     "meta": {
       "members": true,
@@ -634,17 +720,17 @@
         "skill": "Mining",
         "cap": 20
       },
-       {
+      {
         "kind": "SKILL_CAP_AT_LEAST",
         "skill": "Thieving",
         "cap": 30
       },
-       {
+      {
         "kind": "SKILL_CAP_AT_LEAST",
         "skill": "Agility",
         "cap": 30
       },
-       {
+      {
         "kind": "SKILL_CAP_AT_LEAST",
         "skill": "Crafting",
         "cap": 40
@@ -667,7 +753,18 @@
     "title": "Death Plateau",
     "description": "Complete the quest: Death Plateau.",
     "weight": 12,
-    "requires": [],
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "fishing",
+        "cap": 20
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Cooking",
+        "cap": 10
+      }
+    ],
     "meta": {
       "members": true,
       "difficulty": "Novice",
@@ -739,21 +836,21 @@
         "kind": "CARD_COMPLETED",
         "cardId": "quest_the_dig_site"
       },
-       {
+      {
         "kind": "CARD_COMPLETED",
         "cardId": "quest_temple_of_ikov"
       },
-       {
+      {
         "kind": "CARD_COMPLETED",
         "cardId": "quest_the_tourist_trap"
       },
-       {
+      {
         "kind": "CARD_COMPLETED",
         "cardId": "quest_troll_stronghold"
       },
       {
-        "kind": "CARD_COMPLETED",  
-        "cardId": "quest_priest_in_peril"   
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_priest_in_peril"
       },
       {
         "kind": "CARD_COMPLETED",
@@ -773,7 +870,35 @@
     "title": "Devious Minds",
     "description": "Complete the quest: Devious Minds.",
     "weight": 5,
-    "requires": [],
+    "requires": [
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_wanted"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_troll_stronghold"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_dorics_quest"
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Smithing",
+        "cap": 70
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Runecraft",
+        "cap": 50
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Fletching",
+        "cap": 50
+      }
+    ],
     "meta": {
       "members": true,
       "difficulty": "Experienced",
@@ -938,12 +1063,12 @@
         "skill": "Crafting",
         "cap": 20
       },
-       {
+      {
         "kind": "SKILL_CAP_AT_LEAST",
         "skill": "Smithing",
         "cap": 20
       },
-       {
+      {
         "kind": "SKILL_CAP_AT_LEAST",
         "skill": "Mining",
         "cap": 20
@@ -963,15 +1088,15 @@
     "description": "Complete the quest: Elemental Workshop II.",
     "weight": 16,
     "requires": [
-       {
+      {
         "kind": "SKILL_CAP_AT_LEAST",
         "skill": "Smithing",
         "cap": 30
       },
-       {
+      {
         "kind": "CARD_COMPLETED",
         "cardId": "quest_elemental_workshop_i"
-       }
+      }
     ],
     "meta": {
       "members": true,
@@ -1027,7 +1152,6 @@
         "skill": "Farming",
         "cap": 30
       }
-
     ],
     "meta": {
       "members": true,
@@ -1085,7 +1209,6 @@
         "skill": "Thieving",
         "cap": 40
       }
-
     ],
     "meta": {
       "members": true,
@@ -1652,9 +1775,8 @@
         "cap": 70
       },
       {
-        "kind":"CARD_COMPLETED"
-        ,"cardId":"quest_black_knights_fortress"
-
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_black_knights_fortress"
       },
       {
         "kind": "CARD_COMPLETED",
@@ -1671,7 +1793,7 @@
       {
         "kind": "CARD_COMPLETED",
         "cardId": "quest_one_small_favour"
-      } 
+      }
     ],
     "meta": {
       "members": true,
@@ -1778,7 +1900,6 @@
         "skill": "Crafting",
         "cap": 40
       }
-
     ],
     "meta": {
       "members": true,
@@ -2042,6 +2163,15 @@
       {
         "kind": "CARD_COMPLETED",
         "cardId": "quest_priest_in_peril"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_priest_in_peril"
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Crafting",
+        "cap": 20
       }
     ],
     "meta": {
@@ -2057,7 +2187,13 @@
     "title": "Observatory Quest",
     "description": "Complete the quest: Observatory Quest.",
     "weight": 12,
-    "requires": [],
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Crafting",
+        "cap": 10
+      }
+    ],
     "meta": {
       "members": true,
       "difficulty": "Novice",
@@ -2305,6 +2441,10 @@
       {
         "kind": "CARD_COMPLETED",
         "cardId": "quest_druidic_ritual"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_black_knights_fortress"
       }
     ],
     "meta": {
@@ -2474,7 +2614,6 @@
         "skill": "Smithing",
         "cap": 40
       }
-
     ],
     "meta": {
       "members": false,
@@ -2489,7 +2628,13 @@
     "title": "Sea Slug",
     "description": "Complete the quest: Sea Slug.",
     "weight": 12,
-    "requires": [],
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Firemaking",
+        "cap": 30
+      }
+    ],
     "meta": {
       "members": true,
       "difficulty": "Novice",
@@ -2556,11 +2701,31 @@
     "title": "Shadows of Custodia",
     "description": "Complete the quest: Shadows of Custodia.",
     "weight": 12,
-    "requires": [],
+    "requires": [
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_children_of_the_sun"
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Fishing",
+        "cap": 50
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Construction",
+        "cap": 50
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Hunter",
+        "cap": 40
+      }
+    ],
     "meta": {
       "members": false,
-      "difficulty": "Novice",
-      "questPoints": 1,
+      "difficulty": "Experienced",
+      "questPoints": 2,
       "url": "https://oldschool.runescape.wiki/w/Shadows_of_Custodia"
     }
   },
@@ -2847,7 +3012,17 @@
     "title": "The Ascent of Arceuus",
     "description": "Complete the quest: The Ascent of Arceuus.",
     "weight": 12,
-    "requires": [],
+    "requires": [
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_client_of_kourend"
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Hunter",
+        "cap": 20
+      }
+    ],
     "meta": {
       "members": true,
       "difficulty": "Novice",
@@ -3522,6 +3697,31 @@
       {
         "kind": "CARD_COMPLETED",
         "cardId": "quest_pandemonium"
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Construction",
+        "cap": 50
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Sailing",
+        "cap": 50
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Hunter",
+        "cap": 50
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Woodcutting",
+        "cap": 40
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Crafting",
+        "cap": 40
       }
     ],
     "meta": {

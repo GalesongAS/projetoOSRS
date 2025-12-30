@@ -42,7 +42,6 @@ SLAYER_CHANCE_CAP = 0.90
 NOTES_TEXT = (
     "• Packs stack.\n"
     "• You can only have 1 active card.\n"
-    "• Gated unlocks block opening packs until you confirm the requirement.\n"
     "• Slayer Masters have finite pack pools."
 )
 
@@ -302,6 +301,9 @@ def action_tile(
         ),
     )
 
+def fmt_pct(p: float) -> str:
+    return f"{p * 100:.1f}%"
+
 def main(page: ft.Page):
     page.fonts = {"OSRS": "fonts/RunescapeChat.ttf"}
     page.theme = ft.Theme(font_family="OSRS")
@@ -416,20 +418,52 @@ def main(page: ft.Page):
         show_save_path = not show_save_path
         refresh()
 
-    def is_repeatable(card: dict) -> bool:
-        return bool(card.get("repeatable", False))
 
     def resolve_gate(gate: dict) -> dict:
         if not gate:
             return None
         g = dict(gate)
-        if g.get("kind") == "MARKS_OF_GRACE":
+
+        if g.get("kind") in ("MARKS_OF_GRACE", "DIARIES"):
             mn = int(g.get("min", 1))
             mx = int(g.get("max", mn))
             if mx < mn:
                 mx = mn
             g["amount"] = mn + secrets.randbelow(mx - mn + 1)
         return g
+
+    def gate_amount_text(g: dict | None) -> str:
+        if not g:
+            return ""
+        kind = g.get("kind")
+        amt = int(g.get("amount", g.get("min", 1)))
+        if kind == "MARKS_OF_GRACE":
+            return f"Requirement: Collect {amt} Marks of grace."
+        if kind == "DIARIES":
+            return f"Requirement: Complete {amt} achievement diaries."
+        return ""
+    
+    def gate_range_text(g: dict | None) -> str:
+        if not g:
+            return ""
+        kind = g.get("kind")
+        mn = int(g.get("min", g.get("amount", 1)))
+        mx = int(g.get("max", mn))
+        if mx < mn:
+            mx = mn
+
+        def fmt_range(unit_singular: str, unit_plural: str):
+            if mn == mx:
+                unit = unit_singular if mn == 1 else unit_plural
+                return f"Requirement: {mn} {unit}."
+            return f"Requirement: {mn}–{mx} {unit_plural}."
+
+        if kind == "MARKS_OF_GRACE":
+            return "Requirement: Collect " + fmt_range("Mark of grace", "Marks of grace")[13:]
+        if kind == "DIARIES":
+            return "Requirement: Complete " + fmt_range("achievement diary", "achievement diaries")[13:]
+        return ""
+
 
     def slayer_pack_chance_for(st: dict) -> float:
         base = float(config["packChancePerSlayerTask"])
@@ -490,7 +524,6 @@ def main(page: ft.Page):
     )
     pack_options_row.visible = False
     
-    # ✅ Create once (NOT inside render_pack_from_state)
     complete_btn_section = ft.Container(
         alignment=ft.alignment.center,
         padding=ft.padding.only(top=10),
@@ -499,8 +532,8 @@ def main(page: ft.Page):
             border_radius=14,
             border=ft.border.all(1, BORDER_LIGHT),
             bgcolor="#3a2f1f",
-            padding=ft.padding.symmetric(horizontal=34, vertical=18),  # bigger
-            on_click=lambda e: complete_current_card(e),  # resolves at click time
+            padding=ft.padding.symmetric(horizontal=34, vertical=18),  
+            on_click=lambda e: complete_current_card(e), 
             content=ft.Text(
                 "Complete task",
                 color=TEXT_MAIN,
@@ -597,7 +630,6 @@ def main(page: ft.Page):
 
 
     def render_pack_from_state():
-        # If user restarted with a pending pack, always prefer that
         if state.get("pendingPackOptionIds") and not state.get("lastPackOptionIds"):
             state["lastPackOptionIds"] = list(state["pendingPackOptionIds"])
             state["lastPackPickedId"] = None
@@ -625,7 +657,9 @@ def main(page: ft.Page):
                 pack_title.value = "Task in progress"
                 pack_hint.value = "Complete your current task to open another pack."
                 empty_title.value = c.get("title", "Active task")
-                empty_desc.value = c.get("description", "")
+                desc = c.get("description", "")
+                req = gate_amount_text(state.get("activeGate"))
+                empty_desc.value = f"{desc}\n\n{req}" if req else desc
             else:
                 pack_title.value = ""
                 if state.get("unopenedPacks", 0) > 0:
@@ -688,7 +722,18 @@ def main(page: ft.Page):
                 border=ft.border.all(1, ACCENT),
                 content=ft.Text(badge_text, color=ACCENT, size=11, weight=ft.FontWeight.BOLD),
             )
-
+                
+            desc = card.get("description","") or ""
+                
+            if card.get("gate"):
+                if has_confirmed and is_picked and state.get("activeCardId") == cid:
+                        req = gate_amount_text(state.get("activeGate"))
+                else:
+                        req = gate_range_text(card.get("gate"))
+                    
+                if req:
+                    desc = f"{desc}\n\n{req}"
+                
             return ft.Container(
                 expand=1,
                 height=260,
@@ -714,7 +759,7 @@ def main(page: ft.Page):
                             ],
                         ),
                         ft.Text(f"[{card.get('type','?')}]", color=ACCENT),
-                        ft.Text(card.get("description", ""), color=TEXT_DIM),
+                        ft.Text(desc, color=TEXT_DIM),
                         ft.Text(hint_text, size=12, color=TEXT_DIM),
                     ],
                 ),
@@ -1032,19 +1077,6 @@ def main(page: ft.Page):
     def is_repeatable(card: dict) -> bool:
         return bool(card.get("repeatable", False))
 
-    def resolve_gate(gate: dict) -> dict:
-        if not gate:
-            return None
-        g = dict(gate)
-
-        if g.get("kind") == "MARKS_OF_GRACE":
-            mn = int(g.get("min", 1))
-            mx = int(g.get("max", mn))
-            if mx < mn:
-                mx = mn
-            g["amount"] = mn + secrets.randbelow(mx - mn + 1)
-
-        return g
 
     def draw_pack_options(eligible: list[dict], draw_n: int) -> list[dict]:
         pool = eligible[:]
@@ -1265,6 +1297,7 @@ def main(page: ft.Page):
 
         def rebuild():
             list_view.controls.clear()
+            
             for mm in config.get("slayerMasters", []):
                 portrait = mm.get("portrait")
                 mid = mm["id"]
@@ -1276,8 +1309,13 @@ def main(page: ft.Page):
                 tasks = int(st.get("tasks", 0))
                 found = int(st.get("packsFound", 0))
                 maxp = int(st.get("maxPacks", mm["maxPacks"]))
+                
+                can_still_drop = found < maxp
+                chance = slayer_pack_chance_for(st) if can_still_drop else 0.0
+                chance_text = fmt_pct(chance)
 
-                # ✅ ADD THIS BLOCK HERE (before `row = ...`)
+                
+
                 if portrait and os.path.exists(os.path.join(ASSETS_DIR, portrait.replace("/", os.sep))):
                     img = ft.Image(src=portrait, width=44, height=44, fit=ft.ImageFit.CONTAIN)
                 else:
@@ -1290,6 +1328,19 @@ def main(page: ft.Page):
                         border_radius=8,
                         content=ft.Text(name[:1], color=TEXT_MAIN, weight=ft.FontWeight.BOLD),
                     )
+                    
+                chance_badge = ft.Container(
+                    padding=ft.padding.symmetric(horizontal=8,vertical=3),
+                    border_radius=999,
+                    bgcolor="#15110d",
+                    border=ft.border.all(1, BORDER_LIGHT),
+                    content=ft.Text(
+                        chance_text if can_still_drop else "0.0%",
+                        color= ACCENT if can_still_drop else TEXT_DIM,
+                        size=14,
+                        weight= ft.FontWeight.BOLD,
+                    ),
+                )
 
                 row = ft.Container(
                     padding=12,
@@ -1309,7 +1360,14 @@ def main(page: ft.Page):
                                     ft.Column(
                                         spacing=2,
                                         controls=[
-                                            ft.Text(name, size=18, weight=ft.FontWeight.BOLD, color=TEXT_MAIN),
+                                            ft.Row(
+                                                spacing = 10,
+                                                vertical_alignment= ft.CrossAxisAlignment.CENTER,
+                                                controls=[
+                                                    ft.Text(name, size=18, weight=ft.FontWeight.BOLD, color=TEXT_MAIN),
+                                                    chance_badge,
+                                                ],
+                                            ),
                                             ft.Text(f"Lifetime Tasks: {tasks}", color=TEXT_DIM),
                                             ft.Text(f"Packs Found: {found}/{maxp}", color=ACCENT),
                                         ],

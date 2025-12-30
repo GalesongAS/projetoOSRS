@@ -2122,7 +2122,7 @@
       "level": 10
     },
     "_generated": "skill_unlock_v1",
-    "requires":[
+    "requires": [
       {
         "kind": "CARD_COMPLETED",
         "cardId": "quest_druidic_ritual"
@@ -2904,7 +2904,7 @@
     "title": "Runecraft 1 → 10",
     "description": "Increase your Runecraft cap to 10. You must reach 10 before opening another pack.",
     "weight": 14,
-    "requires":[
+    "requires": [
       {
         "kind": "CARD_COMPLETED",
         "cardId": "quest_rune_mysteries"
@@ -4226,39 +4226,51 @@
     ]
   },
   {
-  "id": "task-any-quest",
-  "type": "TASK",
-  "title": "Do any quest",
-  "description": "Complete any quest and choose it when you press Completed.",
-  "repeatable": true,
-  "weight": 1,
-  "gate": { "kind": "ANY_QUEST" }
-},
-{
-  "id": "task-marks-of-grace",
-  "type": "TASK",
-  "title": "Marks of grace",
-  "description": "Do rooftops and collect Marks of grace.",
-  "repeatable": true,
-  "weight": 2,
-  "gate": { "kind": "MARKS_OF_GRACE", "min": 1, "max": 5 }
-},
-{
-  "id": "task-achievement_diaries",
-  "type": "TASK",
-  "title": "Achievement Diaries",
-  "description": "Complete any achievement diary.",
-  "repeatable": true,
-  "weight": 2,
-  "gate": { "kind": "ACHIEVEMENT_DIARY", "min": 1, "max": 3 }
-},
-{
-  "id": "task-stronghold-of-security",
-  "type": "TASK",
-  "title": "Stronghold of Security",
-  "description": "Go grab that 10k!.",
-  "repeatable": false,
-  "weight": 1,
-  "gate": { "kind": "STRONGHOLD_OF_SECURITY" }
-}
+    "id": "task-any-quest",
+    "type": "TASK",
+    "title": "Do any quest",
+    "description": "Complete any quest and choose it when you press Completed.",
+    "repeatable": true,
+    "weight": 1,
+    "gate": {
+      "kind": "ANY_QUEST"
+    }
+  },
+  {
+    "id": "task-marks-of-grace",
+    "type": "TASK",
+    "title": "Marks of grace",
+    "description": "Do rooftops and collect Marks of grace.",
+    "repeatable": true,
+    "weight": 2,
+    "gate": {
+      "kind": "MARKS_OF_GRACE",
+      "min": 1,
+      "max": 5
+    }
+  },
+  {
+    "id": "task-achievement_diaries",
+    "type": "TASK",
+    "title": "Achievement Diaries",
+    "description": "Complete any achievement diary.",
+    "repeatable": true,
+    "weight": 2,
+    "gate": {
+      "kind": "DIARIES",
+      "min": 1,
+      "max": 3
+    }
+  },
+  {
+    "id": "task-stronghold-of-security",
+    "type": "TASK",
+    "title": "Stronghold of Security",
+    "description": "Go grab that 10k!.",
+    "repeatable": false,
+    "weight": 1,
+    "gate": {
+      "kind": "STRONGHOLD_OF_SECURITY"
+    }
+  }
 ]
