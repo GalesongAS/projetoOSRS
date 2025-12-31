@@ -211,6 +211,72 @@
     }
   },
   {
+    "id": "quest_at_first_light",
+    "type": "QUEST",
+    "title": "At First Light",
+    "description": "Complete the quest: At First Light.",
+    "weight": 12,
+    "requires": [
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_children_of_the_sun"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_eagles_peak"
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Hunter",
+        "cap": 50
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Herblore",
+        "cap": 30
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Construction",
+        "cap": 30
+      }
+    ]
+  },
+  {
+    "id": "quest_beneath_cursed_sands",
+    "type": "QUEST",
+    "title": "Beneath Cursed Sands",
+    "description": "Complete the quest: Beneath Cursed Sands.",
+    "weight": 12,
+    "requires": [
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_contact"
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Agility",
+        "cap": 70
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Crafting",
+        "cap": 60
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Firemaking",
+        "cap": 60
+      }
+    ],
+    "meta": {
+      "members": true,
+      "difficulty": "Master",
+      "questPoints": 2,
+      "url": "https://oldschool.runescape.wiki/w/Beneath_Cursed_Sands"
+    }
+  },
+  {
     "id": "quest_ernest_the_chicken",
     "type": "QUEST",
     "title": "Ernest the Chicken",
@@ -865,6 +931,74 @@
     }
   },
   {
+    "id": "quest_desert_treasure_ii",
+    "type": "QUEST",
+    "title": "Desert Treasure II - The Fallen Empire",
+    "description": "Complete the quest: Desert Treasure II - The Fallen Empire.",
+    "weight": 32,
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Firemaking",
+        "cap": 80
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Thieving",
+        "cap": 70
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Herblore",
+        "cap": 70
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Runecraft",
+        "cap": 60
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Construction",
+        "cap": 60
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_desert_treasure_i"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_secrets_of_the_north"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_enakhras_lament"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_temple_of_the_eye"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_the_garden_of_death"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_below_ice_mountain"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_his_faithful_servants"
+      }
+    ],
+    "meta": {
+      "members": true,
+      "difficulty": "Grandmaster",
+      "questPoints": 5,
+      "url": "https://oldschool.runescape.wiki/w/Desert_Treasure_II_-_The_Fallen_Empire"
+    }
+  },
+  {
     "id": "quest_devious_minds",
     "type": "QUEST",
     "title": "Devious Minds",
@@ -966,13 +1100,138 @@
     "type": "QUEST",
     "title": "Dragon Slayer II",
     "description": "Complete the quest: Dragon Slayer II.",
-    "weight": 1,
-    "requires": [],
+    "weight": 200,
+    "requires": [
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_Legends_quest"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_dream_mentor"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_a_tail_of_two_cats"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_animal_magnetism"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_ghost_ahoy"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_bone_voyage"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_client_of_kourend"
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Smithing",
+        "cap": 70
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Mining",
+        "cap": 70
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Crafting",
+        "cap": 70
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Agility",
+        "cap": 60
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Thieving",
+        "cap": 60
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Construction",
+        "cap": 50
+      }
+    ],
     "meta": {
       "members": true,
       "difficulty": "Grandmaster",
       "questPoints": 5,
       "url": "https://oldschool.runescape.wiki/w/Dragon_Slayer_II"
+    }
+  },
+  {
+    "id": "quest_the_corsair_curse",
+    "type": "QUEST",
+    "title": "The Corsair Curse",
+    "description": "Complete the quest: The Corsair Curse",
+    "weight": 2,
+    "requires": [],
+    "meta": {
+      "members": false,
+      "difficulty": "Intermediate",
+      "questPoints": 2,
+      "url": "https://oldschool.runescape.wiki/w/The_Corsair_Curse"
+    }
+  },
+  {
+    "id": "quest_the_curse_of_arrav",
+    "type": "QUEST",
+    "title": "The Curse of Arrav",
+    "description": "Complete the quest: The Curse of Arrav.",
+    "weight": 12,
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Mining",
+        "cap": 70
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Thieving",
+        "cap": 70
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Agility",
+        "cap": 70
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_defender_of_varrock"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_troll_romance"
+      }
+    ],
+    "meta": {
+      "members": true,
+      "difficulty": "Master",
+      "questPoints": 2,
+      "url": "https://oldschool.runescape.wiki/w/The_Curse_of_Arrav"
+    }
+  },
+  {
+    "id": "quest_romeo_&_juliet",
+    "type": "QUEST",
+    "title": "Romeo & Juliet",
+    "description": "Complete the quest: Romeo & Juliet",
+    "weight": 1,
+    "requires": [],
+    "meta": {
+      "members": false,
+      "difficulty": "Novice",
+      "questPoints": 5,
+      "url": "https://oldschool.runescape.wiki/w/Romeo_%26_Juliet"
     }
   },
   {
@@ -1266,7 +1525,7 @@
     "type": "QUEST",
     "title": "Fishing Contest",
     "description": "Complete the quest: Fishing Contest.",
-    "weight": 12,
+    "weight": 2,
     "requires": [
       {
         "kind": "SKILL_CAP_AT_LEAST",
@@ -1980,6 +2239,15 @@
       {
         "kind": "CARD_COMPLETED",
         "cardId": "quest_priest_in_peril"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_the_restless_ghost"
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Crafting",
+        "cap": 30
       }
     ],
     "meta": {
@@ -3059,11 +3327,34 @@
     "type": "QUEST",
     "title": "The Final Dawn",
     "description": "Complete the quest: The Final Dawn.",
-    "weight": 1,
+    "weight": 12,
     "requires": [
       {
         "kind": "CARD_COMPLETED",
         "cardId": "quest_song_of_the_elves"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_the_heart_of_darkness"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_perilous_moons"
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Thieving",
+        "cap": 70
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Runecraft",
+        "cap": 60
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Fletching",
+        "cap": 60
       }
     ],
     "meta": {
@@ -3666,6 +3957,86 @@
       "difficulty": "Intermediate",
       "questPoints": 2,
       "url": "https://oldschool.runescape.wiki/w/Troll_Romance"
+    }
+  },
+  {
+    "id": "quest_death_on_the_isle",
+    "type": "QUEST",
+    "title": "Death on the Isle",
+    "description": "Complete the quest: Death on the Isle.",
+    "weight": 5,
+    "requires": [
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_children_of_the_sun"
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Thieving",
+        "cap": 40
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Agility",
+        "cap": 40
+      }
+    ]
+  },
+  {
+    "id": "quest_defender_of_varrock",
+    "type": "QUEST",
+    "title": "Defender of Varrock",
+    "description": "Complete the quest: Defender of Varrock",
+    "weight": 12,
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Smithing",
+        "cap": 60
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Hunter",
+        "cap": 60
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_shield_of_arrav"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_temple_of_ikov"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_below_ice_mountain"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_family_crest"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_garden_of_tranquility"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_what_lies_below"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_romeo_&_juliet"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_demon_slayer"
+      }
+    ],
+    "meta": {
+      "members": true,
+      "difficulty": "Experienced",
+      "questPoints": 2,
+      "url": "https://oldschool.runescape.wiki/w/Defender_of_Varrock"
     }
   },
   {

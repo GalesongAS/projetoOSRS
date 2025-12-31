@@ -35,7 +35,7 @@ QUEST_YELLOW = "#ffd166"
 SLAYER_START_MULT = 2.3
 SLAYER_END_MULT = 0.50
 SLAYER_CURVE = 1.0
-SLAYER_PITY_PER_TASK = 0.02
+SLAYER_PITY_PER_TASK = 0.04
 SLAYER_PITY_CAP = 0.25
 SLAYER_CHANCE_CAP = 0.90
 
@@ -73,7 +73,6 @@ def default_save(config):
         "taskLog": [],
         "pendingPackOptionIds": [],
 
-        # keep last opened pack visible after picking
         "lastPackOptionIds": [],
         "lastPackPickedId": None,
 
@@ -326,7 +325,7 @@ def main(page: ft.Page):
     if os.path.exists(QUESTS_PATH):
         all_cards.extend(read_json(QUESTS_PATH))
     cards_by_id = {c["id"]: c for c in all_cards}
-    all_cards = list(cards_by_id.values())  # dedupe
+    all_cards = list(cards_by_id.values()) 
 
     def validate_cards(cards: list[dict]):
         bad = 0 
@@ -346,7 +345,7 @@ def main(page: ft.Page):
     else:
         state = default_save(config)
 
-    # ✅ SAFETY: if a pack was opened but not picked, keep showing the same options after restart
+    # if a pack was opened but not picked, keep showing the same options after restart
     pending = list(state.get("pendingPackOptionIds") or [])
     if pending:
         if not state.get("lastPackOptionIds"):
@@ -499,7 +498,6 @@ def main(page: ft.Page):
     pack_title = ft.Text("Pack opening — pick 1 of 3", size=18, weight=ft.FontWeight.BOLD, color=TEXT_MAIN)
     pack_hint = ft.Text("Pick one card. After picking, the other 2 remain (dimmed).", color=TEXT_DIM, size=11)
 
-    # “empty” state: keep it empty like you asked
     empty_title = ft.Text("", size=22, weight=ft.FontWeight.BOLD, color=TEXT_MAIN)
     empty_desc = ft.Text("", size=13, color=TEXT_DIM)
 
@@ -527,7 +525,7 @@ def main(page: ft.Page):
     complete_btn_section = ft.Container(
         alignment=ft.alignment.center,
         padding=ft.padding.only(top=10),
-        visible=False,  # toggled in refresh()
+        visible=False, 
         content=ft.Container(
             border_radius=14,
             border=ft.border.all(1, BORDER_LIGHT),
@@ -776,7 +774,6 @@ def main(page: ft.Page):
             snack("You already have an active card.")
             return
 
-        # Safety: if pending exists, always reuse it (no reroll / no extra pack consumed)
         pending_ids = list(state.get("pendingPackOptionIds") or [])
         if pending_ids:
             state["lastPackOptionIds"] = pending_ids[:]
@@ -819,10 +816,8 @@ def main(page: ft.Page):
         state["unopenedPacks"] -= 1
         state["packsOpened"] = int(state.get("packsOpened", 0)) + 1
 
-        # pending safety (no free reroll if app closes)
         state["pendingPackOptionIds"] = option_ids[:]
 
-        # visible pack
         state["lastPackOptionIds"] = option_ids[:]
         state["lastPackPickedId"] = None
         selected_pack_id = None
@@ -862,7 +857,6 @@ def main(page: ft.Page):
                 snack(f"{config_master_name(master_id)} task complete → no pack this time.")
                 set_status(f"{config_master_name(master_id)} did not give you a pack this time.", QUEST_RED)
 
-    # Minimal placeholders for dialogs (keep yours if you want)
     def open_task_log_window(_):
         dlg = ft.AlertDialog(modal=True)
         list_view = ft.ListView(expand=True, spacing=6, padding=10)
@@ -880,7 +874,6 @@ def main(page: ft.Page):
                 return
 
             # Keep FULL history in save.json,
-            # but only render the last N to keep UI snappy.
             render_limit = 500
             shown = logs[-render_limit:]
             header_stats.value = f"Showing last {len(shown)} of {len(logs)} entries"
@@ -1106,7 +1099,6 @@ def main(page: ft.Page):
                 pick = weighted_pick(nonquests_left)
             else:
                 pick = weighted_pick(pool)
-                # Safety: if we accidentally picked a quest while already at cap and nonquests exist, repick
                 if pick.get("type") == "QUEST" and nonquests_left and quest_count >= max_quests_if_possible:
                     pick = weighted_pick(nonquests_left)
 
@@ -1351,7 +1343,6 @@ def main(page: ft.Page):
                         alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
                         vertical_alignment=ft.CrossAxisAlignment.CENTER,
                         controls=[
-                            # ✅ CHANGE THIS LEFT SIDE to include the portrait + text
                             ft.Row(
                                 spacing=12,
                                 vertical_alignment=ft.CrossAxisAlignment.CENTER,
