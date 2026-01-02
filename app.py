@@ -1,8 +1,43 @@
 import json
 import os
 import secrets
+
 import flet as ft
 from datetime import datetime
+from supabase import create_client, Client
+
+CLOUD_CFG_PATH = os.path.join(SAVE_DIR, "cloud.json")          # stores url + anon key
+CLOUD_SESSION_PATH = os.path.join(SAVE_DIR, "cloud_session.json")
+CLOUD_TABLE = "saves"
+CLOUD_SLOT = "default"
+
+def read_json_safe(path: str, fallback):
+    try:
+        if os.path.exists(path):
+            return read_json(path)
+    except Exception:
+        pass
+    return fallback
+
+def load_cloud_cfg() -> dict:
+    return read_json_safe(CLOUD_CFG_PATH, {"url": "", "anon_key": ""})
+
+def save_cloud_cfg(cfg: dict):
+    write_json(CLOUD_CFG_PATH, cfg)
+
+def load_cloud_session() -> dict | None:
+    return read_json_safe(CLOUD_SESSION_PATH, None)
+
+def save_cloud_session(session):
+    # session from supabase auth responses
+    if not session:
+        if os.path.exists(CLOUD_SESSION_PATH):
+            os.remove(CLOUD_SESSION_PATH)
+        return
+    write_json(CLOUD_SESSION_PATH, {
+        "access_token": session.access_token,
+        "refresh_token": session.refresh_token,
+    })
 
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -15,10 +50,7 @@ SAVE_PATH = os.path.join(SAVE_DIR, "save.json")
 
 ASSETS_DIR = os.path.join(HERE, "assets")
 
-# Version-safe colors namespace
-C = ft.Colors if hasattr(ft, "Colors") else ft.colors
 
-# --- OSRS-ish palette (tweak freely) ---
 OSRS_BG = "#0f0d0a"
 PANEL_BG = "#211c15"
 PANEL_INNER = "#17130f"
@@ -312,6 +344,110 @@ def main(page: ft.Page):
     page.window_width = 1200
     page.window_height = 800
     
+    cloud_cfg = load_cloud_cfg()
+    supabase: Client | None = None
+
+    def get_supabase() -> Client | None:
+        nonlocal supabase, cloud_cfg
+        if supabase:
+            return supabase
+
+        url = (cloud_cfg.get("url") or "").strip()
+        key = (cloud_cfg.get("anon_key") or "").strip()
+        if not url or not key:
+            return None
+
+        supabase = create_client(url, key)
+
+        # restore session if present
+        sess = load_cloud_session()
+        if sess:
+            try:
+                # Set/refresh session (docs) :contentReference[oaicite:2]{index=2}
+                resp = supabase.auth.set_session(sess["access_token"], sess["refresh_token"])
+                if getattr(resp, "session", None):
+                    save_cloud_session(resp.session)
+            except Exception as ex:
+                print("Supabase session restore failed:", ex)
+
+        return supabase
+
+    def cloud_signed_in() -> bool:
+        sb = get_supabase()
+        if not sb:
+            return False
+        try:
+            return sb.auth.get_session() is not None  # may be None if not signed in
+        except Exception:
+            return False
+
+    def cloud_sign_up(email: str, password: str):
+        sb = get_supabase()
+        if not sb:
+            raise RuntimeError("Supabase not configured")
+        resp = sb.auth.sign_up({"email": email, "password": password})  # docs :contentReference[oaicite:3]{index=3}
+        if getattr(resp, "session", None):
+            save_cloud_session(resp.session)
+
+    def cloud_sign_in(email: str, password: str):
+        sb = get_supabase()
+        if not sb:
+            raise RuntimeError("Supabase not configured")
+        resp = sb.auth.sign_in_with_password({"email": email, "password": password})  # docs :contentReference[oaicite:4]{index=4}
+        save_cloud_session(resp.session)
+
+    def cloud_pull_into_state():
+        """If cloud has a save, replace local state with it (last-write-wins)."""
+        sb = get_supabase()
+        if not sb or not cloud_signed_in():
+            return False
+
+        # Retrieve zero or one row (docs: maybe_single) :contentReference[oaicite:5]{index=5}
+        resp = (
+            sb.table(CLOUD_TABLE)
+            .select("data,updated_at")
+            .eq("slot", CLOUD_SLOT)
+            .maybe_single()
+            .execute()
+        )
+        row = resp.data
+        if not row:
+            return False
+
+        cloud_state = row.get("data")
+        if not isinstance(cloud_state, dict):
+            return False
+
+        # Keep your migration safe:
+        migrated = migrate_save(cloud_state, config)
+
+        state.clear()
+        state.update(migrated)
+
+        # Optional: store cloud timestamp for debugging
+        state.setdefault("_cloud", {})["updated_at"] = row.get("updated_at")
+
+        save()   # writes local save.json
+        refresh()
+        return True
+
+    def cloud_push_from_state():
+        sb = get_supabase()
+        if not sb or not cloud_signed_in():
+            return False
+
+        payload = {
+            "slot": CLOUD_SLOT,
+            "data": state,
+        }
+
+        # Upsert docs :contentReference[oaicite:6]{index=6}
+        sb.table(CLOUD_TABLE).upsert(payload, on_conflict="user_id,slot").execute()
+        return True
+
+        
+        
+    
     selected_pack_id = None
     
     for attr in ("text_scale_factor", "text_scale"):
@@ -326,6 +462,9 @@ def main(page: ft.Page):
         all_cards.extend(read_json(QUESTS_PATH))
     cards_by_id = {c["id"]: c for c in all_cards}
     all_cards = list(cards_by_id.values()) 
+    
+    
+    
 
     def validate_cards(cards: list[dict]):
         bad = 0 
@@ -687,7 +826,6 @@ def main(page: ft.Page):
         pack_hint.value = "Pick one card."
 
 
-        has_picked = bool(picked_id)
 
         def make_tile(card: dict) -> ft.Control:
             cid = card.get("id")
