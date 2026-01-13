@@ -6,10 +6,22 @@ import flet as ft
 from datetime import datetime
 from supabase import create_client, Client
 
-CLOUD_CFG_PATH = os.path.join(SAVE_DIR, "cloud.json")          # stores url + anon key
-CLOUD_SESSION_PATH = os.path.join(SAVE_DIR, "cloud_session.json")
-CLOUD_TABLE = "saves"
-CLOUD_SLOT = "default"
+def _align(name: str, x: float, y: float):
+    # Newer flet: ft.alignment.center, ft.alignment.top_right, etc.
+    if hasattr(ft, "alignment") and hasattr(ft.alignment, name):
+        return getattr(ft.alignment, name)
+    # Older/other flet: use Alignment(x,y)
+    return ft.Alignment(x, y)
+
+ALIGN_CENTER = _align("center", 0.0, 0.0)
+ALIGN_TOP_RIGHT = _align("top_right", 1.0, -1.0)
+ALIGN_TOP_LEFT = _align("top_left", -1.0, -1.0)
+ALIGN_BOTTOM_RIGHT = _align("bottom_right", 1.0, 1.0)
+ALIGN_BOTTOM_LEFT = _align("bottom_left", -1.0, 1.0)
+ALIGN_CENTER_LEFT = _align("center_left", -1.0, 0.0)
+ALIGN_CENTER_RIGHT = _align("center_right", 1.0, 0.0)
+ALIGN_TOP_CENTER = _align("top_center", 0.0, -1.0)
+ALIGN_BOTTOM_CENTER = _align("bottom_center", 0.0, 1.0)
 
 def read_json_safe(path: str, fallback):
     try:
@@ -20,10 +32,45 @@ def read_json_safe(path: str, fallback):
     return fallback
 
 def load_cloud_cfg() -> dict:
-    return read_json_safe(CLOUD_CFG_PATH, {"url": "", "anon_key": ""})
+    cfg = read_json_safe(CLOUD_CFG_PATH, {})
+    if not isinstance(cfg, dict):
+        cfg = {}
+
+    # Backward-compatible defaults
+    cfg.setdefault("mode", "local")        # "local" | "cloud"
+    cfg.setdefault("url", "")
+    cfg.setdefault("anon_key", "")
+    cfg.setdefault("auto_sync", False)
+
+    # Clean up common junk
+    cfg["mode"] = (cfg.get("mode") or "local").strip().lower()
+    if cfg["mode"] not in ("local", "cloud"):
+        cfg["mode"] = "local"
+
+    cfg["url"] = (cfg.get("url") or "").strip()
+    cfg["anon_key"] = (cfg.get("anon_key") or "").strip()
+    cfg["auto_sync"] = bool(cfg.get("auto_sync"))
+
+    return cfg
 
 def save_cloud_cfg(cfg: dict):
-    write_json(CLOUD_CFG_PATH, cfg)
+    # Only persist known keys (avoid random stuff ending up in the file)
+    cleaned = {
+        "mode": (cfg.get("mode") or "local").strip().lower(),
+        "url": (cfg.get("url") or "").strip(),
+        "anon_key": (cfg.get("anon_key") or "").strip(),
+        "auto_sync": bool(cfg.get("auto_sync")),
+    }
+    if cleaned["mode"] not in ("local", "cloud"):
+        cleaned["mode"] = "local"
+    write_json(CLOUD_CFG_PATH, cleaned)
+
+def cloud_enabled(cfg: dict) -> bool:
+    return (
+        cfg.get("mode") == "cloud"
+        and (cfg.get("url") or "").strip()
+        and (cfg.get("anon_key") or "").strip()
+    )
 
 def load_cloud_session() -> dict | None:
     return read_json_safe(CLOUD_SESSION_PATH, None)
@@ -50,6 +97,10 @@ SAVE_PATH = os.path.join(SAVE_DIR, "save.json")
 
 ASSETS_DIR = os.path.join(HERE, "assets")
 
+CLOUD_CFG_PATH = os.path.join(SAVE_DIR, "cloud.json")          # stores url + anon key
+CLOUD_SESSION_PATH = os.path.join(SAVE_DIR, "cloud_session.json")
+CLOUD_TABLE = "saves"
+CLOUD_SLOT = "default"
 
 OSRS_BG = "#0f0d0a"
 PANEL_BG = "#211c15"
@@ -254,7 +305,7 @@ def icon_button(img_src: str, on_click, tooltip: str = "", size: int = 22):
         padding=8,
         tooltip=tooltip or None,
         on_click=on_click,
-        content=ft.Image(src=img_src, width=size, height=size, fit=ft.ImageFit.CONTAIN),
+        content=ft.Image(src=img_src, width=size, height=size, fit=ft.BoxFit.CONTAIN),
     )
 
 def stat_pill(label: str, value_control: ft.Control):
@@ -290,7 +341,7 @@ def action_tile(
         icon_ok = os.path.exists(os.path.join(ASSETS_DIR, icon_src.replace("/", os.sep)))
 
     icon_control = (
-        ft.Image(src=icon_src, width=24, height=24, fit=ft.ImageFit.CONTAIN)
+        ft.Image(src=icon_src, width=24, height=24, fit=ft.BoxFit.CONTAIN)
         if icon_ok
         else ft.Text(emoji_fallback, size=18, color=TEXT_MAIN)
     )
@@ -315,7 +366,7 @@ def action_tile(
                             border_radius=10,
                             bgcolor="#1a1510",
                             border=ft.border.all(1, BORDER_LIGHT),
-                            alignment=ft.alignment.center,
+                            alignment=ALIGN_CENTER,
                             content=icon_control,
                         ),
                         ft.Column(
@@ -346,11 +397,20 @@ def main(page: ft.Page):
     
     cloud_cfg = load_cloud_cfg()
     supabase: Client | None = None
+    supabase_sig = None  # (url, anon_key) used to detect config changes
+
+    def reset_supabase():
+        nonlocal supabase, supabase_sig
+        supabase = None
+        supabase_sig = None
 
     def get_supabase() -> Client | None:
         nonlocal supabase, cloud_cfg
         if supabase:
             return supabase
+
+        if not cloud_enabled(cloud_cfg):
+            return None
 
         url = (cloud_cfg.get("url") or "").strip()
         key = (cloud_cfg.get("anon_key") or "").strip()
@@ -363,7 +423,6 @@ def main(page: ft.Page):
         sess = load_cloud_session()
         if sess:
             try:
-                # Set/refresh session (docs) :contentReference[oaicite:2]{index=2}
                 resp = supabase.auth.set_session(sess["access_token"], sess["refresh_token"])
                 if getattr(resp, "session", None):
                     save_cloud_session(resp.session)
@@ -371,6 +430,31 @@ def main(page: ft.Page):
                 print("Supabase session restore failed:", ex)
 
         return supabase
+
+
+    def ensure_cloud_session() -> bool:
+        sb = get_supabase()
+        if not sb:
+            return False
+
+        # already signed in?
+        try:
+            if sb.auth.get_session() is not None:
+                return True
+        except Exception:
+            pass
+
+        # auto-create an anonymous user/session
+        try:
+            resp = sb.auth.sign_in_anonymously()
+            sess = getattr(resp, "session", None)
+            if sess:
+                save_cloud_session(sess)
+                return True
+        except Exception as ex:
+            print("Anonymous sign-in failed:", ex)
+
+        return False
 
     def cloud_signed_in() -> bool:
         sb = get_supabase()
@@ -385,21 +469,32 @@ def main(page: ft.Page):
         sb = get_supabase()
         if not sb:
             raise RuntimeError("Supabase not configured")
-        resp = sb.auth.sign_up({"email": email, "password": password})  # docs :contentReference[oaicite:3]{index=3}
+
+        resp = sb.auth.sign_up({"email": email, "password": password})
         if getattr(resp, "session", None):
             save_cloud_session(resp.session)
+            try:
+                sb.postgrest.auth(resp.session.access_token)
+            except Exception:
+                pass
 
     def cloud_sign_in(email: str, password: str):
         sb = get_supabase()
         if not sb:
             raise RuntimeError("Supabase not configured")
-        resp = sb.auth.sign_in_with_password({"email": email, "password": password})  # docs :contentReference[oaicite:4]{index=4}
-        save_cloud_session(resp.session)
+
+        resp = sb.auth.sign_in_with_password({"email": email, "password": password})
+        if getattr(resp, "session", None):
+            save_cloud_session(resp.session)
+            try:
+                sb.postgrest.auth(resp.session.access_token)
+            except Exception:
+                pass
 
     def cloud_pull_into_state():
         """If cloud has a save, replace local state with it (last-write-wins)."""
         sb = get_supabase()
-        if not sb or not cloud_signed_in():
+        if not sb or not ensure_cloud_session():
             return False
 
         # Retrieve zero or one row (docs: maybe_single) :contentReference[oaicite:5]{index=5}
@@ -433,21 +528,20 @@ def main(page: ft.Page):
 
     def cloud_push_from_state():
         sb = get_supabase()
-        if not sb or not cloud_signed_in():
+        if not sb or not ensure_cloud_session():
             return False
 
-        payload = {
-            "slot": CLOUD_SLOT,
-            "data": state,
-        }
+        payload = {"slot": CLOUD_SLOT, "data": state}
 
-        # Upsert docs :contentReference[oaicite:6]{index=6}
-        sb.table(CLOUD_TABLE).upsert(payload, on_conflict="user_id,slot").execute()
+        resp = (
+            sb.table(CLOUD_TABLE)
+            .upsert(payload, on_conflict="user_id,slot")
+            .select("updated_at")
+            .execute()
+        )
+        print("push resp:", resp.data)
         return True
 
-        
-        
-    
     selected_pack_id = None
     
     for attr in ("text_scale_factor", "text_scale"):
@@ -462,9 +556,6 @@ def main(page: ft.Page):
         all_cards.extend(read_json(QUESTS_PATH))
     cards_by_id = {c["id"]: c for c in all_cards}
     all_cards = list(cards_by_id.values()) 
-    
-    
-    
 
     def validate_cards(cards: list[dict]):
         bad = 0 
@@ -526,7 +617,221 @@ def main(page: ft.Page):
                 page.overlay.append(dlg)
             dlg.open = True
             page.update()
+            
+    def open_cloud_window(_):
+        dlg = ft.AlertDialog(modal=True)
 
+        # Controls
+        mode_switch = ft.Switch(
+            label="Enable cloud saves (Supabase)",
+            value=(cloud_cfg.get("mode") == "cloud"),
+        )
+
+        url_tf = ft.TextField(
+            label="Supabase URL",
+            value=cloud_cfg.get("url", ""),
+            dense=True,
+        )
+
+        key_tf = ft.TextField(
+            label="Supabase anon key",
+            value=cloud_cfg.get("anon_key", ""),
+            dense=True,
+            password=True,
+            can_reveal_password=True,
+        )
+
+        auto_sync_sw = ft.Switch(
+            label="Auto-sync on every local save",
+            value=bool(cloud_cfg.get("auto_sync", False)),
+        )
+
+        email_tf = ft.TextField(label="Email", dense=True)
+        pass_tf = ft.TextField(label="Password", dense=True, password=True, can_reveal_password=True)
+
+        signed_in_txt = ft.Text("", color=TEXT_DIM, size=12)
+        cfg_status_txt = ft.Text("", color=TEXT_DIM, size=11)
+
+        def refresh_cloud_ui():
+            enabled = mode_switch.value
+
+            url_tf.disabled = not enabled
+            key_tf.disabled = not enabled
+            auto_sync_sw.disabled = not enabled
+
+            # Update config summary + signed-in status
+            if not enabled:
+                cfg_status_txt.value = "Mode: Local (no cloud)."
+                signed_in_txt.value = "Cloud: disabled"
+                signed_in_txt.color = TEXT_DIM
+            else:
+                ok = bool(url_tf.value.strip()) and bool(key_tf.value.strip())
+                cfg_status_txt.value = "Mode: Cloud (configured)" if ok else "Mode: Cloud (missing URL / key)"
+                is_in = cloud_signed_in()
+                signed_in_txt.value = "Signed in ✅" if is_in else "Not signed in"
+                signed_in_txt.color = QUEST_GREEN if is_in else QUEST_RED
+
+            page.update()
+
+        def save_settings(_e=None):
+            # Update in-memory cfg
+            cloud_cfg["mode"] = "cloud" if mode_switch.value else "local"
+            cloud_cfg["url"] = (url_tf.value or "").strip()
+            cloud_cfg["anon_key"] = (key_tf.value or "").strip()
+            cloud_cfg["auto_sync"] = bool(auto_sync_sw.value)
+
+            save_cloud_cfg(cloud_cfg)
+            reset_supabase()  # force new client / session restore next time
+
+            # If user switched to local mode, wipe stored session tokens
+            if cloud_cfg["mode"] != "cloud":
+                save_cloud_session(None)
+
+            snack("Cloud settings saved.")
+            refresh_cloud_ui()
+
+        def do_sign_up(_e):
+            try:
+                save_settings()
+                if not cloud_enabled(cloud_cfg):
+                    snack("Enable cloud + set URL/key first.")
+                    return
+                cloud_sign_up(email_tf.value.strip(), pass_tf.value)
+                snack("Signed up (check email if confirmation is required).")
+            except Exception as ex:
+                snack(f"Sign up failed: {ex}")
+            refresh_cloud_ui()
+
+        def do_sign_in(_e):
+            try:
+                save_settings()
+                if not cloud_enabled(cloud_cfg):
+                    snack("Enable cloud + set URL/key first.")
+                    return
+                cloud_sign_in(email_tf.value.strip(), pass_tf.value)
+                snack("Signed in.")
+            except Exception as ex:
+                snack(f"Sign in failed: {ex}")
+            refresh_cloud_ui()
+
+        def do_sign_out(_e):
+            try:
+                sb = get_supabase()
+                if sb:
+                    try:
+                        sb.auth.sign_out()
+                    except Exception:
+                        # some versions differ; session file removal is the key part anyway
+                        pass
+                save_cloud_session(None)
+                reset_supabase()
+                snack("Signed out.")
+            except Exception as ex:
+                snack(f"Sign out failed: {ex}")
+            refresh_cloud_ui()
+
+        def do_pull(_e):
+            try:
+                save_settings()
+                ok = cloud_pull_into_state()
+                snack("Pulled from cloud." if ok else "No cloud save found (or not signed in).")
+            except Exception as ex:
+                snack(f"Pull failed: {ex}")
+            refresh_cloud_ui()
+
+        def do_push(_e):
+            try:
+                save_settings()
+                ok = cloud_push_from_state()
+                snack("Pushed to cloud." if ok else "Push skipped (not configured or not signed in).")
+            except Exception as ex:
+                snack(f"Push failed: {ex}")
+            refresh_cloud_ui()
+
+        # Layout
+        dlg.content = ft.Container(
+            width=560,
+            bgcolor=PANEL_BG,
+            border=ft.border.all(1, BORDER_DARK),
+            border_radius=14,
+            padding=12,
+            content=ft.Column(
+                tight=True,
+                spacing=10,
+                controls=[
+                    ft.Row(
+                        alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+                        controls=[
+                            ft.Text("Cloud Saves", size=18, weight=ft.FontWeight.BOLD, color=TEXT_MAIN),
+                            ft.Container(
+                                padding=6,
+                                border_radius=8,
+                                border=ft.border.all(1, BORDER_LIGHT),
+                                bgcolor="#2b241a",
+                                on_click=lambda e: close_dialog(dlg),
+                                content=ft.Text("X", color=TEXT_MAIN, weight=ft.FontWeight.BOLD),
+                            ),
+                        ],
+                    ),
+
+                    ft.Container(
+                        bgcolor=PANEL_INNER,
+                        border=ft.border.all(1, BORDER_LIGHT),
+                        border_radius=12,
+                        padding=12,
+                        content=ft.Column(
+                            tight=True,
+                            spacing=10,
+                            controls=[
+                                mode_switch,
+                                cfg_status_txt,
+                                ft.Divider(height=1, color=BORDER_LIGHT),
+
+                                url_tf,
+                                key_tf,
+                                auto_sync_sw,
+
+                                ft.Row(
+                                    spacing=10,
+                                    controls=[
+                                        osrs_button("Save settings", save_settings, primary=True),
+                                        osrs_button("Pull (download)", do_pull),
+                                        osrs_button("Push (upload)", do_push),
+                                    ],
+                                ),
+
+                                ft.Divider(height=1, color=BORDER_LIGHT),
+
+                                signed_in_txt,
+                                email_tf,
+                                pass_tf,
+                                ft.Row(
+                                    spacing=10,
+                                    controls=[
+                                        osrs_button("Sign up", do_sign_up),
+                                        osrs_button("Sign in", do_sign_in, primary=True),
+                                        osrs_button("Sign out", do_sign_out),
+                                    ],
+                                ),
+                            ],
+                        ),
+                    ),
+
+                    ft.Text(
+                        "Tip: For BYO Supabase, make sure your table has RLS policies so users can only access their own rows.",
+                        color=TEXT_DIM,
+                        size=11,
+                    ),
+                ],
+            ),
+        )
+
+        # Wire events + initial refresh
+        mode_switch.on_change = lambda e: refresh_cloud_ui()
+        open_dialog(dlg)
+        refresh_cloud_ui()
+
+            
     def close_dialog(dlg: ft.AlertDialog):
         if hasattr(page, "close"):
             page.close(dlg)
@@ -662,7 +967,7 @@ def main(page: ft.Page):
     pack_options_row.visible = False
     
     complete_btn_section = ft.Container(
-        alignment=ft.alignment.center,
+        alignment=ALIGN_CENTER,
         padding=ft.padding.only(top=10),
         visible=False, 
         content=ft.Container(
@@ -681,7 +986,7 @@ def main(page: ft.Page):
     )
     
     pick_btn_section = ft.Container(
-        alignment=ft.alignment.center,
+        alignment=ALIGN_CENTER,
         padding=ft.padding.only(top=10),
         visible=False,
         content=ft.Container(
@@ -1109,7 +1414,7 @@ def main(page: ft.Page):
                 src=icon_rel,
                 width=34,
                 height=34,
-                fit=ft.ImageFit.CONTAIN,
+                fit=ft.BoxFit.CONTAIN,
                 opacity=1.0 if cap > 1 else 0.35,
             )
             if has_icon
@@ -1144,9 +1449,9 @@ def main(page: ft.Page):
             border=ft.border.all(1, BORDER_LIGHT),
             content=ft.Stack(
                 controls=[
-                    ft.Container(expand=True, alignment=ft.alignment.center, content=icon),
-                    ft.Container(expand=True, alignment=ft.alignment.center, content=lock_control, visible=(cap <= 1)),
-                    ft.Container(expand=True, alignment=ft.alignment.top_right, padding=6, content=cap_badge, visible=(cap > 1)),
+                    ft.Container(expand=True, alignment=ALIGN_CENTER, content=icon),
+                    ft.Container(expand=True, alignment=ALIGN_CENTER, content=lock_control, visible=(cap <= 1)),
+                    ft.Container(expand=True, alignment=ALIGN_TOP_RIGHT, padding=6, content=cap_badge, visible=(cap > 1)),
                 ]
             ),
         )
@@ -1447,12 +1752,12 @@ def main(page: ft.Page):
                 
 
                 if portrait and os.path.exists(os.path.join(ASSETS_DIR, portrait.replace("/", os.sep))):
-                    img = ft.Image(src=portrait, width=44, height=44, fit=ft.ImageFit.CONTAIN)
+                    img = ft.Image(src=portrait, width=44, height=44, fit=ft.BoxFit.CONTAIN)
                 else:
                     img = ft.Container(
                         width=44,
                         height=44,
-                        alignment=ft.alignment.center,
+                        alignment=ALIGN_CENTER,
                         bgcolor="#1a1510",
                         border=ft.border.all(1, BORDER_LIGHT),
                         border_radius=8,
@@ -1642,6 +1947,14 @@ def main(page: ft.Page):
                     icon_src="ui/slayer.png",
                     emoji_fallback="⚔",
                 ),
+                action_tile(
+                    "Cloud saves",
+                    "Local / Supabase sync settings",
+                    open_cloud_window,
+                    icon_src="ui/cloud.png",
+                    emoji_fallback="☁",
+                ),
+
 
                 ft.Container(height=6),
                 ft.Row(

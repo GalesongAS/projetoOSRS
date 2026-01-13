@@ -1,4 +1,3 @@
-
 # Python
 __pycache__/
 *.pyc
@@ -13,6 +12,11 @@ venv/
 Thumbs.db
 .vscode/
 
-# Your app save data (important!)
+
 .runecards/
 save.json
+cloud.json
+cloud_session.json
+
+# Private tooling
+scripts/
