@@ -1,6 +1,11 @@
 import json
 import os
 import secrets
+import threading
+
+import base64
+import zlib
+import time
 
 import flet as ft
 from datetime import datetime
@@ -92,13 +97,18 @@ CONFIG_PATH = os.path.join(HERE, "config.json")
 CARDS_PATH = os.path.join(HERE, "cards.json")
 QUESTS_PATH = os.path.join(HERE, "quests.json")
 
-SAVE_DIR = os.path.join(os.path.expanduser("~"), ".runecards")
+# Pick a writable persistent folder for ALL platforms
+APP_DATA_DIR = os.getenv("FLET_APP_STORAGE_DATA")  # set by packaged Flet apps
+if not APP_DATA_DIR:
+    APP_DATA_DIR = os.path.join(os.path.expanduser("~"), ".runecards")  # desktop fallback
+
+SAVE_DIR = APP_DATA_DIR
 SAVE_PATH = os.path.join(SAVE_DIR, "save.json")
+CLOUD_CFG_PATH = os.path.join(SAVE_DIR, "cloud.json")
+CLOUD_SESSION_PATH = os.path.join(SAVE_DIR, "cloud_session.json")
 
 ASSETS_DIR = os.path.join(HERE, "assets")
 
-CLOUD_CFG_PATH = os.path.join(SAVE_DIR, "cloud.json")          # stores url + anon key
-CLOUD_SESSION_PATH = os.path.join(SAVE_DIR, "cloud_session.json")
 CLOUD_TABLE = "saves"
 CLOUD_SLOT = "default"
 
@@ -275,12 +285,12 @@ def panel(content, padding=16):
         padding=padding,
         bgcolor=PANEL_BG,
         border_radius=14,
-        border=ft.border.all(1, BORDER_DARK),
+        border=ft.Border.all(1, BORDER_DARK),
         content=ft.Container(
             padding=12,
             bgcolor=PANEL_INNER,
             border_radius=12,
-            border=ft.border.all(1, BORDER_LIGHT),
+            border=ft.Border.all(1, BORDER_LIGHT),
             content=content,
         ),
     )
@@ -288,9 +298,9 @@ def panel(content, padding=16):
 def osrs_button(text: str, on_click, primary=False):
     return ft.Container(
         border_radius=10,
-        border=ft.border.all(1, BORDER_LIGHT),
+        border=ft.Border.all(1, BORDER_LIGHT),
         bgcolor=("#3a2f1f" if primary else "#2b241a"),
-        padding=ft.padding.symmetric(horizontal=14, vertical=10),
+        padding=ft.Padding.symmetric(horizontal=14, vertical=10),
         on_click=on_click,
         content=ft.Text(text,size=14, color=TEXT_MAIN, weight=ft.FontWeight.BOLD),
     )
@@ -300,7 +310,7 @@ def icon_button(img_src: str, on_click, tooltip: str = "", size: int = 22):
         width=size + 18,
         height=size + 18,
         border_radius=10,
-        border=ft.border.all(1, BORDER_LIGHT),
+        border=ft.Border.all(1, BORDER_LIGHT),
         bgcolor="#2b241a",
         padding=8,
         tooltip=tooltip or None,
@@ -310,10 +320,10 @@ def icon_button(img_src: str, on_click, tooltip: str = "", size: int = 22):
 
 def stat_pill(label: str, value_control: ft.Control):
     return ft.Container(
-        padding=ft.padding.symmetric(horizontal=10, vertical=6),
+        padding=ft.Padding.symmetric(horizontal=10, vertical=6),
         border_radius=999,
         bgcolor="#1a1510",
-        border=ft.border.all(1, BORDER_LIGHT),
+        border=ft.Border.all(1, BORDER_LIGHT),
         content=ft.Row(
             tight=True,
             spacing=6,
@@ -350,7 +360,7 @@ def action_tile(
         padding=12,
         border_radius=12,
         bgcolor=bg,
-        border=ft.border.all(1, BORDER_LIGHT),
+        border=ft.Border.all(1, BORDER_LIGHT),
         on_click=on_click,
         content=ft.Row(
             alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
@@ -365,7 +375,7 @@ def action_tile(
                             height=40,
                             border_radius=10,
                             bgcolor="#1a1510",
-                            border=ft.border.all(1, BORDER_LIGHT),
+                            border=ft.Border.all(1, BORDER_LIGHT),
                             alignment=ALIGN_CENTER,
                             content=icon_control,
                         ),
@@ -387,22 +397,68 @@ def fmt_pct(p: float) -> str:
     return f"{p * 100:.1f}%"
 
 def main(page: ft.Page):
+
+    import threading, time
+    cloud_timer = None
+    cloud_session_ready = False
+    cloud_last_push = 0.0
     page.fonts = {"OSRS": "fonts/RunescapeChat.ttf"}
     page.theme = ft.Theme(font_family="OSRS")
 
     page.title = "RuneCards"
     page.bgcolor = OSRS_BG
-    page.window_width = 1200
-    page.window_height = 800
-    
+
+    platform = (os.getenv("FLET_PLATFORM") or "").lower()
+    if platform in ("windows","macos","linux"):
+        page.window_width = 1300
+        page.window_height = 900
+        
     cloud_cfg = load_cloud_cfg()
     supabase: Client | None = None
     supabase_sig = None  # (url, anon_key) used to detect config changes
 
+    def cloud_schedule_push():
+        nonlocal cloud_timer, cloud_last_push
+
+        if not cloud_enabled(cloud_cfg) or not cloud_cfg.get("auto_sync", False):
+            return
+        
+        if cloud_timer:
+            try:
+                cloud_timer.cancel()
+            except Exception:
+                pass
+
+        def _do():
+            nonlocal cloud_last_push
+
+            now = time.time()
+            if now - cloud_last_push < 2.0:
+                return
+            try:
+                if ensure_cloud_session():
+                    cloud_push_from_state()
+                    cloud_last_push = now
+            except Exception as ex:
+                print("Auto cloud push failed:", ex)
+
+        cloud_timer = threading.Timer(2.0, _do)
+        cloud_timer.daemon = True
+        cloud_timer.start()
+
+    def apply_db_auth(sb: Client, access_token: str | None):
+        if not access_token:
+            return
+        try:
+            sb.postgrest.auth(access_token)
+        except Exception as ex:
+            print("postgrest.auth failed:", ex)
+
     def reset_supabase():
-        nonlocal supabase, supabase_sig
+        nonlocal supabase, supabase_sig, cloud_session_ready
         supabase = None
         supabase_sig = None
+        cloud_session_ready = False
 
     def get_supabase() -> Client | None:
         nonlocal supabase, cloud_cfg
@@ -424,8 +480,10 @@ def main(page: ft.Page):
         if sess:
             try:
                 resp = supabase.auth.set_session(sess["access_token"], sess["refresh_token"])
-                if getattr(resp, "session", None):
-                    save_cloud_session(resp.session)
+                session = getattr(resp, "session", None)
+                if session and getattr(session, "access_token", None):
+                    save_cloud_session(session)
+                    apply_db_auth(supabase, session.access_token)  # ✅ pass token
             except Exception as ex:
                 print("Supabase session restore failed:", ex)
 
@@ -433,24 +491,41 @@ def main(page: ft.Page):
 
 
     def ensure_cloud_session() -> bool:
+        nonlocal cloud_session_ready
+        if cloud_session_ready:
+            return True
+        
         sb = get_supabase()
         if not sb:
+            print("ensure_cloud_session: no supabase client")
             return False
 
-        # already signed in?
+        # 1) try restored session first
         try:
-            if sb.auth.get_session() is not None:
+            sess = sb.auth.get_session()
+            if sess and getattr(sess, "access_token", None):
+                save_cloud_session(sess)
+                apply_db_auth(sb, sess.access_token)
+                cloud_session_ready = True
+                print("signed in ok, uid =", get_user_id(sb))
                 return True
         except Exception:
             pass
 
-        # auto-create an anonymous user/session
+        # 2) otherwise create an anonymous session
         try:
             resp = sb.auth.sign_in_anonymously()
             sess = getattr(resp, "session", None)
-            if sess:
+            user = getattr(resp, "user", None)
+            print("anon sign-in user:", getattr(user, "id", None))
+
+            if sess and getattr(sess, "access_token", None):
                 save_cloud_session(sess)
+                apply_db_auth(sb, sess.access_token)
+                cloud_session_ready = True
                 return True
+
+            print("anon sign-in: no session returned:", resp)
         except Exception as ex:
             print("Anonymous sign-in failed:", ex)
 
@@ -465,47 +540,74 @@ def main(page: ft.Page):
         except Exception:
             return False
 
-    def cloud_sign_up(email: str, password: str):
-        sb = get_supabase()
-        if not sb:
-            raise RuntimeError("Supabase not configured")
 
-        resp = sb.auth.sign_up({"email": email, "password": password})
-        if getattr(resp, "session", None):
-            save_cloud_session(resp.session)
-            try:
-                sb.postgrest.auth(resp.session.access_token)
-            except Exception:
-                pass
+    def get_user_id(sb: Client) -> str | None:
+        try:
+            u = sb.auth.get_user()
+            # supabase-py returns an object with user.id in some versions
+            user = getattr(u, "user", None)
+            if user and getattr(user, "id", None):
+                return user.id
+        except Exception:
+            pass
 
-    def cloud_sign_in(email: str, password: str):
-        sb = get_supabase()
-        if not sb:
-            raise RuntimeError("Supabase not configured")
+        # fallback: try session.user
+        try:
+            sess = sb.auth.get_session()
+            if sess:
+                user = getattr(sess, "user", None)
+                if user and getattr(user, "id", None):
+                    return user.id
+        except Exception:
+            pass
 
-        resp = sb.auth.sign_in_with_password({"email": email, "password": password})
-        if getattr(resp, "session", None):
-            save_cloud_session(resp.session)
-            try:
-                sb.postgrest.auth(resp.session.access_token)
-            except Exception:
-                pass
-
-    def cloud_pull_into_state():
-        """If cloud has a save, replace local state with it (last-write-wins)."""
+        return None
+    
+    def cloud_pull_into_state(update_ui: bool = False) -> bool:
         sb = get_supabase()
         if not sb or not ensure_cloud_session():
             return False
 
-        # Retrieve zero or one row (docs: maybe_single) :contentReference[oaicite:5]{index=5}
-        resp = (
-            sb.table(CLOUD_TABLE)
-            .select("data,updated_at")
-            .eq("slot", CLOUD_SLOT)
-            .maybe_single()
-            .execute()
-        )
-        row = resp.data
+        uid = get_user_id(sb)
+        if not uid:
+            print("cloud_pull: no uid")
+            return False
+
+        try:
+            q = (
+                sb.table(CLOUD_TABLE)
+                .select("data,updated_at")
+                .eq("user_id", uid)
+                .eq("slot", CLOUD_SLOT)
+                .limit(1)
+            )
+
+            # optional: if your version supports ordering
+            if hasattr(q, "order"):
+                q = q.order("updated_at", desc=True)
+
+            resp = q.execute()
+        except Exception as ex:
+            print("cloud_pull exception:", ex)
+            return False
+
+        if resp is None:
+            print("cloud_pull: execute returned None")
+            return False
+
+        data = getattr(resp, "data", None)
+        err = getattr(resp, "error", None)
+        if err:
+            print("cloud_pull error:", err)
+            return False
+
+        # data might be [] or [{}] depending on version
+        row = None
+        if isinstance(data, list) and data:
+            row = data[0]
+        elif isinstance(data, dict):
+            row = data
+
         if not row:
             return False
 
@@ -513,34 +615,158 @@ def main(page: ft.Page):
         if not isinstance(cloud_state, dict):
             return False
 
-        # Keep your migration safe:
         migrated = migrate_save(cloud_state, config)
-
         state.clear()
         state.update(migrated)
 
-        # Optional: store cloud timestamp for debugging
-        state.setdefault("_cloud", {})["updated_at"] = row.get("updated_at")
+        write_json(SAVE_PATH, state)
 
-        save()   # writes local save.json
-        refresh()
+        if update_ui:
+            refresh()
+
+        print("cloud_pull ok, updated_at =", row.get("updated_at"))
         return True
+    
 
-    def cloud_push_from_state():
+
+    def cloud_push_from_state() -> bool:
         sb = get_supabase()
         if not sb or not ensure_cloud_session():
             return False
 
-        payload = {"slot": CLOUD_SLOT, "data": state}
+        uid = get_user_id(sb)
+        if not uid:
+            print("cloud_push: no uid")
+            return False
 
-        resp = (
-            sb.table(CLOUD_TABLE)
-            .upsert(payload, on_conflict="user_id,slot")
-            .select("updated_at")
-            .execute()
-        )
-        print("push resp:", resp.data)
+        payload = {"user_id": uid, "slot": CLOUD_SLOT, "data": state}
+
+        try:
+            q = sb.table(CLOUD_TABLE).upsert(payload, on_conflict="user_id,slot")
+
+            # Some versions allow .select() here, some don't.
+            if hasattr(q, "select"):
+                q = q.select("updated_at")
+
+            resp = q.execute()
+        except Exception as ex:
+            print("cloud_push exception:", ex)
+            return False
+
+        if resp is None:
+            print("cloud_push: execute returned None")
+            return False
+
+        print("cloud_push data:", getattr(resp, "data", None))
+        print("cloud_push error:", getattr(resp, "error", None))
         return True
+    
+    TRANSFER_PREFIX = "RC1:"
+
+    def _b64e(b: bytes) -> str:
+        return base64.urlsafe_b64encode(b).decode("utf-8").rstrip("=")
+    
+    def _b64d(s: str) -> bytes:
+        s = s.strip()
+        pad = "=" * (-len(s) % 4)
+        return base64.urlsafe_b64decode(s + pad)
+    
+    def make_transfer_code(exp_seconds: int = 15 * 60) -> str | None:
+        """
+        Creates a short-lived transfer code carrying the current session tokens.
+        """
+        if not ensure_cloud_session():
+            return None
+
+        sess = load_cloud_session()
+        if not sess or not sess.get("access_token") or not sess.get("refresh_token"):
+            return None
+
+        now = int(time.time())
+        payload = {
+            "v": 1,
+            "iat": now,
+            "exp": now + int(exp_seconds),
+            "access_token": sess["access_token"],
+            "refresh_token": sess["refresh_token"],
+        }
+
+        raw = json.dumps(payload, separators=(",", ":")).encode("utf-8")
+        packed = zlib.compress(raw, 9)
+        return TRANSFER_PREFIX + _b64e(packed)
+    
+
+    def apply_transfer_code(code: str) -> bool:
+        """
+        Stores the transferred tokens into cloud_session.json and verifies we can use them.
+        Pulls cloud save into local state (preferred on a new device).
+        """
+        code = (code or "").strip()
+        if not code:
+            return False
+
+        if code.startswith(TRANSFER_PREFIX):
+            code = code[len(TRANSFER_PREFIX):]
+
+        try:
+            packed = _b64d(code)
+            raw = zlib.decompress(packed)
+            payload = json.loads(raw.decode("utf-8"))
+        except Exception as ex:
+            print("transfer decode failed:", ex)
+            return False
+
+        if payload.get("v") != 1:
+            print("transfer code: unsupported version")
+            return False
+
+        exp = int(payload.get("exp") or 0)
+        if exp and time.time() > exp:
+            print("transfer code expired")
+            return False
+
+        at = payload.get("access_token")
+        rt = payload.get("refresh_token")
+        if not at or not rt:
+            print("transfer code missing tokens")
+            return False
+
+        # Persist tokens locally on THIS device
+        write_json(CLOUD_SESSION_PATH, {"access_token": at, "refresh_token": rt})
+
+        # Recreate client and apply session
+        reset_supabase()
+
+        # Ensure we can use this session
+        if not ensure_cloud_session():
+            print("transfer: session verify failed")
+            return False
+
+        # New device behavior: pull cloud save first (do NOT overwrite cloud)
+        pulled = cloud_pull_into_state(update_ui=True)
+        if pulled:
+            print("transfer: pulled cloud save ok")
+            return True
+
+        # If no cloud row exists yet, seed it
+        print("transfer: no cloud save found, seeding with local")
+        return cloud_push_from_state()
+
+
+
+
+
+    def cloud_bootstrap():
+        if not cloud_enabled(cloud_cfg):
+            return
+        if not ensure_cloud_session():
+            print("cloud bootstrap: no session")
+            return
+
+        pulled = cloud_pull_into_state(update_ui=False)
+        if not pulled:
+            print("cloud bootstrap: no cloud save, pushing local")
+            cloud_push_from_state()
 
     selected_pack_id = None
     
@@ -584,14 +810,15 @@ def main(page: ft.Page):
         state["lastPackPickedId"] = None
 
     write_json(SAVE_PATH, state)
+    cloud_bootstrap()
 
     status_text = ft.Text("", size=12, color=TEXT_DIM)
     status_box = ft.Container(
         visible=False,
-        padding=ft.padding.symmetric(horizontal=12, vertical=8),
+        padding=ft.Padding.symmetric(horizontal=12, vertical=8),
         border_radius=12,
         bgcolor="#15110d",
-        border=ft.border.all(1, BORDER_LIGHT),
+        border=ft.Border.all(1, BORDER_LIGHT),
         content=status_text,
     )
 
@@ -603,6 +830,9 @@ def main(page: ft.Page):
 
     def save():
         write_json(SAVE_PATH, state)
+        if cloud_cfg.get("auto_sync", False):
+            cloud_schedule_push()
+
 
     def snack(msg: str):
         page.snack_bar = ft.SnackBar(ft.Text(msg, color=TEXT_MAIN))
@@ -646,11 +876,38 @@ def main(page: ft.Page):
             value=bool(cloud_cfg.get("auto_sync", False)),
         )
 
-        email_tf = ft.TextField(label="Email", dense=True)
-        pass_tf = ft.TextField(label="Password", dense=True, password=True, can_reveal_password=True)
-
         signed_in_txt = ft.Text("", color=TEXT_DIM, size=12)
         cfg_status_txt = ft.Text("", color=TEXT_DIM, size=11)
+
+        transfer_tf = ft.TextField(
+            label="Transfer code (link another device)",
+            dense = True,
+            multiline= True,
+            min_lines=3,
+            max_lines=6,
+        )
+
+        def do_generate_code(_e):
+            code = make_transfer_code()
+            if not code:
+                snack("Failed to create transfer code (not signed in).")
+                return
+            transfer_tf.value = code
+            page.update()
+
+            if hasattr(page, "set_clipboard"):
+                try: 
+                    page.set_clipboard(code)
+                    snack("Transfer code copied to clipboard.")
+                except Exception:
+                    snack("Transfer code generated (but clipboard copy failed).")
+            else:
+                snack("Transfer code generated.")
+
+        def do_import_code(_e):
+            save_settings()
+            ok = apply_transfer_code(transfer_tf.value)
+            snack("Device linked successfully." if ok else "Transfer code invalid or expired.")
 
         def refresh_cloud_ui():
             enabled = mode_switch.value
@@ -658,6 +915,7 @@ def main(page: ft.Page):
             url_tf.disabled = not enabled
             key_tf.disabled = not enabled
             auto_sync_sw.disabled = not enabled
+            transfer_tf.disabled = not enabled
 
             # Update config summary + signed-in status
             if not enabled:
@@ -681,7 +939,10 @@ def main(page: ft.Page):
             cloud_cfg["auto_sync"] = bool(auto_sync_sw.value)
 
             save_cloud_cfg(cloud_cfg)
-            reset_supabase()  # force new client / session restore next time
+            reset_supabase() 
+
+            if cloud_enabled(cloud_cfg):
+                cloud_bootstrap()
 
             # If user switched to local mode, wipe stored session tokens
             if cloud_cfg["mode"] != "cloud":
@@ -690,46 +951,7 @@ def main(page: ft.Page):
             snack("Cloud settings saved.")
             refresh_cloud_ui()
 
-        def do_sign_up(_e):
-            try:
-                save_settings()
-                if not cloud_enabled(cloud_cfg):
-                    snack("Enable cloud + set URL/key first.")
-                    return
-                cloud_sign_up(email_tf.value.strip(), pass_tf.value)
-                snack("Signed up (check email if confirmation is required).")
-            except Exception as ex:
-                snack(f"Sign up failed: {ex}")
-            refresh_cloud_ui()
-
-        def do_sign_in(_e):
-            try:
-                save_settings()
-                if not cloud_enabled(cloud_cfg):
-                    snack("Enable cloud + set URL/key first.")
-                    return
-                cloud_sign_in(email_tf.value.strip(), pass_tf.value)
-                snack("Signed in.")
-            except Exception as ex:
-                snack(f"Sign in failed: {ex}")
-            refresh_cloud_ui()
-
-        def do_sign_out(_e):
-            try:
-                sb = get_supabase()
-                if sb:
-                    try:
-                        sb.auth.sign_out()
-                    except Exception:
-                        # some versions differ; session file removal is the key part anyway
-                        pass
-                save_cloud_session(None)
-                reset_supabase()
-                snack("Signed out.")
-            except Exception as ex:
-                snack(f"Sign out failed: {ex}")
-            refresh_cloud_ui()
-
+        
         def do_pull(_e):
             try:
                 save_settings()
@@ -752,13 +974,14 @@ def main(page: ft.Page):
         dlg.content = ft.Container(
             width=560,
             bgcolor=PANEL_BG,
-            border=ft.border.all(1, BORDER_DARK),
+            border=ft.Border.all(1, BORDER_DARK),
             border_radius=14,
             padding=12,
             content=ft.Column(
                 tight=True,
                 spacing=10,
                 controls=[
+                    # Header
                     ft.Row(
                         alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
                         controls=[
@@ -766,7 +989,7 @@ def main(page: ft.Page):
                             ft.Container(
                                 padding=6,
                                 border_radius=8,
-                                border=ft.border.all(1, BORDER_LIGHT),
+                                border=ft.Border.all(1, BORDER_LIGHT),
                                 bgcolor="#2b241a",
                                 on_click=lambda e: close_dialog(dlg),
                                 content=ft.Text("X", color=TEXT_MAIN, weight=ft.FontWeight.BOLD),
@@ -774,9 +997,10 @@ def main(page: ft.Page):
                         ],
                     ),
 
+                    # Main content panel
                     ft.Container(
                         bgcolor=PANEL_INNER,
-                        border=ft.border.all(1, BORDER_LIGHT),
+                        border=ft.Border.all(1, BORDER_LIGHT),
                         border_radius=12,
                         padding=12,
                         content=ft.Column(
@@ -795,22 +1019,21 @@ def main(page: ft.Page):
                                     spacing=10,
                                     controls=[
                                         osrs_button("Save settings", save_settings, primary=True),
-                                        osrs_button("Pull (download)", do_pull),
-                                        osrs_button("Push (upload)", do_push),
+                                        osrs_button("Pull", do_pull),
+                                        osrs_button("Push", do_push),
                                     ],
                                 ),
 
                                 ft.Divider(height=1, color=BORDER_LIGHT),
 
-                                signed_in_txt,
-                                email_tf,
-                                pass_tf,
+                                # Transfer section
+                                ft.Text("Link another device", color=TEXT_DIM, size=11),
+                                transfer_tf,
                                 ft.Row(
                                     spacing=10,
                                     controls=[
-                                        osrs_button("Sign up", do_sign_up),
-                                        osrs_button("Sign in", do_sign_in, primary=True),
-                                        osrs_button("Sign out", do_sign_out),
+                                        osrs_button("Generate code", do_generate_code, primary=True),
+                                        osrs_button("Import code", do_import_code),
                                     ],
                                 ),
                             ],
@@ -825,7 +1048,6 @@ def main(page: ft.Page):
                 ],
             ),
         )
-
         # Wire events + initial refresh
         mode_switch.on_change = lambda e: refresh_cloud_ui()
         open_dialog(dlg)
@@ -968,13 +1190,13 @@ def main(page: ft.Page):
     
     complete_btn_section = ft.Container(
         alignment=ALIGN_CENTER,
-        padding=ft.padding.only(top=10),
+        padding=ft.Padding.only(top=10),
         visible=False, 
         content=ft.Container(
             border_radius=14,
-            border=ft.border.all(1, BORDER_LIGHT),
+            border=ft.Border.all(1, BORDER_LIGHT),
             bgcolor="#3a2f1f",
-            padding=ft.padding.symmetric(horizontal=34, vertical=18),  
+            padding=ft.Padding.symmetric(horizontal=34, vertical=18),  
             on_click=lambda e: complete_current_card(e), 
             content=ft.Text(
                 "Complete task",
@@ -987,13 +1209,13 @@ def main(page: ft.Page):
     
     pick_btn_section = ft.Container(
         alignment=ALIGN_CENTER,
-        padding=ft.padding.only(top=10),
+        padding=ft.Padding.only(top=10),
         visible=False,
         content=ft.Container(
             border_radius=14,
-            border=ft.border.all(1, BORDER_LIGHT),
+            border=ft.Border.all(1, BORDER_LIGHT),
             bgcolor="#3a2f1f",
-            padding=ft.padding.symmetric(horizontal=34, vertical=18),
+            padding=ft.Padding.symmetric(horizontal=34, vertical=18),
             on_click=lambda e: confirm_pick(e),
             content=ft.Text(
                 "Pick task",
@@ -1141,14 +1363,14 @@ def main(page: ft.Page):
 
             if has_confirmed:
                 tile_opacity = 1.0 if is_picked else 0.33
-                tile_border = ft.border.all(2 if is_picked else 1, ACCENT if is_picked else BORDER_LIGHT)
+                tile_border = ft.Border.all(2 if is_picked else 1, ACCENT if is_picked else BORDER_LIGHT)
                 tile_bg = "#3a2f1f" if is_picked else "#2b241a"
                 click_handler = None
                 badge_text = "PICKED" if is_picked else None
                 hint_text = ""
             else:
                 tile_opacity = 1.0
-                tile_border = ft.border.all(2 if is_selected else 1, ACCENT if is_selected else BORDER_LIGHT)
+                tile_border = ft.Border.all(2 if is_selected else 1, ACCENT if is_selected else BORDER_LIGHT)
                 tile_bg = "#3a2f1f" if is_selected else "#2b241a"
                 click_handler = (lambda e, c=card: select_card(c))
                 badge_text = "SELECTED" if is_selected else None
@@ -1157,10 +1379,10 @@ def main(page: ft.Page):
             badge = None
             if badge_text:
                 badge = ft.Container(
-                padding=ft.padding.symmetric(horizontal=8, vertical=3),
+                padding=ft.Padding.symmetric(horizontal=8, vertical=3),
                 border_radius=999,
                 bgcolor="#1a1510",
-                border=ft.border.all(1, ACCENT),
+                border=ft.Border.all(1, ACCENT),
                 content=ft.Text(badge_text, color=ACCENT, size=11, weight=ft.FontWeight.BOLD),
             )
                 
@@ -1329,10 +1551,10 @@ def main(page: ft.Page):
 
                 list_view.controls.append(
                     ft.Container(
-                        padding=ft.padding.symmetric(horizontal=10, vertical=8),
+                        padding=ft.Padding.symmetric(horizontal=10, vertical=8),
                         border_radius=10,
                         bgcolor="#15110d",
-                        border=ft.border.all(1, BORDER_LIGHT),
+                        border=ft.Border.all(1, BORDER_LIGHT),
                         content=ft.Column(
                             spacing=2,
                             controls=[
@@ -1352,7 +1574,7 @@ def main(page: ft.Page):
             width=560,
             height=560,
             bgcolor=PANEL_BG,
-            border=ft.border.all(1, BORDER_DARK),
+            border=ft.Border.all(1, BORDER_DARK),
             border_radius=14,
             padding=12,
             content=ft.Column(
@@ -1371,7 +1593,7 @@ def main(page: ft.Page):
                             ft.Container(
                                 padding=6,
                                 border_radius=8,
-                                border=ft.border.all(1, BORDER_LIGHT),
+                                border=ft.Border.all(1, BORDER_LIGHT),
                                 bgcolor="#2b241a",
                                 on_click=lambda e: close_dialog(dlg),
                                 content=ft.Text("X", color=TEXT_MAIN, weight=ft.FontWeight.BOLD),
@@ -1381,7 +1603,7 @@ def main(page: ft.Page):
                     ft.Container(
                         expand=True,
                         bgcolor=PANEL_INNER,
-                        border=ft.border.all(1, BORDER_LIGHT),
+                        border=ft.Border.all(1, BORDER_LIGHT),
                         border_radius=12,
                         content=list_view,
                     ),
@@ -1434,9 +1656,9 @@ def main(page: ft.Page):
         )
 
         cap_badge = ft.Container(
-            padding=ft.padding.symmetric(horizontal=6, vertical=2),
+            padding=ft.Padding.symmetric(horizontal=6, vertical=2),
             bgcolor="#2a241a",
-            border=ft.border.all(1, BORDER_LIGHT),
+            border=ft.Border.all(1, BORDER_LIGHT),
             border_radius=6,
             content=ft.Text(str(cap), size=12, weight=ft.FontWeight.BOLD, color=TEXT_MAIN),
         )
@@ -1446,7 +1668,7 @@ def main(page: ft.Page):
             height=60,
             border_radius=8,
             bgcolor="#1a1510",
-            border=ft.border.all(1, BORDER_LIGHT),
+            border=ft.Border.all(1, BORDER_LIGHT),
             content=ft.Stack(
                 controls=[
                     ft.Container(expand=True, alignment=ALIGN_CENTER, content=icon),
@@ -1477,7 +1699,7 @@ def main(page: ft.Page):
             width=420,
             height=360,
             bgcolor=PANEL_BG,
-            border=ft.border.all(1, BORDER_DARK),
+            border=ft.Border.all(1, BORDER_DARK),
             border_radius=14,
             padding=12,
             content=ft.Column(
@@ -1490,7 +1712,7 @@ def main(page: ft.Page):
                             ft.Container(
                                 padding=6,
                                 border_radius=8,
-                                border=ft.border.all(1, BORDER_LIGHT),
+                                border=ft.Border.all(1, BORDER_LIGHT),
                                 bgcolor="#2b241a",
                                 on_click=lambda e: close_dialog(dlg),
                                 content=ft.Text("X", color=TEXT_MAIN, weight=ft.FontWeight.BOLD),
@@ -1500,7 +1722,7 @@ def main(page: ft.Page):
                     ft.Container(
                         expand=True,
                         bgcolor=PANEL_INNER,
-                        border=ft.border.all(1, BORDER_LIGHT),
+                        border=ft.Border.all(1, BORDER_LIGHT),
                         border_radius=12,
                         padding=12,
                         content=grid_content,
@@ -1606,10 +1828,10 @@ def main(page: ft.Page):
 
                 list_view.controls.append(
                     ft.Container(
-                        padding=ft.padding.symmetric(horizontal=10, vertical=6),
+                        padding=ft.Padding.symmetric(horizontal=10, vertical=6),
                         border_radius=8,
                         bgcolor="#15110d",
-                        border=ft.border.all(1, BORDER_LIGHT),
+                        border=ft.Border.all(1, BORDER_LIGHT),
                         content=ft.Column(
                             spacing=1,
                             controls=[
@@ -1641,7 +1863,7 @@ def main(page: ft.Page):
             width=520,
             height=540,
             bgcolor=PANEL_BG,
-            border=ft.border.all(1, BORDER_DARK),
+            border=ft.Border.all(1, BORDER_DARK),
             border_radius=14,
             padding=12,
             content=ft.Column(
@@ -1654,7 +1876,7 @@ def main(page: ft.Page):
                             ft.Container(
                                 padding=6,
                                 border_radius=8,
-                                border=ft.border.all(1, BORDER_LIGHT),
+                                border=ft.Border.all(1, BORDER_LIGHT),
                                 bgcolor="#2b241a",
                                 on_click=lambda e: close_dialog(dlg),
                                 content=ft.Text("X", color=TEXT_MAIN, weight=ft.FontWeight.BOLD),
@@ -1665,7 +1887,7 @@ def main(page: ft.Page):
                     ft.Container(
                         expand=True,
                         bgcolor=PANEL_INNER,
-                        border=ft.border.all(1, BORDER_LIGHT),
+                        border=ft.Border.all(1, BORDER_LIGHT),
                         border_radius=12,
                         content=list_view,
                     ),
@@ -1681,7 +1903,7 @@ def main(page: ft.Page):
         dlg.content = ft.Container(
             width=520,
             bgcolor=PANEL_BG,
-            border=ft.border.all(1, BORDER_DARK),
+            border=ft.Border.all(1, BORDER_DARK),
             border_radius=14,
             padding=12,
             content=ft.Column(
@@ -1695,7 +1917,7 @@ def main(page: ft.Page):
                             ft.Container(
                                 padding=6,
                                 border_radius=8,
-                                border=ft.border.all(1, BORDER_LIGHT),
+                                border=ft.Border.all(1, BORDER_LIGHT),
                                 bgcolor="#2b241a",
                                 on_click=lambda e: close_dialog(dlg),
                                 content=ft.Text("X", color=TEXT_MAIN, weight=ft.FontWeight.BOLD),
@@ -1704,7 +1926,7 @@ def main(page: ft.Page):
                     ),
                     ft.Container(
                         bgcolor=PANEL_INNER,
-                        border=ft.border.all(1, BORDER_LIGHT),
+                        border=ft.Border.all(1, BORDER_LIGHT),
                         border_radius=12,
                         padding=12,
                         content=ft.Text(NOTES_TEXT, color=TEXT_DIM),
@@ -1759,16 +1981,16 @@ def main(page: ft.Page):
                         height=44,
                         alignment=ALIGN_CENTER,
                         bgcolor="#1a1510",
-                        border=ft.border.all(1, BORDER_LIGHT),
+                        border=ft.Border.all(1, BORDER_LIGHT),
                         border_radius=8,
                         content=ft.Text(name[:1], color=TEXT_MAIN, weight=ft.FontWeight.BOLD),
                     )
                     
                 chance_badge = ft.Container(
-                    padding=ft.padding.symmetric(horizontal=8,vertical=3),
+                    padding=ft.Padding.symmetric(horizontal=8,vertical=3),
                     border_radius=999,
                     bgcolor="#15110d",
-                    border=ft.border.all(1, BORDER_LIGHT),
+                    border=ft.Border.all(1, BORDER_LIGHT),
                     content=ft.Text(
                         chance_text if can_still_drop else "0.0%",
                         color= ACCENT if can_still_drop else TEXT_DIM,
@@ -1781,7 +2003,7 @@ def main(page: ft.Page):
                     padding=12,
                     border_radius=12,
                     bgcolor="#1a1510",
-                    border=ft.border.all(1, BORDER_LIGHT),
+                    border=ft.Border.all(1, BORDER_LIGHT),
                     content=ft.Row(
                         alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
                         vertical_alignment=ft.CrossAxisAlignment.CENTER,
@@ -1809,10 +2031,10 @@ def main(page: ft.Page):
                                 ],
                             ),
                             ft.Container(
-                                padding=ft.padding.symmetric(horizontal=14, vertical=10),
+                                padding=ft.Padding.symmetric(horizontal=14, vertical=10),
                                 border_radius=10,
                                 bgcolor="#2b241a",
-                                border=ft.border.all(1, BORDER_LIGHT),
+                                border=ft.Border.all(1, BORDER_LIGHT),
                                 on_click=lambda e, x=mid: (complete_task_for_master(x), rebuild()),
                                 content=ft.Text("Complete Task", color=TEXT_MAIN, weight=ft.FontWeight.BOLD),
                             ),
@@ -1828,7 +2050,7 @@ def main(page: ft.Page):
             width=520,
             height=540,
             bgcolor=PANEL_BG,
-            border=ft.border.all(1, BORDER_DARK),
+            border=ft.Border.all(1, BORDER_DARK),
             border_radius=14,
             padding=12,
             content=ft.Column(
@@ -1841,7 +2063,7 @@ def main(page: ft.Page):
                             ft.Container(
                                 padding=6,
                                 border_radius=8,
-                                border=ft.border.all(1, BORDER_LIGHT),
+                                border=ft.Border.all(1, BORDER_LIGHT),
                                 bgcolor="#2b241a",
                                 on_click=lambda e: close_dialog(dlg),
                                 content=ft.Text("X", color=TEXT_MAIN, weight=ft.FontWeight.BOLD),
@@ -1851,7 +2073,7 @@ def main(page: ft.Page):
                     ft.Container(
                         expand=True,
                         bgcolor=PANEL_INNER,
-                        border=ft.border.all(1, BORDER_LIGHT),
+                        border=ft.Border.all(1, BORDER_LIGHT),
                         border_radius=12,
                         content=list_view,
                     ),
@@ -1862,9 +2084,9 @@ def main(page: ft.Page):
 
     top_bar = ft.Container(
         height=64,
-        padding=ft.padding.symmetric(horizontal=14, vertical=10),
+        padding=ft.Padding.symmetric(horizontal=14, vertical=10),
         bgcolor="#15110d",
-        border=ft.border.all(1, BORDER_LIGHT),
+        border=ft.Border.all(1, BORDER_LIGHT),
         border_radius=12,
         content=ft.Row(
             alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
@@ -1875,9 +2097,9 @@ def main(page: ft.Page):
                     spacing=10,
                     controls=[
                         ft.Container(
-                            padding=ft.padding.symmetric(horizontal=10, vertical=8),
+                            padding=ft.Padding.symmetric(horizontal=10, vertical=8),
                             border_radius=10,
-                            border=ft.border.all(1, BORDER_LIGHT),
+                            border=ft.Border.all(1, BORDER_LIGHT),
                             bgcolor="#1a1510",
                             content=ft.Row(
                                 spacing=8,
@@ -1889,9 +2111,9 @@ def main(page: ft.Page):
                             ),
                         ),
                         ft.Container(
-                            padding=ft.padding.symmetric(horizontal=10, vertical=8),
+                            padding=ft.Padding.symmetric(horizontal=10, vertical=8),
                             border_radius=10,
-                            border=ft.border.all(1, BORDER_LIGHT),
+                            border=ft.Border.all(1, BORDER_LIGHT),
                             bgcolor="#1a1510",
                             content=ft.Row(
                                 spacing=8,
@@ -1902,9 +2124,9 @@ def main(page: ft.Page):
                             ),
                         ),
                         ft.Container(
-                            padding=ft.padding.symmetric(horizontal=10, vertical=8),
+                            padding=ft.Padding.symmetric(horizontal=10, vertical=8),
                             border_radius=10,
-                            border=ft.border.all(1, BORDER_LIGHT),
+                            border=ft.Border.all(1, BORDER_LIGHT),
                             bgcolor="#1a1510",
                             content=ft.Row(
                                 spacing=8,
@@ -1963,10 +2185,10 @@ def main(page: ft.Page):
                     controls=[
                         save_path_text,
                         ft.Container(
-                                     padding=ft.padding.symmetric(horizontal=10, vertical=6),
+                                     padding=ft.Padding.symmetric(horizontal=10, vertical=6),
                                      border_radius=10,
                                      bgcolor="#2b241a",
-                                     border=ft.border.all(1, BORDER_LIGHT),
+                                     border=ft.Border.all(1, BORDER_LIGHT),
                                      on_click=toggle_save_path,
                                      content=save_toggle_text, 
                 ),
@@ -2022,4 +2244,4 @@ def main(page: ft.Page):
 
 
 if __name__ == "__main__":
-    ft.app(target=main, assets_dir="assets")
+    ft.run(main, assets_dir="assets")
