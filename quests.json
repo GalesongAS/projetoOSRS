@@ -93,7 +93,7 @@
     "type": "QUEST",
     "title": "A Porcine of Interest",
     "description": "Complete the quest: A Porcine of Interest.",
-    "weight": 12,
+    "weight": 15,
     "requires": [],
     "meta": {
       "members": true,
@@ -130,7 +130,7 @@
     "type": "QUEST",
     "title": "Pandemonium",
     "description": "Complete the quest: Pandemonium.",
-    "weight": 1,
+    "weight": 15,
     "requires": [],
     "meta": {
       "members": true,
@@ -187,7 +187,7 @@
     "type": "QUEST",
     "title": "The Restless Ghost",
     "description": "Complete the quest: The Restless Ghost.",
-    "weight": 1,
+    "weight": 15,
     "requires": [],
     "meta": {
       "members": false,
@@ -201,7 +201,7 @@
     "type": "QUEST",
     "title": "Shield of Arrav",
     "description": "Complete the quest: Shield of Arrav.",
-    "weight": 1,
+    "weight": 15,
     "requires": [],
     "meta": {
       "members": false,
@@ -281,7 +281,7 @@
     "type": "QUEST",
     "title": "Ernest the Chicken",
     "description": "Complete the quest: Ernest the Chicken.",
-    "weight": 1,
+    "weight": 15,
     "requires": [],
     "meta": {
       "members": false,
@@ -295,7 +295,7 @@
     "type": "QUEST",
     "title": "Children of the Sun",
     "description": "Complete the quest: Children of the Sun.",
-    "weight": 1,
+    "weight": 15,
     "requires": [],
     "meta": {
       "members": true,
@@ -309,7 +309,7 @@
     "type": "QUEST",
     "title": "Animal Magnetism",
     "description": "Complete the quest: Animal Magnetism.",
-    "weight": 8,
+    "weight": 12,
     "requires": [
       {
         "kind": "CARD_COMPLETED",
@@ -322,6 +322,16 @@
       {
         "kind": "CARD_COMPLETED",
         "cardId": "quest_ernest_the_chicken"
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Woodcutting",
+        "cap": 40
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Crafting",
+        "cap": 20
       }
     ],
     "meta": {
@@ -465,7 +475,7 @@
     "type": "QUEST",
     "title": "Biohazard",
     "description": "Complete the quest: Biohazard.",
-    "weight": 12,
+    "weight": 15,
     "requires": [
       {
         "kind": "CARD_COMPLETED",
@@ -484,7 +494,7 @@
     "type": "QUEST",
     "title": "Bone Voyage",
     "description": "Complete the quest: Bone Voyage.",
-    "weight": 8,
+    "weight": 15,
     "requires": [
       {
         "kind": "CARD_COMPLETED",
@@ -503,7 +513,7 @@
     "type": "QUEST",
     "title": "Black Knights' Fortress",
     "description": "Complete the quest: Black Knights' Fortress.",
-    "weight": 12,
+    "weight": 15,
     "requires": [],
     "meta": {
       "members": false,
@@ -517,7 +527,7 @@
     "type": "QUEST",
     "title": "Cabin Fever",
     "description": "Complete the quest: Cabin Fever.",
-    "weight": 5,
+    "weight": 15,
     "requires": [
       {
         "kind": "CARD_COMPLETED",
@@ -555,7 +565,7 @@
     "type": "QUEST",
     "title": "Pirate's Treasure",
     "description": "Complete the quest: Pirate's Treasure",
-    "weight": 3,
+    "weight": 15,
     "requires": [],
     "meta": {
       "members": false,
@@ -588,7 +598,7 @@
     "type": "QUEST",
     "title": "Clock Tower",
     "description": "Complete the quest: Clock Tower.",
-    "weight": 2,
+    "weight": 15,
     "requires": [],
     "meta": {
       "members": true,
@@ -675,7 +685,7 @@
     "type": "QUEST",
     "title": "Contact!",
     "description": "Complete the quest: Contact!.",
-    "weight": 2,
+    "weight": 9,
     "requires": [
       {
         "kind": "CARD_COMPLETED",
@@ -708,7 +718,7 @@
     "type": "QUEST",
     "title": "Cook's Assistant",
     "description": "Complete the quest: Cook's Assistant.",
-    "weight": 12,
+    "weight": 15,
     "requires": [],
     "meta": {
       "members": false,
@@ -722,7 +732,7 @@
     "type": "QUEST",
     "title": "Creature of Fenkenstrain",
     "description": "Complete the quest: Creature of Fenkenstrain.",
-    "weight": 8,
+    "weight":12,
     "requires": [
       {
         "kind": "SKILL_CAP_AT_LEAST",
@@ -755,7 +765,7 @@
     "type": "QUEST",
     "title": "Current Affairs",
     "description": "Complete the quest: Current Affairs.",
-    "weight": 12,
+    "weight": 15,
     "requires": [
       {
         "kind": "CARD_COMPLETED",
@@ -818,7 +828,7 @@
     "type": "QUEST",
     "title": "Death Plateau",
     "description": "Complete the quest: Death Plateau.",
-    "weight": 12,
+    "weight": 15,
     "requires": [
       {
         "kind": "SKILL_CAP_AT_LEAST",
@@ -872,7 +882,7 @@
     "type": "QUEST",
     "title": "Demon Slayer",
     "description": "Complete the quest: Demon Slayer.",
-    "weight": 12,
+    "weight": 15,
     "requires": [],
     "meta": {
       "members": false,
@@ -886,7 +896,7 @@
     "type": "QUEST",
     "title": "Desert Treasure I",
     "description": "Complete the quest: Desert Treasure I.",
-    "weight": 22,
+    "weight": 5,
     "requires": [
       {
         "kind": "SKILL_CAP_AT_LEAST",
@@ -931,11 +941,59 @@
     }
   },
   {
+    "id": "quest_the_eyes_of_glouphrie",
+    "type": "QUEST",
+    "title": "The Eyes of Glouphrie",
+    "description": "Complete the quest: The Eyes of Glouphrie.",
+    "weight": 8,
+    "requires": [
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_the_grand_tree"
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Construction",
+        "cap": 10
+      }
+    ],
+    "meta": {
+      "members": true,
+      "difficulty": "Intermediate",
+      "questPoints": 2,
+      "url": "https://oldschool.runescape.wiki/w/The_Eyes_of_Glouphrie"
+    }
+  },
+  {
+    "id": "quest_the_feud",
+    "type": "QUEST",
+    "title": "The Feud",
+    "description": "Complete the quest: The Feud.",
+    "weight": 5,
+    "requires": [
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_the_knights_sword"
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Thieving",
+        "cap": 30
+      }
+    ],
+    "meta": {
+      "members": true,
+      "difficulty": "Intermediate",
+      "questPoints": 1,
+      "url": "https://oldschool.runescape.wiki/w/The_Feud"
+    }
+  },
+  {
     "id": "quest_desert_treasure_ii",
     "type": "QUEST",
     "title": "Desert Treasure II - The Fallen Empire",
     "description": "Complete the quest: Desert Treasure II - The Fallen Empire.",
-    "weight": 32,
+    "weight": 1,
     "requires": [
       {
         "kind": "SKILL_CAP_AT_LEAST",
@@ -1045,7 +1103,7 @@
     "type": "QUEST",
     "title": "Doric's Quest",
     "description": "Complete the quest: Doric's Quest.",
-    "weight": 12,
+    "weight": 15,
     "requires": [
       {
         "kind": "SKILL_CAP_AT_LEAST",
@@ -1065,7 +1123,7 @@
     "type": "QUEST",
     "title": "Dragon Slayer I",
     "description": "Complete the quest: Dragon Slayer I.",
-    "weight": 5,
+    "weight": 10,
     "requires": [
       {
         "kind": "SKILL_CAP_AT_LEAST",
@@ -1187,7 +1245,7 @@
     "type": "QUEST",
     "title": "The Curse of Arrav",
     "description": "Complete the quest: The Curse of Arrav.",
-    "weight": 12,
+    "weight": 2,
     "requires": [
       {
         "kind": "SKILL_CAP_AT_LEAST",
@@ -1225,7 +1283,7 @@
     "type": "QUEST",
     "title": "Romeo & Juliet",
     "description": "Complete the quest: Romeo & Juliet",
-    "weight": 1,
+    "weight": 15,
     "requires": [],
     "meta": {
       "members": false,
@@ -1253,7 +1311,7 @@
     "type": "QUEST",
     "title": "Druidic Ritual",
     "description": "Complete the quest: Druidic Ritual.",
-    "weight": 12,
+    "weight": 15,
     "requires": [],
     "meta": {
       "members": true,
@@ -1267,7 +1325,7 @@
     "type": "QUEST",
     "title": "Dwarf Cannon",
     "description": "Complete the quest: Dwarf Cannon.",
-    "weight": 1,
+    "weight": 15,
     "requires": [],
     "meta": {
       "members": true,
@@ -1282,7 +1340,21 @@
     "title": "Eadgar's Ruse",
     "description": "Complete the quest: Eadgar's Ruse.",
     "weight": 5,
-    "requires": [],
+    "requires": [
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_druidic_ritual"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_troll_stronghold"
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Herblore",
+        "cap": 40
+      }
+    ],
     "meta": {
       "members": true,
       "difficulty": "Experienced",
@@ -1291,11 +1363,39 @@
     }
   },
   {
+    "id": "quest_ethically_acquired_antiquities",
+    "type": "QUEST",
+    "title": "Ethically Acquired Antiquities",
+    "description": "Complete the quest: Ethically Acquired Antiquities.",
+    "weight": 10,
+    "requires": [
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_children_of_the_sun"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_shield_of_arrav"
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Thieving",
+        "cap": 30
+      }
+    ],
+    "meta": {
+      "members": true,
+      "difficulty": "Intermediate",
+      "questPoints": 1,
+      "url": "https://oldschool.runescape.wiki/w/Ethically_Acquired_Antiquities"
+    }
+  },
+  {
     "id": "quest_eagles_peak",
     "type": "QUEST",
     "title": "Eagles' Peak",
     "description": "Complete the quest: Eagles' Peak.",
-    "weight": 12,
+    "weight": 15,
     "requires": [
       {
         "kind": "SKILL_CAP_AT_LEAST",
@@ -1315,7 +1415,7 @@
     "type": "QUEST",
     "title": "Elemental Workshop I",
     "description": "Complete the quest: Elemental Workshop I.",
-    "weight": 12,
+    "weight": 15,
     "requires": [
       {
         "kind": "SKILL_CAP_AT_LEAST",
@@ -1525,7 +1625,7 @@
     "type": "QUEST",
     "title": "Fishing Contest",
     "description": "Complete the quest: Fishing Contest.",
-    "weight": 2,
+    "weight": 15,
     "requires": [
       {
         "kind": "SKILL_CAP_AT_LEAST",
@@ -1545,7 +1645,7 @@
     "type": "QUEST",
     "title": "A Soul's Bane",
     "description": "Complete the quest: A Soul's Bane.",
-    "weight": 12,
+    "weight": 15,
     "requires": [],
     "meta": {
       "members": true,
@@ -1620,11 +1720,31 @@
     }
   },
   {
+    "id": "quest_the_garden_of_death",
+    "type": "QUEST",
+    "title": "The Garden of Death",
+    "description": "Complete the quest: The Garden of Death.",
+    "weight": 5,
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Farming",
+        "cap": 20
+      }
+    ],
+    "meta": {
+      "members": true,
+      "difficulty": "Intermediate",
+      "questPoints": 1,
+      "url": "https://oldschool.runescape.wiki/w/The_Garden_of_Death"
+    }
+  },
+  {
     "id": "quest_gertrudes_cat",
     "type": "QUEST",
     "title": "Gertrude's Cat",
     "description": "Complete the quest: Gertrude's Cat.",
-    "weight": 12,
+    "weight": 15,
     "requires": [],
     "meta": {
       "members": true,
@@ -1696,7 +1816,7 @@
     "type": "QUEST",
     "title": "Goblin Diplomacy",
     "description": "Complete the quest: Goblin Diplomacy.",
-    "weight": 1,
+    "weight": 10,
     "requires": [],
     "meta": {
       "members": false,
@@ -1897,6 +2017,11 @@
       {
         "kind": "CARD_COMPLETED",
         "cardId": "quest_gertrudes_cat"
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Woodcutting",
+        "cap": 30
       }
     ],
     "meta": {
@@ -1983,7 +2108,7 @@
     "type": "QUEST",
     "title": "X Marks the Spot",
     "description": "Complete the quest: X Marks the Spot.",
-    "weight": 1,
+    "weight": 10,
     "requires": [],
     "meta": {
       "members": false,
@@ -2803,7 +2928,7 @@
     "type": "QUEST",
     "title": "Rum Deal",
     "description": "Complete the quest: Rum Deal.",
-    "weight": 5,
+    "weight": 15,
     "requires": [
       {
         "kind": "SKILL_CAP_AT_LEAST",
@@ -2861,7 +2986,7 @@
     "type": "QUEST",
     "title": "Scrambled!",
     "description": "Complete the quest: Scrambled!.",
-    "weight": 12,
+    "weight": 15,
     "requires": [
       {
         "kind": "CARD_COMPLETED",
@@ -2895,7 +3020,7 @@
     "type": "QUEST",
     "title": "Sea Slug",
     "description": "Complete the quest: Sea Slug.",
-    "weight": 12,
+    "weight": 15,
     "requires": [
       {
         "kind": "SKILL_CAP_AT_LEAST",
@@ -3002,7 +3127,7 @@
     "type": "QUEST",
     "title": "Sheep Herder",
     "description": "Complete the quest: Sheep Herder.",
-    "weight": 12,
+    "weight": 15,
     "requires": [],
     "meta": {
       "members": true,
@@ -3016,7 +3141,7 @@
     "type": "QUEST",
     "title": "Sheep Shearer",
     "description": "Complete the quest: Sheep Shearer.",
-    "weight": 12,
+    "weight": 15,
     "requires": [],
     "meta": {
       "members": true,
@@ -3279,7 +3404,7 @@
     "type": "QUEST",
     "title": "The Ascent of Arceuus",
     "description": "Complete the quest: The Ascent of Arceuus.",
-    "weight": 12,
+    "weight": 15,
     "requires": [
       {
         "kind": "CARD_COMPLETED",
@@ -3365,11 +3490,119 @@
     }
   },
   {
+    "id": "quest_the_heart_of_darkness",
+    "type": "QUEST",
+    "title": "The Heart of Darkness",
+    "description": "Complete the quest: The Heart of Darkness.",
+    "weight": 8,
+    "requires": [
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_twilights_promise"
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Mining",
+        "cap": 60
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Thieving",
+        "cap": 50
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Agility",
+        "cap": 50
+      }
+    ],
+    "meta": {
+      "members": true,
+      "difficulty": "Experienced",
+      "questPoints": 2,
+      "url": "https://oldschool.runescape.wiki/w/The_Heart_of_Darkness"
+    }
+  },
+  {
+    "id": "quest_twilights_promise",
+    "type": "QUEST",
+    "title": "Twilight's Promise",
+    "description": "Complete the quest: Twilight's Promise.",
+    "weight": 8,
+    "requires": [
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_children_of_the_sun"
+      }
+    ],
+    "meta": {
+      "members": true,
+      "difficulty": "Intermediate",
+      "questPoints": 1,
+      "url": "https://oldschool.runescape.wiki/w/Twilight%27s_Promise"
+    }
+  },
+  {
+    "id": "quest_land_of_the_goblins",
+    "type": "QUEST",
+    "title": "Land of the Goblins",
+    "description": "Complete the quest: Land of the Goblins.",
+    "weight": 15,
+    "requires": [
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_goblin_diplomacy"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_another_slice_of_ham"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_the_dig_site"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_the_giant_dwarf"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_fishing_contest"
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Agility",
+        "cap": 40
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "fishing",
+        "cap": 40
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Thieving",
+        "cap": 50
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Herblore",
+        "cap": 50
+      }
+    ],
+    "meta": {
+      "members": true,
+      "difficulty": "Experienced",
+      "questPoints": 2,
+      "url": "https://oldschool.runescape.wiki/w/Land_of_the_Goblins"
+    }
+  },
+  {
     "id": "quest_the_forsaken_tower",
     "type": "QUEST",
     "title": "The Forsaken Tower",
     "description": "Complete the quest: The Forsaken Tower.",
-    "weight": 12,
+    "weight": 15,
     "requires": [
       {
         "kind": "CARD_COMPLETED",
@@ -3432,7 +3665,7 @@
     "type": "QUEST",
     "title": "Sleeping Giants",
     "description": "Complete the quest: Sleeping Giants.",
-    "weight": 3,
+    "weight": 15,
     "requires": [
       {
         "kind": "SKILL_CAP_AT_LEAST",
@@ -3651,7 +3884,7 @@
     "type": "QUEST",
     "title": "The Knight's Sword",
     "description": "Complete the quest: The Knight's Sword.",
-    "weight": 12,
+    "weight": 15,
     "requires": [
       {
         "kind": "SKILL_CAP_AT_LEAST",
@@ -3671,7 +3904,7 @@
     "type": "QUEST",
     "title": "The Lost Tribe",
     "description": "Complete the quest: The Lost Tribe.",
-    "weight": 12,
+    "weight": 15,
     "requires": [
       {
         "kind": "CARD_COMPLETED",
@@ -3690,12 +3923,17 @@
     "type": "QUEST",
     "title": "The Queen of Thieves",
     "description": "Complete the quest: The Queen of Thieves.",
-    "weight": 12,
+    "weight": 15,
     "requires": [
       {
         "kind": "SKILL_CAP_AT_LEAST",
         "skill": "Thieving",
         "cap": 20
+      },
+       {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Cooking",
+        "cap": 30
       },
       {
         "kind": "CARD_COMPLETED",
@@ -3761,7 +3999,7 @@
     "type": "QUEST",
     "title": "The Tale of the Righteous",
     "description": "Complete the quest: The Tale of the Righteous.",
-    "weight": 12,
+    "weight": 15,
     "requires": [
       {
         "kind": "SKILL_CAP_AT_LEAST",
@@ -3810,7 +4048,7 @@
     "type": "QUEST",
     "title": "Misthalin Mystery",
     "description": "Complete the quest: Misthalin Mystery.",
-    "weight": 1,
+    "weight": 15,
     "requires": [],
     "meta": {
       "members": true,
@@ -3824,7 +4062,7 @@
     "type": "QUEST",
     "title": "Rune Mysteries",
     "description": "Complete the quest: Rune Mysteries.",
-    "weight": 1,
+    "weight": 15,
     "requires": [],
     "meta": {
       "members": false,
@@ -3838,7 +4076,7 @@
     "type": "QUEST",
     "title": "Prince Ali Rescue",
     "description": "Complete the quest: Prince Ali Rescue.",
-    "weight": 1,
+    "weight": 15,
     "requires": [],
     "meta": {
       "members": false,
@@ -3906,7 +4144,7 @@
     "type": "QUEST",
     "title": "Tree Gnome Village",
     "description": "Complete the quest: Tree Gnome Village.",
-    "weight": 12,
+    "weight": 15,
     "requires": [],
     "meta": {
       "members": true,
@@ -4131,7 +4369,7 @@
     "type": "QUEST",
     "title": "Vampyre Slayer",
     "description": "Complete the quest: Vampyre Slayer.",
-    "weight": 12,
+    "weight": 15,
     "requires": [],
     "meta": {
       "members": false,
@@ -4268,7 +4506,7 @@
     "type": "QUEST",
     "title": "Witch's Potion",
     "description": "Complete the quest: Witch's Potion.",
-    "weight": 12,
+    "weight": 15,
     "requires": [],
     "meta": {
       "members": false,
@@ -4305,6 +4543,149 @@
       "difficulty": "Intermediate",
       "questPoints": 1,
       "url": "https://oldschool.runescape.wiki/w/Zogre_Flesh_Eaters"
+    }
+  },
+  {
+    "id": "quest_mountain_daughter",
+    "type": "QUEST",
+    "title": "Mountain Daughter",
+    "description": "Complete the quest: Mountain Daughter.",
+    "weight": 8,
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Agility",
+        "cap": 20
+      }
+    ],
+    "meta": {
+      "members": true,
+      "difficulty": "Intermediate",
+      "questPoints": 2,
+      "url": "https://oldschool.runescape.wiki/w/Mountain_Daughter"
+    }
+
+  },
+  {
+    "id": "quest_mournings_end_part_1",
+    "type": "QUEST",
+    "title": "Mourning's End Part 1",
+    "description": "Complete the quest: Mourning's End Part 1.",
+    "weight": 2,
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Thieving",
+        "cap": 50
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_roving_elves"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_big_chompy_bird_hunting"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_sheep_herder"
+      }
+    ],
+    "meta": {
+      "members": true,
+      "difficulty": "Master",
+      "questPoints": 2,
+      "url": "https://oldschool.runescape.wiki/w/Mourning%27s_End_Part_1"
+    }
+  },
+  {
+    "id": "quest_mournings_end_part_2",
+    "type": "QUEST",
+    "title": "Mourning's End Part 2",
+    "description": "Complete the quest: Mourning's End Part 2.",
+    "weight": 2,
+    "requires": [
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_mournings_end_part_1"
+      }
+    ],
+    "meta": {
+      "members": true,
+      "difficulty": "Master",
+      "questPoints": 2,
+      "url": "https://oldschool.runescape.wiki/w/Mourning%27s_End_Part_2"
+    }
+  },
+  {
+    "id": "quest_a_night_at_the_theatre",
+    "type": "QUEST",
+    "title": "A Night at the Theatre",
+    "description": "Complete the quest: A Night at the Theatre.",
+    "weight": 8,
+    "requires": [
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_a_taste_of_hope"
+      }
+    ],
+    "meta": {
+      "members": true,
+      "difficulty": "Intermediate",
+      "questPoints": 1,
+      "url": "https://oldschool.runescape.wiki/w/A_Night_at_the_Theatre"
+    }
+  },
+
+  {
+    "id": "quest_making_friends_with_my_arm",
+    "type": "QUEST",
+    "title": "Making Friends with My Arm",
+    "description": "Complete the quest: Making Friends with My Arm.",
+    "weight": 8,
+    "requires": [
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_my_arm's_big_adventure"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_swan_song"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_cold_war"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_romeo_&_juliet"
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Firemaking",
+        "cap": 70
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Mining",
+        "cap": 80
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Construction",
+        "cap": 40
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Agility",
+        "cap": 70
+      }
+    ],
+    "meta": {
+      "members": true,
+      "difficulty": "Intermediate",
+      "questPoints": 1,
+      "url": "https://oldschool.runescape.wiki/w/Making_Friends_with_My_Arm"
     }
   }
 ]
