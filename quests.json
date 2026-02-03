@@ -309,7 +309,7 @@
     "type": "QUEST",
     "title": "Animal Magnetism",
     "description": "Complete the quest: Animal Magnetism.",
-    "weight": 12,
+    "weight": 14,
     "requires": [
       {
         "kind": "CARD_COMPLETED",
