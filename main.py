@@ -1,15 +1,14 @@
 import json
 import os
 import secrets
-import threading
 
-import base64
-import zlib
-import time
 
 import flet as ft
 from datetime import datetime
-from supabase import create_client, Client
+
+
+from cloud_store import CloudStore
+
 
 def _align(name: str, x: float, y: float):
     # Newer flet: ft.alignment.center, ft.alignment.top_right, etc.
@@ -17,6 +16,7 @@ def _align(name: str, x: float, y: float):
         return getattr(ft.alignment, name)
     # Older/other flet: use Alignment(x,y)
     return ft.Alignment(x, y)
+
 
 ALIGN_CENTER = _align("center", 0.0, 0.0)
 ALIGN_TOP_RIGHT = _align("top_right", 1.0, -1.0)
@@ -28,6 +28,7 @@ ALIGN_CENTER_RIGHT = _align("center_right", 1.0, 0.0)
 ALIGN_TOP_CENTER = _align("top_center", 0.0, -1.0)
 ALIGN_BOTTOM_CENTER = _align("bottom_center", 0.0, 1.0)
 
+
 def read_json_safe(path: str, fallback):
     try:
         if os.path.exists(path):
@@ -35,61 +36,6 @@ def read_json_safe(path: str, fallback):
     except Exception:
         pass
     return fallback
-
-def load_cloud_cfg() -> dict:
-    cfg = read_json_safe(CLOUD_CFG_PATH, {})
-    if not isinstance(cfg, dict):
-        cfg = {}
-
-    # Backward-compatible defaults
-    cfg.setdefault("mode", "local")        # "local" | "cloud"
-    cfg.setdefault("url", "")
-    cfg.setdefault("anon_key", "")
-    cfg.setdefault("auto_sync", False)
-
-    # Clean up common junk
-    cfg["mode"] = (cfg.get("mode") or "local").strip().lower()
-    if cfg["mode"] not in ("local", "cloud"):
-        cfg["mode"] = "local"
-
-    cfg["url"] = (cfg.get("url") or "").strip()
-    cfg["anon_key"] = (cfg.get("anon_key") or "").strip()
-    cfg["auto_sync"] = bool(cfg.get("auto_sync"))
-
-    return cfg
-
-def save_cloud_cfg(cfg: dict):
-    # Only persist known keys (avoid random stuff ending up in the file)
-    cleaned = {
-        "mode": (cfg.get("mode") or "local").strip().lower(),
-        "url": (cfg.get("url") or "").strip(),
-        "anon_key": (cfg.get("anon_key") or "").strip(),
-        "auto_sync": bool(cfg.get("auto_sync")),
-    }
-    if cleaned["mode"] not in ("local", "cloud"):
-        cleaned["mode"] = "local"
-    write_json(CLOUD_CFG_PATH, cleaned)
-
-def cloud_enabled(cfg: dict) -> bool:
-    return (
-        cfg.get("mode") == "cloud"
-        and (cfg.get("url") or "").strip()
-        and (cfg.get("anon_key") or "").strip()
-    )
-
-def load_cloud_session() -> dict | None:
-    return read_json_safe(CLOUD_SESSION_PATH, None)
-
-def save_cloud_session(session):
-    # session from supabase auth responses
-    if not session:
-        if os.path.exists(CLOUD_SESSION_PATH):
-            os.remove(CLOUD_SESSION_PATH)
-        return
-    write_json(CLOUD_SESSION_PATH, {
-        "access_token": session.access_token,
-        "refresh_token": session.refresh_token,
-    })
 
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -100,7 +46,9 @@ QUESTS_PATH = os.path.join(HERE, "quests.json")
 # Pick a writable persistent folder for ALL platforms
 APP_DATA_DIR = os.getenv("FLET_APP_STORAGE_DATA")  # set by packaged Flet apps
 if not APP_DATA_DIR:
-    APP_DATA_DIR = os.path.join(os.path.expanduser("~"), ".runecards")  # desktop fallback
+    APP_DATA_DIR = os.path.join(
+        os.path.expanduser("~"), ".runecards"
+    )  # desktop fallback
 
 SAVE_DIR = APP_DATA_DIR
 SAVE_PATH = os.path.join(SAVE_DIR, "save.json")
@@ -110,7 +58,7 @@ CLOUD_SESSION_PATH = os.path.join(SAVE_DIR, "cloud_session.json")
 ASSETS_DIR = os.path.join(HERE, "assets")
 
 CLOUD_TABLE = "saves"
-CLOUD_SLOT = "default"
+
 
 OSRS_BG = "#0f0d0a"
 PANEL_BG = "#211c15"
@@ -123,7 +71,6 @@ ACCENT = "#c9b06a"
 QUEST_RED = "#d14b43"
 QUEST_GREEN = "#3ddc62"
 QUEST_YELLOW = "#ffd166"
-
 # --- Slayer pack drop tuning ---
 SLAYER_START_MULT = 2.3
 SLAYER_END_MULT = 0.50
@@ -138,10 +85,19 @@ NOTES_TEXT = (
     "• Slayer Masters have finite pack pools."
 )
 
+
 # ---------- IO ----------
+NOTES_TEXT = (
+    "- Packs stack.\n"
+    "- You can only have 1 active card.\n"
+    "- Slayer Masters have finite pack pools."
+)
+
+
 def read_json(path: str):
     with open(path, "r", encoding="utf-8") as f:
         return json.load(f)
+
 
 def write_json(path: str, data):
     os.makedirs(os.path.dirname(path), exist_ok=True)
@@ -151,11 +107,17 @@ def write_json(path: str, data):
         f.write("\n")
     os.replace(tmp, path)
 
+
 # ---------- State ----------
 def default_save(config):
     caps = dict(config.get("startingCaps", {}))
     masters = {
-        m["id"]: {"tasks": 0, "packsFound": 0, "maxPacks": int(m["maxPacks"]), "sinceLastPack": 0}
+        m["id"]: {
+            "tasks": 0,
+            "packsFound": 0,
+            "maxPacks": int(m["maxPacks"]),
+            "sinceLastPack": 0,
+        }
         for m in config.get("slayerMasters", [])
     }
 
@@ -165,20 +127,17 @@ def default_save(config):
         "packsOpened": 0,
         "taskLog": [],
         "pendingPackOptionIds": [],
-
         "lastPackOptionIds": [],
         "lastPackPickedId": None,
-
         "skillCaps": caps,
         "reachedLevels": {},
-
         "activeCardId": None,
         "activeGate": None,
         "obtainedCardIds": [],
         "completedCardIds": [],
-
         "slayerMasters": masters,
     }
+
 
 def migrate_save(state: dict, config: dict) -> dict:
     state.setdefault("unopenedPacks", 0)
@@ -216,6 +175,7 @@ def migrate_save(state: dict, config: dict) -> dict:
 
     return state
 
+
 # ---------- Card logic ----------
 def weighted_pick(items):
     total = sum(max(0, int(i.get("weight", 1))) for i in items)
@@ -228,6 +188,7 @@ def weighted_pick(items):
         if r < acc:
             return it
     return items[-1]
+
 
 def check_requires(state, card):
     reqs = card.get("requires", []) or []
@@ -249,6 +210,7 @@ def check_requires(state, card):
             return False
     return True
 
+
 def gate_satisfied(state):
     g = state.get("activeGate")
     if not g:
@@ -258,7 +220,8 @@ def gate_satisfied(state):
         target = int(g["level"])
         cur = int(state["reachedLevels"].get(skill, 1))
         return cur >= target
-    return False
+    return True
+
 
 def apply_unlock_effects(state, card):
     for eff in card.get("effects", []) or []:
@@ -266,6 +229,7 @@ def apply_unlock_effects(state, card):
             skill = eff["skill"]
             cap = int(eff["cap"])
             state["skillCaps"][skill] = max(int(state["skillCaps"].get(skill, 1)), cap)
+
 
 def complete_active_card(state, repeatable: bool = False):
     cid = state.get("activeCardId")
@@ -278,6 +242,7 @@ def complete_active_card(state, repeatable: bool = False):
     state["activeCardId"] = None
     state["activeGate"] = None
     return True
+
 
 # ---------- UI helpers ----------
 def panel(content, padding=16):
@@ -295,6 +260,7 @@ def panel(content, padding=16):
         ),
     )
 
+
 def osrs_button(text: str, on_click, primary=False):
     return ft.Container(
         border_radius=10,
@@ -302,8 +268,9 @@ def osrs_button(text: str, on_click, primary=False):
         bgcolor=("#3a2f1f" if primary else "#2b241a"),
         padding=ft.Padding.symmetric(horizontal=14, vertical=10),
         on_click=on_click,
-        content=ft.Text(text,size=14, color=TEXT_MAIN, weight=ft.FontWeight.BOLD),
+        content=ft.Text(text, size=14, color=TEXT_MAIN, weight=ft.FontWeight.BOLD),
     )
+
 
 def icon_button(img_src: str, on_click, tooltip: str = "", size: int = 22):
     return ft.Container(
@@ -317,6 +284,7 @@ def icon_button(img_src: str, on_click, tooltip: str = "", size: int = 22):
         on_click=on_click,
         content=ft.Image(src=img_src, width=size, height=size, fit=ft.BoxFit.CONTAIN),
     )
+
 
 def stat_pill(label: str, value_control: ft.Control):
     return ft.Container(
@@ -334,6 +302,7 @@ def stat_pill(label: str, value_control: ft.Control):
         ),
     )
 
+
 def action_tile(
     title: str,
     subtitle: str,
@@ -345,15 +314,18 @@ def action_tile(
     primary: bool = False,
 ):
     bg = "#3a2f1f" if primary else "#15110d"
+    fallback_text = emoji_fallback if emoji_fallback.isascii() else title[:4]
 
     icon_ok = False
     if icon_src:
-        icon_ok = os.path.exists(os.path.join(ASSETS_DIR, icon_src.replace("/", os.sep)))
+        icon_ok = os.path.exists(
+            os.path.join(ASSETS_DIR, icon_src.replace("/", os.sep))
+        )
 
     icon_control = (
         ft.Image(src=icon_src, width=24, height=24, fit=ft.BoxFit.CONTAIN)
         if icon_ok
-        else ft.Text(emoji_fallback, size=18, color=TEXT_MAIN)
+        else ft.Text(fallback_text, size=18, color=TEXT_MAIN)
     )
 
     return ft.Container(
@@ -382,7 +354,12 @@ def action_tile(
                         ft.Column(
                             spacing=1,
                             controls=[
-                                ft.Text(title, size=14,color=TEXT_MAIN, weight=ft.FontWeight.BOLD),
+                                ft.Text(
+                                    title,
+                                    size=14,
+                                    color=TEXT_MAIN,
+                                    weight=ft.FontWeight.BOLD,
+                                ),
                                 ft.Text(subtitle, color=TEXT_DIM, size=11),
                             ],
                         ),
@@ -393,400 +370,378 @@ def action_tile(
         ),
     )
 
+
 def fmt_pct(p: float) -> str:
     return f"{p * 100:.1f}%"
 
+
 def main(page: ft.Page):
 
-    import threading, time
-    cloud_timer = None
-    cloud_session_ready = False
-    cloud_last_push = 0.0
+    selected_pack_id = None
+
+    config = read_json(CONFIG_PATH)
+    all_cards = read_json(CARDS_PATH)
     page.fonts = {"OSRS": "fonts/RunescapeChat.ttf"}
     page.theme = ft.Theme(font_family="OSRS")
+    cards_by_id = {c["id"]: c for c in all_cards if isinstance(c, dict) and "id" in c}
 
     page.title = "RuneCards"
     page.bgcolor = OSRS_BG
 
     platform = (os.getenv("FLET_PLATFORM") or "").lower()
-    if platform in ("windows","macos","linux"):
+    if platform in ("windows", "macos", "linux"):
         page.window_width = 1300
         page.window_height = 900
-        
-    cloud_cfg = load_cloud_cfg()
-    supabase: Client | None = None
-    supabase_sig = None  # (url, anon_key) used to detect config changes
 
-    def cloud_schedule_push():
-        nonlocal cloud_timer, cloud_last_push
+    cloud_cfg = read_json(CLOUD_CFG_PATH) if os.path.exists(CLOUD_CFG_PATH) else {}
+    if not isinstance(cloud_cfg, dict):
+        cloud_cfg = {}
 
-        if not cloud_enabled(cloud_cfg) or not cloud_cfg.get("auto_sync", False):
-            return
-        
-        if cloud_timer:
-            try:
-                cloud_timer.cancel()
-            except Exception:
-                pass
+    cloud_cfg.setdefault("mode", "local")  # "local" | "cloud"
+    cloud_cfg.setdefault("url", "")
+    cloud_cfg.setdefault("anon_key", "")
+    cloud_cfg.setdefault("slot", "default")
 
-        def _do():
-            nonlocal cloud_last_push
+    def save_cloud_cfg():
+        write_json(CLOUD_CFG_PATH, cloud_cfg)
 
-            now = time.time()
-            if now - cloud_last_push < 2.0:
+    def cloud_on() -> bool:
+        return (
+            cloud_cfg.get("mode") == "cloud"
+            and bool(cloud_cfg["url"].strip())
+            and bool(cloud_cfg["anon_key"].strip())
+        )
+
+    def cloud_ready() -> bool:
+        return bool(cloud and cloud.enabled())
+
+    cloud = None
+    if cloud_on():
+        cloud = CloudStore(
+            url=cloud_cfg["url"],
+            anon_key=cloud_cfg["anon_key"],
+            table="saves",
+            storage_dir=SAVE_DIR,
+        )
+
+    def cloud_slot():
+        return (cloud_cfg.get("slot") or "default").strip()
+
+    def open_cloud_window(_=None):
+        dlg = ft.AlertDialog(modal=True)
+
+        mode_switch = ft.Switch(
+            label="Enable cloud saves (Supabase)",
+            value=(cloud_cfg.get("mode") == "cloud"),
+        )
+        url_tf = ft.TextField(
+            label="Supabase URL", value=cloud_cfg.get("url", ""), dense=True
+        )
+        key_tf = ft.TextField(
+            label="Supabase anon key",
+            value=cloud_cfg.get("anon_key", ""),
+            dense=True,
+            password=True,
+            can_reveal_password=True,
+        )
+
+        def save_settings(_e=None):
+            cloud_cfg["mode"] = "cloud" if mode_switch.value else "local"
+            cloud_cfg["url"] = (url_tf.value or "").strip()
+            cloud_cfg["anon_key"] = (key_tf.value or "").strip()
+            save_cloud_cfg()
+
+            # rebuild cloud object
+            nonlocal cloud
+            cloud = None
+            if cloud_on():
+                cloud = CloudStore(
+                    url=cloud_cfg["url"],
+                    anon_key=cloud_cfg["anon_key"],
+                    table="saves",
+                    storage_dir=SAVE_DIR,
+                )
+
+            if cloud_cfg["mode"] == "cloud" and not cloud_ready():
+                snack("Cloud settings saved, but Supabase support is unavailable.")
+            else:
+                snack("Cloud settings saved.")
+
+        def do_pull(_e=None):
+            save_settings()
+            if not cloud_ready():
+                snack("Cloud is disabled, misconfigured, or unavailable.")
                 return
-            try:
-                if ensure_cloud_session():
-                    cloud_push_from_state()
-                    cloud_last_push = now
-            except Exception as ex:
-                print("Auto cloud push failed:", ex)
 
-        cloud_timer = threading.Timer(2.0, _do)
-        cloud_timer.daemon = True
-        cloud_timer.start()
+            pulled = cloud.pull(cloud_slot())
+            if isinstance(pulled, dict):
+                state.clear()
+                state.update(migrate_save(pulled, config))
+                write_json(SAVE_PATH, state)
+                refresh()
+                render_pack_from_state()
+                snack("Pulled ✅")
+            else:
+                snack("No cloud save found for this slot.")
 
-    def apply_db_auth(sb: Client, access_token: str | None):
-        if not access_token:
-            return
-        try:
-            sb.postgrest.auth(access_token)
-        except Exception as ex:
-            print("postgrest.auth failed:", ex)
+        def do_push(_e=None):
+            save_settings()
+            if not cloud_ready():
+                snack("Cloud is disabled, misconfigured, or unavailable.")
+                return
+            ok = cloud.push(cloud_slot(), cloud_slot(), state, cloud_meta())
+            snack("Pushed ✅" if ok else "Push failed ❌")
 
-    def reset_supabase():
-        nonlocal supabase, supabase_sig, cloud_session_ready
-        supabase = None
-        supabase_sig = None
-        cloud_session_ready = False
+        dlg.content = ft.Container(
+            width=560,
+            bgcolor=PANEL_BG,
+            border=ft.Border.all(1, BORDER_DARK),
+            border_radius=14,
+            padding=12,
+            content=ft.Column(
+                tight=True,
+                spacing=10,
+                controls=[
+                    ft.Row(
+                        alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+                        controls=[
+                            ft.Text(
+                                "Cloud Saves",
+                                size=18,
+                                weight=ft.FontWeight.BOLD,
+                                color=TEXT_MAIN,
+                            ),
+                            ft.Container(
+                                padding=6,
+                                border_radius=8,
+                                border=ft.Border.all(1, BORDER_LIGHT),
+                                bgcolor="#2b241a",
+                                on_click=lambda e: close_dialog(dlg),
+                                content=ft.Text(
+                                    "X", color=TEXT_MAIN, weight=ft.FontWeight.BOLD
+                                ),
+                            ),
+                        ],
+                    ),
+                    ft.Container(
+                        bgcolor=PANEL_INNER,
+                        border=ft.Border.all(1, BORDER_LIGHT),
+                        border_radius=12,
+                        padding=12,
+                        content=ft.Column(
+                            tight=True,
+                            spacing=10,
+                            controls=[
+                                mode_switch,
+                                url_tf,
+                                key_tf,
+                                ft.Row(
+                                    spacing=10,
+                                    controls=[
+                                        osrs_button(
+                                            "Save settings", save_settings, primary=True
+                                        ),
+                                        osrs_button(
+                                            "Choose save", open_save_picker_window
+                                        ),
+                                        osrs_button("Pull", do_pull),
+                                        osrs_button("Push", do_push),
+                                    ],
+                                ),
+                            ],
+                        ),
+                    ),
+                ],
+            ),
+        )
 
-    def get_supabase() -> Client | None:
-        nonlocal supabase, cloud_cfg
-        if supabase:
-            return supabase
+        open_dialog(dlg)
 
-        if not cloud_enabled(cloud_cfg):
-            return None
+    def open_save_picker_window(_=None):
+        dlg = ft.AlertDialog(modal=True)
+        list_view = ft.ListView(expand=True, spacing=8, padding=8)
 
-        url = (cloud_cfg.get("url") or "").strip()
-        key = (cloud_cfg.get("anon_key") or "").strip()
-        if not url or not key:
-            return None
+        current_slot_txt = ft.Text("", color=TEXT_DIM, size=11)
 
-        supabase = create_client(url, key)
+        new_name_tf = ft.TextField(
+            label="New save name (slot)",
+            dense=True,
+            value="main" if not cloud_cfg.get("slot") else "",
+        )
 
-        # restore session if present
-        sess = load_cloud_session()
-        if sess:
-            try:
-                resp = supabase.auth.set_session(sess["access_token"], sess["refresh_token"])
-                session = getattr(resp, "session", None)
-                if session and getattr(session, "access_token", None):
-                    save_cloud_session(session)
-                    apply_db_auth(supabase, session.access_token)  # ✅ pass token
-            except Exception as ex:
-                print("Supabase session restore failed:", ex)
+        def refresh_list():
+            rows = cloud_list_saves()
+            list_view.controls.clear()
 
-        return supabase
-
-
-    def ensure_cloud_session() -> bool:
-        nonlocal cloud_session_ready
-        if cloud_session_ready:
-            return True
-        
-        sb = get_supabase()
-        if not sb:
-            print("ensure_cloud_session: no supabase client")
-            return False
-
-        # 1) try restored session first
-        try:
-            sess = sb.auth.get_session()
-            if sess and getattr(sess, "access_token", None):
-                save_cloud_session(sess)
-                apply_db_auth(sb, sess.access_token)
-                cloud_session_ready = True
-                print("signed in ok, uid =", get_user_id(sb))
-                return True
-        except Exception:
-            pass
-
-        # 2) otherwise create an anonymous session
-        try:
-            resp = sb.auth.sign_in_anonymously()
-            sess = getattr(resp, "session", None)
-            user = getattr(resp, "user", None)
-            print("anon sign-in user:", getattr(user, "id", None))
-
-            if sess and getattr(sess, "access_token", None):
-                save_cloud_session(sess)
-                apply_db_auth(sb, sess.access_token)
-                cloud_session_ready = True
-                return True
-
-            print("anon sign-in: no session returned:", resp)
-        except Exception as ex:
-            print("Anonymous sign-in failed:", ex)
-
-        return False
-
-    def cloud_signed_in() -> bool:
-        sb = get_supabase()
-        if not sb:
-            return False
-        try:
-            return sb.auth.get_session() is not None  # may be None if not signed in
-        except Exception:
-            return False
-
-
-    def get_user_id(sb: Client) -> str | None:
-        try:
-            u = sb.auth.get_user()
-            # supabase-py returns an object with user.id in some versions
-            user = getattr(u, "user", None)
-            if user and getattr(user, "id", None):
-                return user.id
-        except Exception:
-            pass
-
-        # fallback: try session.user
-        try:
-            sess = sb.auth.get_session()
-            if sess:
-                user = getattr(sess, "user", None)
-                if user and getattr(user, "id", None):
-                    return user.id
-        except Exception:
-            pass
-
-        return None
-    
-    def cloud_pull_into_state(update_ui: bool = False) -> bool:
-        sb = get_supabase()
-        if not sb or not ensure_cloud_session():
-            return False
-
-        uid = get_user_id(sb)
-        if not uid:
-            print("cloud_pull: no uid")
-            return False
-
-        try:
-            q = (
-                sb.table(CLOUD_TABLE)
-                .select("data,updated_at")
-                .eq("user_id", uid)
-                .eq("slot", CLOUD_SLOT)
-                .limit(1)
+            current_slot_txt.value = (
+                f"Current slot: {cloud_slot()}"
+                if (cloud_cfg.get("slot") or "").strip()
+                else "Current slot: (none selected)"
             )
 
-            # optional: if your version supports ordering
-            if hasattr(q, "order"):
-                q = q.order("updated_at", desc=True)
+            if not rows:
+                list_view.controls.append(
+                    ft.Text(
+                        "No cloud saves found for this account yet.", color=TEXT_DIM
+                    )
+                )
+                page.update()
+                return
 
-            resp = q.execute()
-        except Exception as ex:
-            print("cloud_pull exception:", ex)
-            return False
+            for r in rows:
+                uid = str(r.get("user_id") or "")
+                slot = str(r.get("slot") or "default")
+                name = str(r.get("name") or slot)
+                updated = str(r.get("updated_at") or "")
 
-        if resp is None:
-            print("cloud_pull: execute returned None")
-            return False
+                data = r.get("data") or {}
+                packs_opened = int(data.get("packsOpened", 0))
+                slayer_tasks = int(
+                    sum(
+                        int(v.get("tasks", 0))
+                        for v in (data.get("slayerMasters") or {}).values()
+                    )
+                )
+                last_task = ""
+                tl = data.get("taskLog") or []
+                if tl:
+                    last_task = str(tl[-1].get("title") or "")
 
-        data = getattr(resp, "data", None)
-        err = getattr(resp, "error", None)
-        if err:
-            print("cloud_pull error:", err)
-            return False
+                subtitle = (
+                    f"Packs opened: {packs_opened} • Slayer tasks: {slayer_tasks}"
+                )
+                if last_task:
+                    subtitle += f"\nLast task: {last_task}"
+                if updated:
+                    subtitle += f"\nUpdated: {updated}"
 
-        # data might be [] or [{}] depending on version
-        row = None
-        if isinstance(data, list) and data:
-            row = data[0]
-        elif isinstance(data, dict):
-            row = data
+                def pick_slot(e, chosen_slot=slot):
+                    cloud_cfg["slot"] = chosen_slot
+                    save_cloud_cfg()
 
-        if not row:
-            return False
+                    pulled = cloud.pull(chosen_slot) if cloud_ready() else None
+                    if isinstance(pulled, dict):
+                        state.clear()
+                        state.update(migrate_save(pulled, config))
+                        write_json(SAVE_PATH, state)
+                        refresh()
+                        render_pack_from_state()
+                        snack("Selected save loaded (this device is now linked to it).")
+                    else:
+                        snack("Selected save has no data.")
 
-        cloud_state = row.get("data")
-        if not isinstance(cloud_state, dict):
-            return False
+                    close_dialog(dlg)
 
-        migrated = migrate_save(cloud_state, config)
-        state.clear()
-        state.update(migrated)
+                list_view.controls.append(
+                    ft.Container(
+                        padding=12,
+                        border_radius=12,
+                        bgcolor="#15110d",
+                        border=ft.Border.all(1, BORDER_LIGHT),
+                        on_click=pick_slot,
+                        content=ft.Column(
+                            spacing=4,
+                            controls=[
+                                ft.Text(
+                                    name,
+                                    color=TEXT_MAIN,
+                                    size=16,
+                                    weight=ft.FontWeight.BOLD,
+                                ),
+                                ft.Text(subtitle, color=TEXT_DIM, size=11),
+                                ft.Text(f"slot: {slot}", color=ACCENT, size=11),
+                                ft.Text(
+                                    f"user_id: {uid[:8]}…", color=TEXT_DIM, size=10
+                                ),
+                            ],
+                        ),
+                    )
+                )
 
-        write_json(SAVE_PATH, state)
+            page.update()
 
-        if update_ui:
-            refresh()
+        def create_new_save(_e=None):
+            name = (new_name_tf.value or "").strip()
+            if not name:
+                snack("Enter a save name.")
+                return
 
-        print("cloud_pull ok, updated_at =", row.get("updated_at"))
-        return True
-    
+            cloud_cfg["slot"] = name
+            save_cloud_cfg()
 
+            ok = (
+                cloud.push(name, name, state, cloud_meta()) if cloud_ready() else False
+            )
+            snack("New save created." if ok else "Failed to create save.")
+            refresh_list()
 
-    def cloud_push_from_state() -> bool:
-        sb = get_supabase()
-        if not sb or not ensure_cloud_session():
-            return False
+        dlg.content = ft.Container(
+            width=620,
+            height=620,
+            bgcolor=PANEL_BG,
+            border=ft.Border.all(1, BORDER_DARK),
+            border_radius=14,
+            padding=12,
+            content=ft.Column(
+                spacing=10,
+                controls=[
+                    ft.Row(
+                        alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+                        controls=[
+                            ft.Text(
+                                "Choose Cloud Save",
+                                size=18,
+                                weight=ft.FontWeight.BOLD,
+                                color=TEXT_MAIN,
+                            ),
+                            ft.Container(
+                                padding=6,
+                                border_radius=8,
+                                border=ft.Border.all(1, BORDER_LIGHT),
+                                bgcolor="#2b241a",
+                                on_click=lambda e: close_dialog(dlg),
+                                content=ft.Text(
+                                    "X", color=TEXT_MAIN, weight=ft.FontWeight.BOLD
+                                ),
+                            ),
+                        ],
+                    ),
+                    current_slot_txt,
+                    ft.Divider(height=1, color=BORDER_LIGHT),
+                    ft.Container(
+                        bgcolor=PANEL_INNER,
+                        border=ft.Border.all(1, BORDER_LIGHT),
+                        border_radius=12,
+                        expand=True,
+                        content=list_view,
+                    ),
+                    ft.Divider(height=1, color=BORDER_LIGHT),
+                    new_name_tf,
+                    ft.Row(
+                        spacing=10,
+                        controls=[
+                            osrs_button(
+                                "Create new save", create_new_save, primary=True
+                            ),
+                            osrs_button("Refresh list", lambda e: refresh_list()),
+                        ],
+                    ),
+                ],
+            ),
+        )
 
-        uid = get_user_id(sb)
-        if not uid:
-            print("cloud_push: no uid")
-            return False
+        open_dialog(dlg)
+        refresh_list()
 
-        payload = {"user_id": uid, "slot": CLOUD_SLOT, "data": state}
-
-        try:
-            q = sb.table(CLOUD_TABLE).upsert(payload, on_conflict="user_id,slot")
-
-            # Some versions allow .select() here, some don't.
-            if hasattr(q, "select"):
-                q = q.select("updated_at")
-
-            resp = q.execute()
-        except Exception as ex:
-            print("cloud_push exception:", ex)
-            return False
-
-        if resp is None:
-            print("cloud_push: execute returned None")
-            return False
-
-        print("cloud_push data:", getattr(resp, "data", None))
-        print("cloud_push error:", getattr(resp, "error", None))
-        return True
-    
-    TRANSFER_PREFIX = "RC1:"
-
-    def _b64e(b: bytes) -> str:
-        return base64.urlsafe_b64encode(b).decode("utf-8").rstrip("=")
-    
-    def _b64d(s: str) -> bytes:
-        s = s.strip()
-        pad = "=" * (-len(s) % 4)
-        return base64.urlsafe_b64decode(s + pad)
-    
-    def make_transfer_code(exp_seconds: int = 15 * 60) -> str | None:
-        """
-        Creates a short-lived transfer code carrying the current session tokens.
-        """
-        if not ensure_cloud_session():
-            return None
-
-        sess = load_cloud_session()
-        if not sess or not sess.get("access_token") or not sess.get("refresh_token"):
-            return None
-
-        now = int(time.time())
-        payload = {
-            "v": 1,
-            "iat": now,
-            "exp": now + int(exp_seconds),
-            "access_token": sess["access_token"],
-            "refresh_token": sess["refresh_token"],
-        }
-
-        raw = json.dumps(payload, separators=(",", ":")).encode("utf-8")
-        packed = zlib.compress(raw, 9)
-        return TRANSFER_PREFIX + _b64e(packed)
-    
-
-    def apply_transfer_code(code: str) -> bool:
-        """
-        Stores the transferred tokens into cloud_session.json and verifies we can use them.
-        Pulls cloud save into local state (preferred on a new device).
-        """
-        code = (code or "").strip()
-        if not code:
-            return False
-
-        if code.startswith(TRANSFER_PREFIX):
-            code = code[len(TRANSFER_PREFIX):]
-
-        try:
-            packed = _b64d(code)
-            raw = zlib.decompress(packed)
-            payload = json.loads(raw.decode("utf-8"))
-        except Exception as ex:
-            print("transfer decode failed:", ex)
-            return False
-
-        if payload.get("v") != 1:
-            print("transfer code: unsupported version")
-            return False
-
-        exp = int(payload.get("exp") or 0)
-        if exp and time.time() > exp:
-            print("transfer code expired")
-            return False
-
-        at = payload.get("access_token")
-        rt = payload.get("refresh_token")
-        if not at or not rt:
-            print("transfer code missing tokens")
-            return False
-
-        # Persist tokens locally on THIS device
-        write_json(CLOUD_SESSION_PATH, {"access_token": at, "refresh_token": rt})
-
-        # Recreate client and apply session
-        reset_supabase()
-
-        # Ensure we can use this session
-        if not ensure_cloud_session():
-            print("transfer: session verify failed")
-            return False
-
-        # New device behavior: pull cloud save first (do NOT overwrite cloud)
-        pulled = cloud_pull_into_state(update_ui=True)
-        if pulled:
-            print("transfer: pulled cloud save ok")
-            return True
-
-        # If no cloud row exists yet, seed it
-        print("transfer: no cloud save found, seeding with local")
-        return cloud_push_from_state()
-
-
-
-
-
-    def cloud_bootstrap():
-        if not cloud_enabled(cloud_cfg):
-            return
-        if not ensure_cloud_session():
-            print("cloud bootstrap: no session")
-            return
-
-        pulled = cloud_pull_into_state(update_ui=False)
-        if not pulled:
-            print("cloud bootstrap: no cloud save, pushing local")
-            cloud_push_from_state()
-
-    selected_pack_id = None
-    
-    for attr in ("text_scale_factor", "text_scale"):
-        if hasattr(page, attr):
-            setattr(page, attr, 1.2)
-            break
-
-    config = read_json(CONFIG_PATH)
-
-    all_cards = read_json(CARDS_PATH)
-    if os.path.exists(QUESTS_PATH):
-        all_cards.extend(read_json(QUESTS_PATH))
-    cards_by_id = {c["id"]: c for c in all_cards}
-    all_cards = list(cards_by_id.values()) 
+    def cloud_list_saves():
+        if not cloud_ready():
+            return []
+        return cloud.list_slots()
 
     def validate_cards(cards: list[dict]):
-        bad = 0 
+        bad = 0
         for c in cards:
-            for r in (c.get("requires") or []):
+            for r in c.get("requires") or []:
                 if r.get("kind") == "SKILL_CAP_AT_LEAST" and "cap" not in r:
                     bad += 1
                     print("\n[INVALID requires] Missing 'cap'")
@@ -795,6 +750,7 @@ def main(page: ft.Page):
                     print("  requires entry:", r)
         if bad:
             print(f"\nFound {bad} invalid requires entries.\n")
+
     validate_cards(all_cards)
     if os.path.exists(SAVE_PATH):
         state = migrate_save(read_json(SAVE_PATH), config)
@@ -810,7 +766,34 @@ def main(page: ft.Page):
         state["lastPackPickedId"] = None
 
     write_json(SAVE_PATH, state)
-    cloud_bootstrap()
+
+    def cloud_meta():
+        # keep your existing meta logic if you want
+        return {
+            "packs_opened": int(state.get("packsOpened", 0)),
+            "slayer_tasks": int(
+                sum(
+                    int(v.get("tasks", 0))
+                    for v in state.get("slayerMasters", {}).values()
+                )
+            ),
+            "last_task_title": (
+                str((state.get("taskLog") or [{}])[-1].get("title") or "")
+                if state.get("taskLog")
+                else ""
+            ),
+        }
+
+    # NEW bootstrap
+    if cloud_ready():
+        pulled = cloud.pull(cloud_slot())
+        if isinstance(pulled, dict):
+            state.clear()
+            state.update(migrate_save(pulled, config))
+            write_json(SAVE_PATH, state)
+        else:
+            # seed cloud with local
+            cloud.push(cloud_slot(), cloud_slot(), state, cloud_meta())
 
     status_text = ft.Text("", size=12, color=TEXT_DIM)
     status_box = ft.Container(
@@ -830,9 +813,8 @@ def main(page: ft.Page):
 
     def save():
         write_json(SAVE_PATH, state)
-        if cloud_cfg.get("auto_sync", False):
-            cloud_schedule_push()
-
+        if cloud_ready():
+            cloud.push(cloud_slot(), cloud_slot(), state, cloud_meta())
 
     def snack(msg: str):
         page.snack_bar = ft.SnackBar(ft.Text(msg, color=TEXT_MAIN))
@@ -847,213 +829,7 @@ def main(page: ft.Page):
                 page.overlay.append(dlg)
             dlg.open = True
             page.update()
-            
-    def open_cloud_window(_):
-        dlg = ft.AlertDialog(modal=True)
 
-        # Controls
-        mode_switch = ft.Switch(
-            label="Enable cloud saves (Supabase)",
-            value=(cloud_cfg.get("mode") == "cloud"),
-        )
-
-        url_tf = ft.TextField(
-            label="Supabase URL",
-            value=cloud_cfg.get("url", ""),
-            dense=True,
-        )
-
-        key_tf = ft.TextField(
-            label="Supabase anon key",
-            value=cloud_cfg.get("anon_key", ""),
-            dense=True,
-            password=True,
-            can_reveal_password=True,
-        )
-
-        auto_sync_sw = ft.Switch(
-            label="Auto-sync on every local save",
-            value=bool(cloud_cfg.get("auto_sync", False)),
-        )
-
-        signed_in_txt = ft.Text("", color=TEXT_DIM, size=12)
-        cfg_status_txt = ft.Text("", color=TEXT_DIM, size=11)
-
-        transfer_tf = ft.TextField(
-            label="Transfer code (link another device)",
-            dense = True,
-            multiline= True,
-            min_lines=3,
-            max_lines=6,
-        )
-
-        def do_generate_code(_e):
-            code = make_transfer_code()
-            if not code:
-                snack("Failed to create transfer code (not signed in).")
-                return
-            transfer_tf.value = code
-            page.update()
-
-            if hasattr(page, "set_clipboard"):
-                try: 
-                    page.set_clipboard(code)
-                    snack("Transfer code copied to clipboard.")
-                except Exception:
-                    snack("Transfer code generated (but clipboard copy failed).")
-            else:
-                snack("Transfer code generated.")
-
-        def do_import_code(_e):
-            save_settings()
-            ok = apply_transfer_code(transfer_tf.value)
-            snack("Device linked successfully." if ok else "Transfer code invalid or expired.")
-
-        def refresh_cloud_ui():
-            enabled = mode_switch.value
-
-            url_tf.disabled = not enabled
-            key_tf.disabled = not enabled
-            auto_sync_sw.disabled = not enabled
-            transfer_tf.disabled = not enabled
-
-            # Update config summary + signed-in status
-            if not enabled:
-                cfg_status_txt.value = "Mode: Local (no cloud)."
-                signed_in_txt.value = "Cloud: disabled"
-                signed_in_txt.color = TEXT_DIM
-            else:
-                ok = bool(url_tf.value.strip()) and bool(key_tf.value.strip())
-                cfg_status_txt.value = "Mode: Cloud (configured)" if ok else "Mode: Cloud (missing URL / key)"
-                is_in = cloud_signed_in()
-                signed_in_txt.value = "Signed in ✅" if is_in else "Not signed in"
-                signed_in_txt.color = QUEST_GREEN if is_in else QUEST_RED
-
-            page.update()
-
-        def save_settings(_e=None):
-            # Update in-memory cfg
-            cloud_cfg["mode"] = "cloud" if mode_switch.value else "local"
-            cloud_cfg["url"] = (url_tf.value or "").strip()
-            cloud_cfg["anon_key"] = (key_tf.value or "").strip()
-            cloud_cfg["auto_sync"] = bool(auto_sync_sw.value)
-
-            save_cloud_cfg(cloud_cfg)
-            reset_supabase() 
-
-            if cloud_enabled(cloud_cfg):
-                cloud_bootstrap()
-
-            # If user switched to local mode, wipe stored session tokens
-            if cloud_cfg["mode"] != "cloud":
-                save_cloud_session(None)
-
-            snack("Cloud settings saved.")
-            refresh_cloud_ui()
-
-        
-        def do_pull(_e):
-            try:
-                save_settings()
-                ok = cloud_pull_into_state()
-                snack("Pulled from cloud." if ok else "No cloud save found (or not signed in).")
-            except Exception as ex:
-                snack(f"Pull failed: {ex}")
-            refresh_cloud_ui()
-
-        def do_push(_e):
-            try:
-                save_settings()
-                ok = cloud_push_from_state()
-                snack("Pushed to cloud." if ok else "Push skipped (not configured or not signed in).")
-            except Exception as ex:
-                snack(f"Push failed: {ex}")
-            refresh_cloud_ui()
-
-        # Layout
-        dlg.content = ft.Container(
-            width=560,
-            bgcolor=PANEL_BG,
-            border=ft.Border.all(1, BORDER_DARK),
-            border_radius=14,
-            padding=12,
-            content=ft.Column(
-                tight=True,
-                spacing=10,
-                controls=[
-                    # Header
-                    ft.Row(
-                        alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
-                        controls=[
-                            ft.Text("Cloud Saves", size=18, weight=ft.FontWeight.BOLD, color=TEXT_MAIN),
-                            ft.Container(
-                                padding=6,
-                                border_radius=8,
-                                border=ft.Border.all(1, BORDER_LIGHT),
-                                bgcolor="#2b241a",
-                                on_click=lambda e: close_dialog(dlg),
-                                content=ft.Text("X", color=TEXT_MAIN, weight=ft.FontWeight.BOLD),
-                            ),
-                        ],
-                    ),
-
-                    # Main content panel
-                    ft.Container(
-                        bgcolor=PANEL_INNER,
-                        border=ft.Border.all(1, BORDER_LIGHT),
-                        border_radius=12,
-                        padding=12,
-                        content=ft.Column(
-                            tight=True,
-                            spacing=10,
-                            controls=[
-                                mode_switch,
-                                cfg_status_txt,
-                                ft.Divider(height=1, color=BORDER_LIGHT),
-
-                                url_tf,
-                                key_tf,
-                                auto_sync_sw,
-
-                                ft.Row(
-                                    spacing=10,
-                                    controls=[
-                                        osrs_button("Save settings", save_settings, primary=True),
-                                        osrs_button("Pull", do_pull),
-                                        osrs_button("Push", do_push),
-                                    ],
-                                ),
-
-                                ft.Divider(height=1, color=BORDER_LIGHT),
-
-                                # Transfer section
-                                ft.Text("Link another device", color=TEXT_DIM, size=11),
-                                transfer_tf,
-                                ft.Row(
-                                    spacing=10,
-                                    controls=[
-                                        osrs_button("Generate code", do_generate_code, primary=True),
-                                        osrs_button("Import code", do_import_code),
-                                    ],
-                                ),
-                            ],
-                        ),
-                    ),
-
-                    ft.Text(
-                        "Tip: For BYO Supabase, make sure your table has RLS policies so users can only access their own rows.",
-                        color=TEXT_DIM,
-                        size=11,
-                    ),
-                ],
-            ),
-        )
-        # Wire events + initial refresh
-        mode_switch.on_change = lambda e: refresh_cloud_ui()
-        open_dialog(dlg)
-        refresh_cloud_ui()
-
-            
     def close_dialog(dlg: ft.AlertDialog):
         if hasattr(page, "close"):
             page.close(dlg)
@@ -1062,7 +838,9 @@ def main(page: ft.Page):
             page.update()
 
     def total_slayer_tasks():
-        return sum(int(v.get("tasks", 0)) for v in state.get("slayerMasters", {}).values())
+        return sum(
+            int(v.get("tasks", 0)) for v in state.get("slayerMasters", {}).values()
+        )
 
     def config_master_name(master_id: str) -> str:
         for mm in config.get("slayerMasters", []):
@@ -1073,16 +851,17 @@ def main(page: ft.Page):
     top_packs = ft.Text(color=TEXT_MAIN, size=14, weight=ft.FontWeight.BOLD)
     top_tasks = ft.Text(color=TEXT_MAIN, weight=ft.FontWeight.BOLD)
     top_opened = ft.Text(color=TEXT_MAIN, weight=ft.FontWeight.BOLD)
- 
+
     show_save_path = False
     save_path_text = ft.Text("", color=TEXT_DIM, size=11)
-    save_toggle_text = ft.Text("Show", size=11, color=TEXT_MAIN, weight=ft.FontWeight.BOLD)
-    
+    save_toggle_text = ft.Text(
+        "Show", size=11, color=TEXT_MAIN, weight=ft.FontWeight.BOLD
+    )
+
     def toggle_save_path(_):
         nonlocal show_save_path
         show_save_path = not show_save_path
         refresh()
-
 
     def resolve_gate(gate: dict) -> dict:
         if not gate:
@@ -1107,7 +886,7 @@ def main(page: ft.Page):
         if kind == "DIARIES":
             return f"Requirement: Complete {amt} achievement diaries."
         return ""
-    
+
     def gate_range_text(g: dict | None) -> str:
         if not g:
             return ""
@@ -1124,11 +903,16 @@ def main(page: ft.Page):
             return f"Requirement: {mn}–{mx} {unit_plural}."
 
         if kind == "MARKS_OF_GRACE":
-            return "Requirement: Collect " + fmt_range("Mark of grace", "Marks of grace")[13:]
+            return (
+                "Requirement: Collect "
+                + fmt_range("Mark of grace", "Marks of grace")[13:]
+            )
         if kind == "DIARIES":
-            return "Requirement: Complete " + fmt_range("achievement diary", "achievement diaries")[13:]
+            return (
+                "Requirement: Complete "
+                + fmt_range("achievement diary", "achievement diaries")[13:]
+            )
         return ""
-
 
     def slayer_pack_chance_for(st: dict) -> float:
         base = float(config["packChancePerSlayerTask"])
@@ -1143,7 +927,9 @@ def main(page: ft.Page):
         start_chance = min(SLAYER_CHANCE_CAP, base * SLAYER_START_MULT)
         end_chance = min(SLAYER_CHANCE_CAP, base * SLAYER_END_MULT)
 
-        chance = end_chance + (start_chance - end_chance) * (remaining_ratio ** SLAYER_CURVE)
+        chance = end_chance + (start_chance - end_chance) * (
+            remaining_ratio**SLAYER_CURVE
+        )
 
         since = int(st.get("sinceLastPack", 0))
         pity = min(SLAYER_PITY_CAP, since * SLAYER_PITY_PER_TASK)
@@ -1161,8 +947,17 @@ def main(page: ft.Page):
         state.setdefault("taskLog", []).append(entry)
 
     # ---------- Pack UI (RIGHT PANEL) ----------
-    pack_title = ft.Text("Pack opening — pick 1 of 3", size=18, weight=ft.FontWeight.BOLD, color=TEXT_MAIN)
-    pack_hint = ft.Text("Pick one card. After picking, the other 2 remain (dimmed).", color=TEXT_DIM, size=11)
+    pack_title = ft.Text(
+        "Pack opening — pick 1 of 3",
+        size=18,
+        weight=ft.FontWeight.BOLD,
+        color=TEXT_MAIN,
+    )
+    pack_hint = ft.Text(
+        "Pick one card. After picking, the other 2 remain (dimmed).",
+        color=TEXT_DIM,
+        size=11,
+    )
 
     empty_title = ft.Text("", size=22, weight=ft.FontWeight.BOLD, color=TEXT_MAIN)
     empty_desc = ft.Text("", size=13, color=TEXT_DIM)
@@ -1180,24 +975,22 @@ def main(page: ft.Page):
     )
     pack_empty.visible = True
 
-
     pack_options_row = ft.Row(
         spacing=12,
-        
         alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
     )
     pack_options_row.visible = False
-    
+
     complete_btn_section = ft.Container(
         alignment=ALIGN_CENTER,
         padding=ft.Padding.only(top=10),
-        visible=False, 
+        visible=False,
         content=ft.Container(
             border_radius=14,
             border=ft.Border.all(1, BORDER_LIGHT),
             bgcolor="#3a2f1f",
-            padding=ft.Padding.symmetric(horizontal=34, vertical=18),  
-            on_click=lambda e: complete_current_card(e), 
+            padding=ft.Padding.symmetric(horizontal=34, vertical=18),
+            on_click=lambda e: complete_current_card(e),
             content=ft.Text(
                 "Complete task",
                 color=TEXT_MAIN,
@@ -1206,7 +999,7 @@ def main(page: ft.Page):
             ),
         ),
     )
-    
+
     pick_btn_section = ft.Container(
         alignment=ALIGN_CENTER,
         padding=ft.Padding.only(top=10),
@@ -1230,18 +1023,25 @@ def main(page: ft.Page):
         top_packs.value = str(state["unopenedPacks"])
         top_tasks.value = str(total_slayer_tasks())
         top_opened.value = str(int(state.get("packsOpened", 0)))
-        
-        save_path_text.value = f"Save: {SAVE_PATH}" if show_save_path else "Save path: (hidden)"
+
+        save_path_text.value = (
+            f"Save: {SAVE_PATH}" if show_save_path else "Save path: (hidden)"
+        )
         save_toggle_text.value = "Hide" if show_save_path else "Show"
-        
+
         has_options = bool(state.get("lastPackOptionIds"))
         has_confirmed_pick = bool(state.get("lastPackPickedId"))
         has_active = bool(state.get("activeCardId"))
-        
-        pick_btn_section.visible = has_options and (not has_confirmed_pick) and (not has_active) and (selected_pack_id is not None)
+
+        pick_btn_section.visible = (
+            has_options
+            and (not has_confirmed_pick)
+            and (not has_active)
+            and (selected_pack_id is not None)
+        )
 
         complete_btn_section.visible = has_active
-        
+
         page.update()
 
     def select_card(card: dict):
@@ -1291,8 +1091,6 @@ def main(page: ft.Page):
             return
         commit_pick(card)
 
-
-
     def render_pack_from_state():
         if state.get("pendingPackOptionIds") and not state.get("lastPackOptionIds"):
             state["lastPackOptionIds"] = list(state["pendingPackOptionIds"])
@@ -1304,8 +1102,6 @@ def main(page: ft.Page):
 
         pack_options_row.controls.clear()
 
-
-
         if not ids:
             pack_options_row.visible = False
             pack_empty.visible = True
@@ -1313,7 +1109,6 @@ def main(page: ft.Page):
             pack_hint.value = "Select a card, then click Pick task."
             empty_title.value = "No packs yet."
             empty_desc.value = "Go to Slayer Masters and log tasks to roll for packs."
-
 
             # Dynamic empty state
             if state.get("activeCardId"):
@@ -1333,11 +1128,12 @@ def main(page: ft.Page):
                 else:
                     pack_hint.value = ""
                     empty_title.value = "No packs yet."
-                    empty_desc.value = "Go to Slayer Masters and log tasks to roll for packs."
+                    empty_desc.value = (
+                        "Go to Slayer Masters and log tasks to roll for packs."
+                    )
 
             page.update()
             return
-
 
         options = [cards_by_id[cid] for cid in ids if cid in cards_by_id]
         if not options:
@@ -1348,55 +1144,59 @@ def main(page: ft.Page):
 
         pack_empty.visible = False
         pack_options_row.visible = True
-        
+
         pack_title.value = f"Pack opening — pick 1 of {len(options)}"
         pack_hint.value = "Pick one card."
 
-
-
         def make_tile(card: dict) -> ft.Control:
             cid = card.get("id")
-            
+
             has_confirmed = bool(picked_id)
-            is_selected = (selected_pack_id == cid)  
-            is_picked = (picked_id == cid)
+            is_selected = selected_pack_id == cid
+            is_picked = picked_id == cid
 
             if has_confirmed:
                 tile_opacity = 1.0 if is_picked else 0.33
-                tile_border = ft.Border.all(2 if is_picked else 1, ACCENT if is_picked else BORDER_LIGHT)
+                tile_border = ft.Border.all(
+                    2 if is_picked else 1, ACCENT if is_picked else BORDER_LIGHT
+                )
                 tile_bg = "#3a2f1f" if is_picked else "#2b241a"
                 click_handler = None
                 badge_text = "PICKED" if is_picked else None
                 hint_text = ""
             else:
                 tile_opacity = 1.0
-                tile_border = ft.Border.all(2 if is_selected else 1, ACCENT if is_selected else BORDER_LIGHT)
+                tile_border = ft.Border.all(
+                    2 if is_selected else 1, ACCENT if is_selected else BORDER_LIGHT
+                )
                 tile_bg = "#3a2f1f" if is_selected else "#2b241a"
-                click_handler = (lambda e, c=card: select_card(c))
+                click_handler = lambda e, c=card: select_card(c)
                 badge_text = "SELECTED" if is_selected else None
                 hint_text = "Click to select"
-                
+
             badge = None
             if badge_text:
                 badge = ft.Container(
-                padding=ft.Padding.symmetric(horizontal=8, vertical=3),
-                border_radius=999,
-                bgcolor="#1a1510",
-                border=ft.Border.all(1, ACCENT),
-                content=ft.Text(badge_text, color=ACCENT, size=11, weight=ft.FontWeight.BOLD),
-            )
-                
-            desc = card.get("description","") or ""
-                
+                    padding=ft.Padding.symmetric(horizontal=8, vertical=3),
+                    border_radius=999,
+                    bgcolor="#1a1510",
+                    border=ft.Border.all(1, ACCENT),
+                    content=ft.Text(
+                        badge_text, color=ACCENT, size=11, weight=ft.FontWeight.BOLD
+                    ),
+                )
+
+            desc = card.get("description", "") or ""
+
             if card.get("gate"):
                 if has_confirmed and is_picked and state.get("activeCardId") == cid:
-                        req = gate_amount_text(state.get("activeGate"))
+                    req = gate_amount_text(state.get("activeGate"))
                 else:
-                        req = gate_range_text(card.get("gate"))
-                    
+                    req = gate_range_text(card.get("gate"))
+
                 if req:
                     desc = f"{desc}\n\n{req}"
-                
+
             return ft.Container(
                 expand=1,
                 height=260,
@@ -1472,7 +1272,6 @@ def main(page: ft.Page):
         if not eligible:
             snack("No eligible cards left.")
             return
-        
 
         draw_n = min(int(config.get("cardsPerPack", 4)), len(eligible))
         options = draw_pack_options(eligible, draw_n)
@@ -1516,11 +1315,20 @@ def main(page: ft.Page):
             save()
             refresh()
             if not can_still_drop:
-                snack(f"{config_master_name(master_id)} task complete → no packs left for this master.")
-                set_status(f"{config_master_name(master_id)} has no packs left.", TEXT_DIM)
+                snack(
+                    f"{config_master_name(master_id)} task complete → no packs left for this master."
+                )
+                set_status(
+                    f"{config_master_name(master_id)} has no packs left.", TEXT_DIM
+                )
             else:
-                snack(f"{config_master_name(master_id)} task complete → no pack this time.")
-                set_status(f"{config_master_name(master_id)} did not give you a pack this time.", QUEST_RED)
+                snack(
+                    f"{config_master_name(master_id)} task complete → no pack this time."
+                )
+                set_status(
+                    f"{config_master_name(master_id)} did not give you a pack this time.",
+                    QUEST_RED,
+                )
 
     def open_task_log_window(_):
         dlg = ft.AlertDialog(modal=True)
@@ -1534,7 +1342,9 @@ def main(page: ft.Page):
 
             if not logs:
                 header_stats.value = "No entries yet."
-                list_view.controls.append(ft.Text("No completed tasks yet.", color=TEXT_DIM))
+                list_view.controls.append(
+                    ft.Text("No completed tasks yet.", color=TEXT_DIM)
+                )
                 page.update()
                 return
 
@@ -1558,9 +1368,15 @@ def main(page: ft.Page):
                         content=ft.Column(
                             spacing=2,
                             controls=[
-                                ft.Text(title, color=TEXT_MAIN, weight=ft.FontWeight.BOLD),
+                                ft.Text(
+                                    title, color=TEXT_MAIN, weight=ft.FontWeight.BOLD
+                                ),
                                 ft.Text(f"{ts} • {typ}", color=TEXT_DIM, size=11),
-                                ft.Text(detail, color=ACCENT, size=11) if detail else ft.Container(height=0),
+                                (
+                                    ft.Text(detail, color=ACCENT, size=11)
+                                    if detail
+                                    else ft.Container(height=0)
+                                ),
                             ],
                         ),
                     )
@@ -1586,7 +1402,12 @@ def main(page: ft.Page):
                             ft.Column(
                                 spacing=2,
                                 controls=[
-                                    ft.Text("Task Log", size=18, weight=ft.FontWeight.BOLD, color=TEXT_MAIN),
+                                    ft.Text(
+                                        "Task Log",
+                                        size=18,
+                                        weight=ft.FontWeight.BOLD,
+                                        color=TEXT_MAIN,
+                                    ),
                                     header_stats,
                                 ],
                             ),
@@ -1596,7 +1417,9 @@ def main(page: ft.Page):
                                 border=ft.Border.all(1, BORDER_LIGHT),
                                 bgcolor="#2b241a",
                                 on_click=lambda e: close_dialog(dlg),
-                                content=ft.Text("X", color=TEXT_MAIN, weight=ft.FontWeight.BOLD),
+                                content=ft.Text(
+                                    "X", color=TEXT_MAIN, weight=ft.FontWeight.BOLD
+                                ),
                             ),
                         ],
                     ),
@@ -1614,6 +1437,7 @@ def main(page: ft.Page):
         open_dialog(dlg)
 
         # ---------- Skills window ----------
+
     def asset_exists(rel_path: str) -> bool:
         return os.path.exists(os.path.join(ASSETS_DIR, rel_path.replace("/", os.sep)))
 
@@ -1623,11 +1447,113 @@ def main(page: ft.Page):
             cap_i = int(cap)
             if cap_i >= 99:
                 continue
-            items.append((skill, cap_i))
+            reached_i = max(
+                1, min(cap_i, int(state.get("reachedLevels", {}).get(skill, 1)))
+            )
+            items.append((skill, cap_i, reached_i))
         items.sort(key=lambda x: x[0].lower())
         return items
 
-    def skill_tile(skill: str, cap: int):
+    def set_reached_level(skill: str, level: int):
+        cap = max(1, int(state.get("skillCaps", {}).get(skill, 1)))
+        state.setdefault("reachedLevels", {})[skill] = max(1, min(cap, int(level)))
+        save()
+        refresh()
+        render_pack_from_state()
+
+    def open_skill_level_window(skill: str):
+        cap = max(1, int(state.get("skillCaps", {}).get(skill, 1)))
+        current = max(1, min(cap, int(state.get("reachedLevels", {}).get(skill, 1))))
+
+        dlg = ft.AlertDialog(modal=True)
+        value_text = ft.Text(
+            f"Reached level: {current}/{cap}",
+            color=TEXT_MAIN,
+            size=16,
+            weight=ft.FontWeight.BOLD,
+        )
+
+        def sync(delta: int = 0, set_cap: bool = False):
+            nonlocal current
+            current = cap if set_cap else max(1, min(cap, current + delta))
+            value_text.value = f"Reached level: {current}/{cap}"
+            page.update()
+
+        def save_level(_=None):
+            set_reached_level(skill, current)
+            close_dialog(dlg)
+
+        dlg.content = ft.Container(
+            width=360,
+            bgcolor=PANEL_BG,
+            border=ft.Border.all(1, BORDER_DARK),
+            border_radius=14,
+            padding=12,
+            content=ft.Column(
+                tight=True,
+                spacing=10,
+                controls=[
+                    ft.Row(
+                        alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+                        controls=[
+                            ft.Text(
+                                skill,
+                                size=18,
+                                weight=ft.FontWeight.BOLD,
+                                color=TEXT_MAIN,
+                            ),
+                            ft.Container(
+                                padding=6,
+                                border_radius=8,
+                                border=ft.Border.all(1, BORDER_LIGHT),
+                                bgcolor="#2b241a",
+                                on_click=lambda e: close_dialog(dlg),
+                                content=ft.Text(
+                                    "X", color=TEXT_MAIN, weight=ft.FontWeight.BOLD
+                                ),
+                            ),
+                        ],
+                    ),
+                    ft.Container(
+                        bgcolor=PANEL_INNER,
+                        border=ft.Border.all(1, BORDER_LIGHT),
+                        border_radius=12,
+                        padding=12,
+                        content=ft.Column(
+                            tight=True,
+                            spacing=10,
+                            controls=[
+                                value_text,
+                                ft.Row(
+                                    alignment=ft.MainAxisAlignment.CENTER,
+                                    spacing=10,
+                                    controls=[
+                                        osrs_button("-1", lambda e: sync(-1)),
+                                        osrs_button("+1", lambda e: sync(1)),
+                                        osrs_button(
+                                            "Set to cap",
+                                            lambda e: sync(set_cap=True),
+                                        ),
+                                    ],
+                                ),
+                                ft.Text(
+                                    "Track the highest level you have actually reached.",
+                                    color=TEXT_DIM,
+                                    size=11,
+                                ),
+                            ],
+                        ),
+                    ),
+                    ft.Row(
+                        alignment=ft.MainAxisAlignment.END,
+                        controls=[osrs_button("Save", save_level, primary=True)],
+                    ),
+                ],
+            ),
+        )
+        open_dialog(dlg)
+
+    def skill_tile(skill: str, cap: int, reached: int):
         icon_rel = f"skills/{skill.lower()}.png"
         has_icon = asset_exists(icon_rel)
 
@@ -1660,26 +1586,61 @@ def main(page: ft.Page):
             bgcolor="#2a241a",
             border=ft.Border.all(1, BORDER_LIGHT),
             border_radius=6,
-            content=ft.Text(str(cap), size=12, weight=ft.FontWeight.BOLD, color=TEXT_MAIN),
+            content=ft.Text(
+                str(cap), size=12, weight=ft.FontWeight.BOLD, color=TEXT_MAIN
+            ),
+        )
+
+        reached_badge = ft.Container(
+            padding=ft.Padding.symmetric(horizontal=6, vertical=2),
+            bgcolor="#1f2418",
+            border=ft.Border.all(1, BORDER_LIGHT),
+            border_radius=6,
+            content=ft.Text(
+                str(reached), size=12, weight=ft.FontWeight.BOLD, color=QUEST_GREEN
+            ),
         )
 
         return ft.Container(
             width=84,
-            height=60,
+            height=82,
             border_radius=8,
             bgcolor="#1a1510",
             border=ft.Border.all(1, BORDER_LIGHT),
+            on_click=(lambda e: open_skill_level_window(skill)) if cap > 1 else None,
+            tooltip=("Click to update reached level" if cap > 1 else None),
             content=ft.Stack(
                 controls=[
                     ft.Container(expand=True, alignment=ALIGN_CENTER, content=icon),
-                    ft.Container(expand=True, alignment=ALIGN_CENTER, content=lock_control, visible=(cap <= 1)),
-                    ft.Container(expand=True, alignment=ALIGN_TOP_RIGHT, padding=6, content=cap_badge, visible=(cap > 1)),
+                    ft.Container(
+                        expand=True,
+                        alignment=ALIGN_CENTER,
+                        content=lock_control,
+                        visible=(cap <= 1),
+                    ),
+                    ft.Container(
+                        expand=True,
+                        alignment=ALIGN_TOP_RIGHT,
+                        padding=6,
+                        content=cap_badge,
+                        visible=(cap > 1),
+                    ),
+                    ft.Container(
+                        expand=True,
+                        alignment=ALIGN_BOTTOM_LEFT,
+                        padding=6,
+                        content=reached_badge,
+                        visible=(cap > 1),
+                    ),
                 ]
             ),
         )
 
     def open_skills_window(_):
-        tiles = [skill_tile(skill, cap) for skill, cap in tracked_skills()]
+        tiles = [
+            skill_tile(skill, cap, reached)
+            for skill, cap, reached in tracked_skills()
+        ]
 
         if hasattr(ft, "GridView"):
             grid = ft.GridView(
@@ -1708,14 +1669,21 @@ def main(page: ft.Page):
                     ft.Row(
                         alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
                         controls=[
-                            ft.Text("Unlocked Skills", size=18, weight=ft.FontWeight.BOLD, color=TEXT_MAIN),
+                            ft.Text(
+                                "Unlocked Skills",
+                                size=18,
+                                weight=ft.FontWeight.BOLD,
+                                color=TEXT_MAIN,
+                            ),
                             ft.Container(
                                 padding=6,
                                 border_radius=8,
                                 border=ft.Border.all(1, BORDER_LIGHT),
                                 bgcolor="#2b241a",
                                 on_click=lambda e: close_dialog(dlg),
-                                content=ft.Text("X", color=TEXT_MAIN, weight=ft.FontWeight.BOLD),
+                                content=ft.Text(
+                                    "X", color=TEXT_MAIN, weight=ft.FontWeight.BOLD
+                                ),
                             ),
                         ],
                     ),
@@ -1727,6 +1695,11 @@ def main(page: ft.Page):
                         padding=12,
                         content=grid_content,
                     ),
+                    ft.Text(
+                        "Top-right is unlock cap. Bottom-left is your reached level.",
+                        color=TEXT_DIM,
+                        size=11,
+                    ),
                 ],
             ),
         )
@@ -1734,7 +1707,6 @@ def main(page: ft.Page):
 
     def is_repeatable(card: dict) -> bool:
         return bool(card.get("repeatable", False))
-
 
     def draw_pack_options(eligible: list[dict], draw_n: int) -> list[dict]:
         pool = eligible[:]
@@ -1764,7 +1736,11 @@ def main(page: ft.Page):
                 pick = weighted_pick(nonquests_left)
             else:
                 pick = weighted_pick(pool)
-                if pick.get("type") == "QUEST" and nonquests_left and quest_count >= max_quests_if_possible:
+                if (
+                    pick.get("type") == "QUEST"
+                    and nonquests_left
+                    and quest_count >= max_quests_if_possible
+                ):
                     pick = weighted_pick(nonquests_left)
 
             options.append(pick)
@@ -1798,7 +1774,9 @@ def main(page: ft.Page):
         dlg = ft.AlertDialog(modal=True)
         list_view = ft.ListView(expand=True, spacing=2, padding=10)
 
-        header_title = ft.Text("Quest List", size=18, weight=ft.FontWeight.BOLD, color=TEXT_MAIN)
+        header_title = ft.Text(
+            "Quest List", size=18, weight=ft.FontWeight.BOLD, color=TEXT_MAIN
+        )
         header_stats = ft.Text("", color=TEXT_DIM)
 
         def rebuild():
@@ -1824,7 +1802,7 @@ def main(page: ft.Page):
 
                 meta = q.get("meta", {}) or {}
                 difficulty = str(meta.get("difficulty") or "").strip()
-                meta_line = difficulty 
+                meta_line = difficulty
 
                 list_view.controls.append(
                     ft.Container(
@@ -1835,8 +1813,17 @@ def main(page: ft.Page):
                         content=ft.Column(
                             spacing=1,
                             controls=[
-                                ft.Text(q.get("title", qid), color=quest_color(status), size=16, weight=ft.FontWeight.BOLD),
-                                ft.Text(meta_line, color=TEXT_DIM, size=11) if meta_line else ft.Container(height=0),
+                                ft.Text(
+                                    q.get("title", qid),
+                                    color=quest_color(status),
+                                    size=16,
+                                    weight=ft.FontWeight.BOLD,
+                                ),
+                                (
+                                    ft.Text(meta_line, color=TEXT_DIM, size=11)
+                                    if meta_line
+                                    else ft.Container(height=0)
+                                ),
                             ],
                         ),
                     )
@@ -1879,7 +1866,9 @@ def main(page: ft.Page):
                                 border=ft.Border.all(1, BORDER_LIGHT),
                                 bgcolor="#2b241a",
                                 on_click=lambda e: close_dialog(dlg),
-                                content=ft.Text("X", color=TEXT_MAIN, weight=ft.FontWeight.BOLD),
+                                content=ft.Text(
+                                    "X", color=TEXT_MAIN, weight=ft.FontWeight.BOLD
+                                ),
                             ),
                         ],
                     ),
@@ -1913,14 +1902,21 @@ def main(page: ft.Page):
                     ft.Row(
                         alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
                         controls=[
-                            ft.Text("Notes", size=18, weight=ft.FontWeight.BOLD, color=TEXT_MAIN),
+                            ft.Text(
+                                "Notes",
+                                size=18,
+                                weight=ft.FontWeight.BOLD,
+                                color=TEXT_MAIN,
+                            ),
                             ft.Container(
                                 padding=6,
                                 border_radius=8,
                                 border=ft.Border.all(1, BORDER_LIGHT),
                                 bgcolor="#2b241a",
                                 on_click=lambda e: close_dialog(dlg),
-                                content=ft.Text("X", color=TEXT_MAIN, weight=ft.FontWeight.BOLD),
+                                content=ft.Text(
+                                    "X", color=TEXT_MAIN, weight=ft.FontWeight.BOLD
+                                ),
                             ),
                         ],
                     ),
@@ -1941,6 +1937,9 @@ def main(page: ft.Page):
         if not cid:
             snack("No active card.")
             return
+        if not gate_satisfied(state):
+            snack(gate_amount_text(state.get("activeGate")) or "Gate not satisfied.")
+            return
         card = cards_by_id.get(cid, {"id": cid, "type": "?"})
         log_completed(card)
         complete_active_card(state, repeatable=is_repeatable(card))
@@ -1954,7 +1953,7 @@ def main(page: ft.Page):
 
         def rebuild():
             list_view.controls.clear()
-            
+
             for mm in config.get("slayerMasters", []):
                 portrait = mm.get("portrait")
                 mid = mm["id"]
@@ -1966,15 +1965,17 @@ def main(page: ft.Page):
                 tasks = int(st.get("tasks", 0))
                 found = int(st.get("packsFound", 0))
                 maxp = int(st.get("maxPacks", mm["maxPacks"]))
-                
+
                 can_still_drop = found < maxp
                 chance = slayer_pack_chance_for(st) if can_still_drop else 0.0
                 chance_text = fmt_pct(chance)
 
-                
-
-                if portrait and os.path.exists(os.path.join(ASSETS_DIR, portrait.replace("/", os.sep))):
-                    img = ft.Image(src=portrait, width=44, height=44, fit=ft.BoxFit.CONTAIN)
+                if portrait and os.path.exists(
+                    os.path.join(ASSETS_DIR, portrait.replace("/", os.sep))
+                ):
+                    img = ft.Image(
+                        src=portrait, width=44, height=44, fit=ft.BoxFit.CONTAIN
+                    )
                 else:
                     img = ft.Container(
                         width=44,
@@ -1983,19 +1984,21 @@ def main(page: ft.Page):
                         bgcolor="#1a1510",
                         border=ft.Border.all(1, BORDER_LIGHT),
                         border_radius=8,
-                        content=ft.Text(name[:1], color=TEXT_MAIN, weight=ft.FontWeight.BOLD),
+                        content=ft.Text(
+                            name[:1], color=TEXT_MAIN, weight=ft.FontWeight.BOLD
+                        ),
                     )
-                    
+
                 chance_badge = ft.Container(
-                    padding=ft.Padding.symmetric(horizontal=8,vertical=3),
+                    padding=ft.Padding.symmetric(horizontal=8, vertical=3),
                     border_radius=999,
                     bgcolor="#15110d",
                     border=ft.Border.all(1, BORDER_LIGHT),
                     content=ft.Text(
                         chance_text if can_still_drop else "0.0%",
-                        color= ACCENT if can_still_drop else TEXT_DIM,
+                        color=ACCENT if can_still_drop else TEXT_DIM,
                         size=14,
-                        weight= ft.FontWeight.BOLD,
+                        weight=ft.FontWeight.BOLD,
                     ),
                 )
 
@@ -2017,26 +2020,46 @@ def main(page: ft.Page):
                                         spacing=2,
                                         controls=[
                                             ft.Row(
-                                                spacing = 10,
-                                                vertical_alignment= ft.CrossAxisAlignment.CENTER,
+                                                spacing=10,
+                                                vertical_alignment=ft.CrossAxisAlignment.CENTER,
                                                 controls=[
-                                                    ft.Text(name, size=18, weight=ft.FontWeight.BOLD, color=TEXT_MAIN),
+                                                    ft.Text(
+                                                        name,
+                                                        size=18,
+                                                        weight=ft.FontWeight.BOLD,
+                                                        color=TEXT_MAIN,
+                                                    ),
                                                     chance_badge,
                                                 ],
                                             ),
-                                            ft.Text(f"Lifetime Tasks: {tasks}", color=TEXT_DIM),
-                                            ft.Text(f"Packs Found: {found}/{maxp}", color=ACCENT),
+                                            ft.Text(
+                                                f"Lifetime Tasks: {tasks}",
+                                                color=TEXT_DIM,
+                                            ),
+                                            ft.Text(
+                                                f"Packs Found: {found}/{maxp}",
+                                                color=ACCENT,
+                                            ),
                                         ],
                                     ),
                                 ],
                             ),
                             ft.Container(
-                                padding=ft.Padding.symmetric(horizontal=14, vertical=10),
+                                padding=ft.Padding.symmetric(
+                                    horizontal=14, vertical=10
+                                ),
                                 border_radius=10,
                                 bgcolor="#2b241a",
                                 border=ft.Border.all(1, BORDER_LIGHT),
-                                on_click=lambda e, x=mid: (complete_task_for_master(x), rebuild()),
-                                content=ft.Text("Complete Task", color=TEXT_MAIN, weight=ft.FontWeight.BOLD),
+                                on_click=lambda e, x=mid: (
+                                    complete_task_for_master(x),
+                                    rebuild(),
+                                ),
+                                content=ft.Text(
+                                    "Complete Task",
+                                    color=TEXT_MAIN,
+                                    weight=ft.FontWeight.BOLD,
+                                ),
                             ),
                         ],
                     ),
@@ -2059,14 +2082,21 @@ def main(page: ft.Page):
                     ft.Row(
                         alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
                         controls=[
-                            ft.Text("Slayer Masters", size=18, weight=ft.FontWeight.BOLD, color=TEXT_MAIN),
+                            ft.Text(
+                                "Slayer Masters",
+                                size=18,
+                                weight=ft.FontWeight.BOLD,
+                                color=TEXT_MAIN,
+                            ),
                             ft.Container(
                                 padding=6,
                                 border_radius=8,
                                 border=ft.Border.all(1, BORDER_LIGHT),
                                 bgcolor="#2b241a",
                                 on_click=lambda e: close_dialog(dlg),
-                                content=ft.Text("X", color=TEXT_MAIN, weight=ft.FontWeight.BOLD),
+                                content=ft.Text(
+                                    "X", color=TEXT_MAIN, weight=ft.FontWeight.BOLD
+                                ),
                             ),
                         ],
                     ),
@@ -2092,7 +2122,12 @@ def main(page: ft.Page):
             alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
             vertical_alignment=ft.CrossAxisAlignment.CENTER,
             controls=[
-                ft.Text("Welcome to RuneCards!", size=22, weight=ft.FontWeight.BOLD, color=TEXT_MAIN),
+                ft.Text(
+                    "Welcome to RuneCards!",
+                    size=22,
+                    weight=ft.FontWeight.BOLD,
+                    color=TEXT_MAIN,
+                ),
                 ft.Row(
                     spacing=10,
                     controls=[
@@ -2136,11 +2171,27 @@ def main(page: ft.Page):
                                 ],
                             ),
                         ),
-                        
-                        icon_button("ui/log.png", open_task_log_window, tooltip="Task Log", size=22),
-                        icon_button("ui/skills.png", open_skills_window, tooltip="Skills", size=22),
-                        icon_button("ui/quests.png", open_quests_window, tooltip="Quests", size=22),
-                        icon_button("ui/notes.png", open_notes_window, tooltip="Notes", size=22),
+                        icon_button(
+                            "ui/log.png",
+                            open_task_log_window,
+                            tooltip="Task Log",
+                            size=22,
+                        ),
+                        icon_button(
+                            "ui/skills.png",
+                            open_skills_window,
+                            tooltip="Skills",
+                            size=22,
+                        ),
+                        icon_button(
+                            "ui/Quests.png",
+                            open_quests_window,
+                            tooltip="Quests",
+                            size=22,
+                        ),
+                        icon_button(
+                            "ui/notes.png", open_notes_window, tooltip="Notes", size=22
+                        ),
                     ],
                 ),
             ],
@@ -2155,29 +2206,24 @@ def main(page: ft.Page):
                     "Open pack",
                     f"Pick 1 of {int(config.get('cardsPerPack', 3))} cards",
                     open_pack,
-                    
                     icon_src="ui/PackIco.png",
                     emoji_fallback="🎴",
-                    primary=True
+                    primary=True,
                 ),
-
                 action_tile(
                     "Slayer Masters",
                     "Log a task (rolls for a pack)",
                     open_slayer_masters_window,
-                    
                     icon_src="ui/slayer.png",
                     emoji_fallback="⚔",
                 ),
                 action_tile(
                     "Cloud saves",
                     "Local / Supabase sync settings",
-                    open_cloud_window,
-                    icon_src="ui/cloud.png",
+                    open_cloud_window,  # ✅ add this
+                    icon_src=None,
                     emoji_fallback="☁",
                 ),
-
-
                 ft.Container(height=6),
                 ft.Row(
                     spacing=10,
@@ -2185,34 +2231,33 @@ def main(page: ft.Page):
                     controls=[
                         save_path_text,
                         ft.Container(
-                                     padding=ft.Padding.symmetric(horizontal=10, vertical=6),
-                                     border_radius=10,
-                                     bgcolor="#2b241a",
-                                     border=ft.Border.all(1, BORDER_LIGHT),
-                                     on_click=toggle_save_path,
-                                     content=save_toggle_text, 
+                            padding=ft.Padding.symmetric(horizontal=10, vertical=6),
+                            border_radius=10,
+                            bgcolor="#2b241a",
+                            border=ft.Border.all(1, BORDER_LIGHT),
+                            on_click=toggle_save_path,
+                            content=save_toggle_text,
+                        ),
+                    ],
                 ),
             ],
         )
-            ]
-    )
     )
 
     right_panel = panel(
-    ft.Column(
-        expand=True,
-        spacing=14,
-        controls=[
-            pack_title,
-            pack_hint,
-            pack_empty,
-            pack_options_row,
-            pick_btn_section,
-            complete_btn_section
-        ],
+        ft.Column(
+            expand=True,
+            spacing=14,
+            controls=[
+                pack_title,
+                pack_hint,
+                pack_empty,
+                pack_options_row,
+                pick_btn_section,
+                complete_btn_section,
+            ],
+        )
     )
-)
-
 
     page.add(
         ft.Container(
