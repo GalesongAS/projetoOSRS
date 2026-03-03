@@ -1,83 +1,60 @@
-import json
-import os
 import secrets
-
-
+import os
 import flet as ft
 from datetime import datetime
 
-
+from app_constants import (
+    ACCENT,
+    ALIGN_BOTTOM_LEFT,
+    ALIGN_CENTER,
+    ALIGN_TOP_RIGHT,
+    ASSETS_DIR,
+    BORDER_DARK,
+    BORDER_LIGHT,
+    CARDS_PATH,
+    CLOUD_CFG_PATH,
+    CLOUD_TABLE,
+    CONFIG_PATH,
+    NOTES_TEXT as APP_NOTES_TEXT,
+    OSRS_BG,
+    PANEL_BG,
+    PANEL_INNER,
+    QUEST_GREEN,
+    QUEST_RED,
+    QUEST_YELLOW,
+    SAVE_DIR,
+    SAVE_PATH,
+    SLAYER_CHANCE_CAP,
+    SLAYER_CURVE,
+    SLAYER_END_MULT,
+    SLAYER_PITY_CAP,
+    SLAYER_PITY_PER_TASK,
+    SLAYER_START_MULT,
+    TEXT_DIM,
+    TEXT_MAIN,
+)
+from app_storage import default_save, migrate_save, read_json, write_json
 from cloud_store import CloudStore
+from game_logic import (
+    apply_unlock_effects,
+    check_requires,
+    complete_active_card,
+    draw_pack_options,
+    fmt_pct,
+    gate_amount_text,
+    gate_range_text,
+    gate_satisfied,
+    is_repeatable,
+    quest_color,
+    quest_status,
+    resolve_gate,
+    slayer_pack_chance_for,
+    tracked_skills,
+    validate_cards,
+    weighted_pick,
+)
+from ui_components import action_tile, icon_button, osrs_button, panel, stat_pill
 
-
-def _align(name: str, x: float, y: float):
-    # Newer flet: ft.alignment.center, ft.alignment.top_right, etc.
-    if hasattr(ft, "alignment") and hasattr(ft.alignment, name):
-        return getattr(ft.alignment, name)
-    # Older/other flet: use Alignment(x,y)
-    return ft.Alignment(x, y)
-
-
-ALIGN_CENTER = _align("center", 0.0, 0.0)
-ALIGN_TOP_RIGHT = _align("top_right", 1.0, -1.0)
-ALIGN_TOP_LEFT = _align("top_left", -1.0, -1.0)
-ALIGN_BOTTOM_RIGHT = _align("bottom_right", 1.0, 1.0)
-ALIGN_BOTTOM_LEFT = _align("bottom_left", -1.0, 1.0)
-ALIGN_CENTER_LEFT = _align("center_left", -1.0, 0.0)
-ALIGN_CENTER_RIGHT = _align("center_right", 1.0, 0.0)
-ALIGN_TOP_CENTER = _align("top_center", 0.0, -1.0)
-ALIGN_BOTTOM_CENTER = _align("bottom_center", 0.0, 1.0)
-
-
-def read_json_safe(path: str, fallback):
-    try:
-        if os.path.exists(path):
-            return read_json(path)
-    except Exception:
-        pass
-    return fallback
-
-
-HERE = os.path.dirname(os.path.abspath(__file__))
-CONFIG_PATH = os.path.join(HERE, "config.json")
-CARDS_PATH = os.path.join(HERE, "cards.json")
-QUESTS_PATH = os.path.join(HERE, "quests.json")
-
-# Pick a writable persistent folder for ALL platforms
-APP_DATA_DIR = os.getenv("FLET_APP_STORAGE_DATA")  # set by packaged Flet apps
-if not APP_DATA_DIR:
-    APP_DATA_DIR = os.path.join(
-        os.path.expanduser("~"), ".runecards"
-    )  # desktop fallback
-
-SAVE_DIR = APP_DATA_DIR
-SAVE_PATH = os.path.join(SAVE_DIR, "save.json")
-CLOUD_CFG_PATH = os.path.join(SAVE_DIR, "cloud.json")
-CLOUD_SESSION_PATH = os.path.join(SAVE_DIR, "cloud_session.json")
-
-ASSETS_DIR = os.path.join(HERE, "assets")
-
-CLOUD_TABLE = "saves"
-
-
-OSRS_BG = "#0f0d0a"
-PANEL_BG = "#211c15"
-PANEL_INNER = "#17130f"
-BORDER_DARK = "#0a0806"
-BORDER_LIGHT = "#5b4f3b"
-TEXT_MAIN = "#d7c9ae"
-TEXT_DIM = "#b6a789"
-ACCENT = "#c9b06a"
-QUEST_RED = "#d14b43"
-QUEST_GREEN = "#3ddc62"
-QUEST_YELLOW = "#ffd166"
-# --- Slayer pack drop tuning ---
-SLAYER_START_MULT = 2.3
-SLAYER_END_MULT = 0.50
-SLAYER_CURVE = 1.0
-SLAYER_PITY_PER_TASK = 0.04
-SLAYER_PITY_CAP = 0.25
-SLAYER_CHANCE_CAP = 0.90
 
 NOTES_TEXT = (
     "• Packs stack.\n"
@@ -87,223 +64,11 @@ NOTES_TEXT = (
 
 
 # ---------- IO ----------
-NOTES_TEXT = (
-    "- Packs stack.\n"
-    "- You can only have 1 active card.\n"
-    "- Slayer Masters have finite pack pools."
-)
-
-
-def read_json(path: str):
-    with open(path, "r", encoding="utf-8") as f:
-        return json.load(f)
-
-
-def write_json(path: str, data):
-    os.makedirs(os.path.dirname(path), exist_ok=True)
-    tmp = path + ".tmp"
-    with open(tmp, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
-        f.write("\n")
-    os.replace(tmp, path)
-
-
-# ---------- State ----------
-def default_save(config):
-    caps = dict(config.get("startingCaps", {}))
-    masters = {
-        m["id"]: {
-            "tasks": 0,
-            "packsFound": 0,
-            "maxPacks": int(m["maxPacks"]),
-            "sinceLastPack": 0,
-        }
-        for m in config.get("slayerMasters", [])
-    }
-
-    return {
-        "version": 3,
-        "unopenedPacks": 0,
-        "packsOpened": 0,
-        "taskLog": [],
-        "pendingPackOptionIds": [],
-        "lastPackOptionIds": [],
-        "lastPackPickedId": None,
-        "skillCaps": caps,
-        "reachedLevels": {},
-        "activeCardId": None,
-        "activeGate": None,
-        "obtainedCardIds": [],
-        "completedCardIds": [],
-        "slayerMasters": masters,
-    }
-
-
-def migrate_save(state: dict, config: dict) -> dict:
-    state.setdefault("unopenedPacks", 0)
-    state.setdefault("packsOpened", 0)
-    state.setdefault("skillCaps", {})
-    state.setdefault("reachedLevels", {})
-    state.setdefault("activeCardId", None)
-    state.setdefault("activeGate", None)
-    state.setdefault("obtainedCardIds", [])
-    state.setdefault("completedCardIds", [])
-    state.setdefault("taskLog", [])
-    state.setdefault("pendingPackOptionIds", [])
-
-    state.setdefault("lastPackOptionIds", [])
-    state.setdefault("lastPackPickedId", None)
-
-    defaults = config.get("startingCaps", {})
-    for skill, cap in defaults.items():
-        if skill not in state["skillCaps"]:
-            state["skillCaps"][skill] = cap
-
-    state.setdefault("slayerMasters", {})
-    for m in config.get("slayerMasters", []):
-        mid = m["id"]
-        if mid not in state["slayerMasters"]:
-            state["slayerMasters"][mid] = {
-                "tasks": 0,
-                "packsFound": 0,
-                "maxPacks": int(m["maxPacks"]),
-                "sinceLastPack": 0,
-            }
-        else:
-            state["slayerMasters"][mid]["maxPacks"] = int(m["maxPacks"])
-            state["slayerMasters"][mid].setdefault("sinceLastPack", 0)
-
-    return state
+NOTES_TEXT = APP_NOTES_TEXT
 
 
 # ---------- Card logic ----------
-def weighted_pick(items):
-    total = sum(max(0, int(i.get("weight", 1))) for i in items)
-    if total <= 0:
-        return items[secrets.randbelow(len(items))]
-    r = secrets.randbelow(total)
-    acc = 0
-    for it in items:
-        acc += max(0, int(it.get("weight", 1)))
-        if r < acc:
-            return it
-    return items[-1]
-
-
-def check_requires(state, card):
-    reqs = card.get("requires", []) or []
-    caps = state["skillCaps"]
-    completed = set(state["completedCardIds"])
-
-    for r in reqs:
-        kind = r.get("kind")
-        if kind == "SKILL_CAP_AT_LEAST":
-            skill = r["skill"]
-            needed = int(r["cap"])
-            if int(caps.get(skill, 1)) < needed:
-                return False
-        elif kind == "CARD_COMPLETED":
-            cid = r["cardId"]
-            if cid not in completed:
-                return False
-        else:
-            return False
-    return True
-
-
-def gate_satisfied(state):
-    g = state.get("activeGate")
-    if not g:
-        return True
-    if g.get("kind") == "REACH_LEVEL":
-        skill = g["skill"]
-        target = int(g["level"])
-        cur = int(state["reachedLevels"].get(skill, 1))
-        return cur >= target
-    return True
-
-
-def apply_unlock_effects(state, card):
-    for eff in card.get("effects", []) or []:
-        if eff.get("kind") == "SET_SKILL_CAP":
-            skill = eff["skill"]
-            cap = int(eff["cap"])
-            state["skillCaps"][skill] = max(int(state["skillCaps"].get(skill, 1)), cap)
-
-
-def complete_active_card(state, repeatable: bool = False):
-    cid = state.get("activeCardId")
-    if not cid:
-        return False
-
-    if not repeatable and cid not in state["completedCardIds"]:
-        state["completedCardIds"].append(cid)
-
-    state["activeCardId"] = None
-    state["activeGate"] = None
-    return True
-
-
-# ---------- UI helpers ----------
-def panel(content, padding=16):
-    return ft.Container(
-        padding=padding,
-        bgcolor=PANEL_BG,
-        border_radius=14,
-        border=ft.Border.all(1, BORDER_DARK),
-        content=ft.Container(
-            padding=12,
-            bgcolor=PANEL_INNER,
-            border_radius=12,
-            border=ft.Border.all(1, BORDER_LIGHT),
-            content=content,
-        ),
-    )
-
-
-def osrs_button(text: str, on_click, primary=False):
-    return ft.Container(
-        border_radius=10,
-        border=ft.Border.all(1, BORDER_LIGHT),
-        bgcolor=("#3a2f1f" if primary else "#2b241a"),
-        padding=ft.Padding.symmetric(horizontal=14, vertical=10),
-        on_click=on_click,
-        content=ft.Text(text, size=14, color=TEXT_MAIN, weight=ft.FontWeight.BOLD),
-    )
-
-
-def icon_button(img_src: str, on_click, tooltip: str = "", size: int = 22):
-    return ft.Container(
-        width=size + 18,
-        height=size + 18,
-        border_radius=10,
-        border=ft.Border.all(1, BORDER_LIGHT),
-        bgcolor="#2b241a",
-        padding=8,
-        tooltip=tooltip or None,
-        on_click=on_click,
-        content=ft.Image(src=img_src, width=size, height=size, fit=ft.BoxFit.CONTAIN),
-    )
-
-
-def stat_pill(label: str, value_control: ft.Control):
-    return ft.Container(
-        padding=ft.Padding.symmetric(horizontal=10, vertical=6),
-        border_radius=999,
-        bgcolor="#1a1510",
-        border=ft.Border.all(1, BORDER_LIGHT),
-        content=ft.Row(
-            tight=True,
-            spacing=6,
-            controls=[
-                ft.Text(label, color=TEXT_DIM, size=12),
-                value_control,
-            ],
-        ),
-    )
-
-
-def action_tile(
+def _legacy_action_tile(
     title: str,
     subtitle: str,
     on_click,
@@ -371,7 +136,7 @@ def action_tile(
     )
 
 
-def fmt_pct(p: float) -> str:
+def _legacy_fmt_pct(p: float) -> str:
     return f"{p * 100:.1f}%"
 
 
@@ -420,7 +185,7 @@ def main(page: ft.Page):
         cloud = CloudStore(
             url=cloud_cfg["url"],
             anon_key=cloud_cfg["anon_key"],
-            table="saves",
+            table=CLOUD_TABLE,
             storage_dir=SAVE_DIR,
         )
 
@@ -458,7 +223,7 @@ def main(page: ft.Page):
                 cloud = CloudStore(
                     url=cloud_cfg["url"],
                     anon_key=cloud_cfg["anon_key"],
-                    table="saves",
+                    table=CLOUD_TABLE,
                     storage_dir=SAVE_DIR,
                 )
 
@@ -669,9 +434,7 @@ def main(page: ft.Page):
             cloud_cfg["slot"] = name
             save_cloud_cfg()
 
-            ok = (
-                cloud.push(name, name, state, cloud_meta()) if cloud_ready() else False
-            )
+            ok = cloud.push(name, name, state, cloud_meta()) if cloud_ready() else False
             snack("New save created." if ok else "Failed to create save.")
             refresh_list()
 
@@ -1638,8 +1401,7 @@ def main(page: ft.Page):
 
     def open_skills_window(_):
         tiles = [
-            skill_tile(skill, cap, reached)
-            for skill, cap, reached in tracked_skills()
+            skill_tile(skill, cap, reached) for skill, cap, reached in tracked_skills()
         ]
 
         if hasattr(ft, "GridView"):
