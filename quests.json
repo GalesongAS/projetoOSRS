@@ -4399,6 +4399,32 @@
     }
   },
   {
+    "id": "quest_temple_of_the_eye",
+    "type": "QUEST",
+    "title": "Temple of the Eye",
+    "description": "Complete the quest: Temple of the Eye.",
+    "weight": 15,
+    "requires": [
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_rune_mysteries"
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Runecraft",
+        "cap": 10
+      }
+    ],
+    "meta": {
+      "members": true,
+      "difficulty": "Intermediate",
+      "questPoints": 1,
+      "url": "https://oldschool.runescape.wiki/w/Temple_of_the_Eye"
+    }
+
+
+  },
+  {
     "id": "quest_throne_of_miscellania",
     "type": "QUEST",
     "title": "Throne of Miscellania",
