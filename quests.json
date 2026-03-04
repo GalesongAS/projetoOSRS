@@ -240,7 +240,13 @@
         "skill": "Construction",
         "cap": 30
       }
-    ]
+    ],
+    "meta": {
+      "members": true,
+      "difficulty": "Intermediate",
+      "questPoints": 1,
+      "url": "https://oldschool.runescape.wiki/w/At_First_Light"
+    }
   },
   {
     "id": "quest_beneath_cursed_sands",
@@ -770,6 +776,12 @@
       {
         "kind": "CARD_COMPLETED",
         "cardId": "quest_pandemonium"
+
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Sailing",
+        "cap": 30
       }
     ],
     "meta": {
@@ -1298,7 +1310,16 @@
     "title": "Dream Mentor",
     "description": "Complete the quest: Dream Mentor.",
     "weight": 2,
-    "requires": [],
+    "requires": [
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_lunar_diplomacy"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_eadgars_ruse"
+      }
+    ],
     "meta": {
       "members": true,
       "difficulty": "Master",
@@ -1969,6 +1990,88 @@
     }
   },
   {
+    "id": "quest_perilous_moons",
+    "type": "QUEST",
+    "title": "Perilous Moons",
+    "description": "Complete the quest: Perilous Moons.",
+    "weight": 5,
+    "requires": [
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_twilights_promise"
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Hunter",
+        "cap": 20
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "fishing",
+        "cap": 20
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Runecraft",
+        "cap": 20
+      },  
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Construction",
+        "cap": 10
+      }
+    ],
+    "meta": {
+      "members": true,
+      "difficulty": "Master",
+      "questPoints": 2,
+      "url": "https://oldschool.runescape.wiki/w/Perilous_Moons"
+    }
+  },
+  {
+    "id": "quest_secrets_of_the_north",
+    "type": "QUEST",
+    "title": "Secrets of the North",
+    "description": "Complete the quest: Secrets of the North.",
+    "weight": 5,
+    "requires": [
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_making_friends_with_my_arm"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_devious_minds"
+      },
+         {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_hazeel_cult"
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Agility",
+        "cap": 70
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Thieving",
+        "cap": 70
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Hunter",
+        "cap": 60
+      }
+    ],
+    "meta": {
+      "members": true,
+      "difficulty": "Master",
+      "questPoints": 2,
+      "url": "https://oldschool.runescape.wiki/w/Secrets_of_the_North"
+    }
+
+   },
+  {
     "id": "quest_holy_grail",
     "type": "QUEST",
     "title": "Holy Grail",
@@ -1987,6 +2090,50 @@
       "url": "https://oldschool.runescape.wiki/w/Holy_Grail"
     }
   },
+  {
+    "id": "quest_sins_of_the_father",
+    "type": "QUEST",
+    "title": "Sins of the Father",
+    "description": "Complete the quest: Sins of the Father.",
+    "weight": 5,
+    "requires": [
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_vampyre_slayer"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_a_taste_of_hope"
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Woodcutting",
+        "cap": 70
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Fletching",
+        "cap": 60
+      },
+            {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Crafting",
+        "cap": 60
+      },
+            {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Agility",
+        "cap": 60
+      }
+    ],
+    "meta": {
+      "members": true,
+      "difficulty": "Master",
+      "questPoints": 2,
+      "url": "https://oldschool.runescape.wiki/w/Sins_of_the_Father"
+    }
+  },
+
   {
     "id": "quest_horror_from_the_deep",
     "type": "QUEST",
@@ -2061,6 +2208,11 @@
         "kind": "SKILL_CAP_AT_LEAST",
         "skill": "Mining",
         "cap": 15
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Smithing",
+        "cap": 50
       },
       {
         "kind": "SKILL_CAP_AT_LEAST",
@@ -2688,6 +2840,167 @@
       "difficulty": "Novice",
       "questPoints": 1,
       "url": "https://oldschool.runescape.wiki/w/Plague_City"
+    }
+  },
+  {
+    "id": "quest_while_guthix_sleeps",
+    "type": "QUEST",
+    "title": "While Guthix Sleeps",
+    "description": "Complete the quest: While Guthix Sleeps.",
+    "weight": 2,
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Thieving",
+        "cap": 80
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Agility",
+        "cap": 70
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Herblore",
+        "cap": 70
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Farming",
+        "cap": 70
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Hunter",
+        "cap": 70
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_defender_of_varrock"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_the_path_of_glouphrie"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_fight_arena"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_dream_mentor"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_the_hand_in_the_sand"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_wanted"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_temple_of_the_eye"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_tears_of_guthix"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_nature_spirit"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_a_tail_of_two_cats"
+      }
+    ],
+    "meta": {
+      "members": true,
+      "difficulty": "Grandmaster",
+      "questPoints": 5,
+      "url": "https://oldschool.runescape.wiki/w/While_Guthix_Sleeps"
+    }
+  },
+  {
+    "id": "quest_the_path_of_glouphrie",
+    "type": "QUEST",
+    "title": "The Path of Glouphrie",
+    "description": "Complete the quest: The Path of Glouphrie.",
+    "weight": 8,
+    "requires": [
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_the_eyes_of_glouphrie"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_waterfall_quest"
+      },
+      {
+        "kind": "CARD_COMPLETED",
+        "cardId": "quest_tree_gnome_village"
+      },
+      {
+        "kind":"SKILL_CAP_AT_LEAST",
+        "skill": "Thieving",
+        "cap": 60
+      },
+         {
+        "kind":"SKILL_CAP_AT_LEAST",
+        "skill": "Agility",
+        "cap": 50
+      }
+    ],
+    "meta": {
+      "members": true,
+      "difficulty": "Experienced",
+      "questPoints": 2,
+      "url": "https://oldschool.runescape.wiki/w/The_Path_of_Glouphrie"
+    }
+  },
+  {
+    "id": "quest_tears_of_guthix",
+    "type": "QUEST",
+    "title": "Tears of Guthix",
+    "description": "Complete the quest: Tears of Guthix.",
+    "weight": 4,
+    "requires": [
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Firemaking",
+        "cap": 50
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Crafting",
+        "cap": 20
+      },
+      {
+        "kind": "SKILL_CAP_AT_LEAST",
+        "skill": "Mining",
+        "cap": 20
+      }
+    ],
+    "meta": {
+      "members": true,
+      "difficulty": "Intermediate",
+      "questPoints": 1,
+      "url": "https://oldschool.runescape.wiki/w/Tears_of_Guthix"
+    }
+  },
+  {
+    "id": "quest_the_ides_of_milk",
+    "type": "QUEST",
+    "title": "The Ides of Milk",
+    "description": "Complete the quest: The Ides of Milk.",
+    "weight": 15,
+    "requires": [],
+    "meta": {
+      "members": true,
+      "difficulty": "Novice",
+      "questPoints": 1,
+      "url": "https://oldschool.runescape.wiki/w/The_Ides_of_Milk"
     }
   },
   {
@@ -4218,7 +4531,13 @@
         "skill": "Agility",
         "cap": 40
       }
-    ]
+    ],
+    "meta": {
+      "members": true,
+      "difficulty": "Intermediate",
+      "questPoints": 2,
+      "url": "https://oldschool.runescape.wiki/w/Death_on_the_Isle"
+    }
   },
   {
     "id": "quest_defender_of_varrock",

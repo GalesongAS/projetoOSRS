@@ -21,6 +21,7 @@ from app_constants import (
     PANEL_INNER,
     QUEST_GREEN,
     QUEST_RED,
+    QUESTS_PATH,
     QUEST_YELLOW,
     SAVE_DIR,
     SAVE_PATH,
@@ -146,9 +147,13 @@ def main(page: ft.Page):
 
     config = read_json(CONFIG_PATH)
     all_cards = read_json(CARDS_PATH)
+    all_quest_cards = read_json(QUESTS_PATH)
     page.fonts = {"OSRS": "fonts/RunescapeChat.ttf"}
     page.theme = ft.Theme(font_family="OSRS")
     cards_by_id = {c["id"]: c for c in all_cards if isinstance(c, dict) and "id" in c}
+    for c in all_quest_cards:
+        if isinstance(c, dict) and "id" in c:
+            cards_by_id[c["id"]] = c
 
     page.title = "RuneCards"
     page.bgcolor = OSRS_BG
@@ -1025,12 +1030,15 @@ def main(page: ft.Page):
         completed = set(state["completedCardIds"])
 
         eligible = []
-        for c in all_cards:
-            if (not is_repeatable(c)) and (c["id"] in obtained or c["id"] in completed):
-                continue
-            if not check_requires(state, c):
-                continue
-            eligible.append(c)
+        for source in (all_cards, all_quest_cards):
+            for c in source:
+                if (not is_repeatable(c)) and (
+                    c["id"] in obtained or c["id"] in completed
+                ):
+                    continue
+                if not check_requires(state, c):
+                    continue
+                eligible.append(c)
 
         if not eligible:
             snack("No eligible cards left.")
@@ -1478,33 +1486,15 @@ def main(page: ft.Page):
             nonlocal pool
             pool = [x for x in pool if x["id"] != picked_id]
 
-        # If drawing 3+ and there are non-quests available, guarantee at least 1 non-quest
-        if draw_n >= 3:
-            nonquests = [c for c in pool if c.get("type") != "QUEST"]
-            if nonquests:
-                first = weighted_pick(nonquests)
-                options.append(first)
-                remove_from_pool(first["id"])
-
-        # Allow quests, but try to keep at least 1 slot for a non-quest if possible
-        max_quests_if_possible = draw_n - 1
+        # If any eligible quest exists, guarantee at least one quest in the pack.
+        quests = [c for c in pool if c.get("type") == "QUEST"]
+        if quests:
+            first = weighted_pick(quests)
+            options.append(first)
+            remove_from_pool(first["id"])
 
         while len(options) < draw_n and pool:
-            quest_count = sum(1 for o in options if o.get("type") == "QUEST")
-            nonquests_left = [c for c in pool if c.get("type") != "QUEST"]
-
-            # If we already have "too many quests" and we still have non-quests, force a non-quest
-            if nonquests_left and quest_count >= max_quests_if_possible:
-                pick = weighted_pick(nonquests_left)
-            else:
-                pick = weighted_pick(pool)
-                if (
-                    pick.get("type") == "QUEST"
-                    and nonquests_left
-                    and quest_count >= max_quests_if_possible
-                ):
-                    pick = weighted_pick(nonquests_left)
-
+            pick = weighted_pick(pool)
             options.append(pick)
             remove_from_pool(pick["id"])
 
@@ -1514,7 +1504,7 @@ def main(page: ft.Page):
     quest_filter = {"mode": "ALL"}  # ALL | ACTIVE | COMPLETE | INCOMPLETE
 
     def all_quests():
-        qs = [c for c in all_cards if c.get("type") == "QUEST"]
+        qs = [c for c in all_quest_cards if c.get("type") == "QUEST"]
         qs.sort(key=lambda x: x.get("title", "").lower())
         return qs
 

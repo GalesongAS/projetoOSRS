@@ -1,5 +1,5 @@
 {
-  "packChancePerSlayerTask": 0.25,
+  "packChancePerSlayerTask": 0.35,
   "cardsPerPack": 4,
   "startingCaps": {
     "Attack": 99,
