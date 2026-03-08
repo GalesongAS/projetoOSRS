@@ -54,7 +54,8 @@ def gate_satisfied(state):
     if g.get("kind") == "REACH_LEVEL":
         skill = g["skill"]
         target = int(g["level"])
-        cur = int(state["reachedLevels"].get(skill, 1))
+        # In this app model, unlocked cap represents available level/content.
+        cur = int(state.get("skillCaps", {}).get(skill, 1))
         return cur >= target
     return True
 

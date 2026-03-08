@@ -2,6 +2,7 @@ import secrets
 import os
 import flet as ft
 from datetime import datetime
+import traceback
 
 from app_constants import (
     ACCENT,
@@ -1218,113 +1219,11 @@ def main(page: ft.Page):
             cap_i = int(cap)
             if cap_i >= 99:
                 continue
-            reached_i = max(
-                1, min(cap_i, int(state.get("reachedLevels", {}).get(skill, 1)))
-            )
-            items.append((skill, cap_i, reached_i))
+            items.append((skill, cap_i))
         items.sort(key=lambda x: x[0].lower())
         return items
 
-    def set_reached_level(skill: str, level: int):
-        cap = max(1, int(state.get("skillCaps", {}).get(skill, 1)))
-        state.setdefault("reachedLevels", {})[skill] = max(1, min(cap, int(level)))
-        save()
-        refresh()
-        render_pack_from_state()
-
-    def open_skill_level_window(skill: str):
-        cap = max(1, int(state.get("skillCaps", {}).get(skill, 1)))
-        current = max(1, min(cap, int(state.get("reachedLevels", {}).get(skill, 1))))
-
-        dlg = ft.AlertDialog(modal=True)
-        value_text = ft.Text(
-            f"Reached level: {current}/{cap}",
-            color=TEXT_MAIN,
-            size=16,
-            weight=ft.FontWeight.BOLD,
-        )
-
-        def sync(delta: int = 0, set_cap: bool = False):
-            nonlocal current
-            current = cap if set_cap else max(1, min(cap, current + delta))
-            value_text.value = f"Reached level: {current}/{cap}"
-            page.update()
-
-        def save_level(_=None):
-            set_reached_level(skill, current)
-            close_dialog(dlg)
-
-        dlg.content = ft.Container(
-            width=360,
-            bgcolor=PANEL_BG,
-            border=ft.Border.all(1, BORDER_DARK),
-            border_radius=14,
-            padding=12,
-            content=ft.Column(
-                tight=True,
-                spacing=10,
-                controls=[
-                    ft.Row(
-                        alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
-                        controls=[
-                            ft.Text(
-                                skill,
-                                size=18,
-                                weight=ft.FontWeight.BOLD,
-                                color=TEXT_MAIN,
-                            ),
-                            ft.Container(
-                                padding=6,
-                                border_radius=8,
-                                border=ft.Border.all(1, BORDER_LIGHT),
-                                bgcolor="#2b241a",
-                                on_click=lambda e: close_dialog(dlg),
-                                content=ft.Text(
-                                    "X", color=TEXT_MAIN, weight=ft.FontWeight.BOLD
-                                ),
-                            ),
-                        ],
-                    ),
-                    ft.Container(
-                        bgcolor=PANEL_INNER,
-                        border=ft.Border.all(1, BORDER_LIGHT),
-                        border_radius=12,
-                        padding=12,
-                        content=ft.Column(
-                            tight=True,
-                            spacing=10,
-                            controls=[
-                                value_text,
-                                ft.Row(
-                                    alignment=ft.MainAxisAlignment.CENTER,
-                                    spacing=10,
-                                    controls=[
-                                        osrs_button("-1", lambda e: sync(-1)),
-                                        osrs_button("+1", lambda e: sync(1)),
-                                        osrs_button(
-                                            "Set to cap",
-                                            lambda e: sync(set_cap=True),
-                                        ),
-                                    ],
-                                ),
-                                ft.Text(
-                                    "Track the highest level you have actually reached.",
-                                    color=TEXT_DIM,
-                                    size=11,
-                                ),
-                            ],
-                        ),
-                    ),
-                    ft.Row(
-                        alignment=ft.MainAxisAlignment.END,
-                        controls=[osrs_button("Save", save_level, primary=True)],
-                    ),
-                ],
-            ),
-        )
-        open_dialog(dlg)
-
-    def skill_tile(skill: str, cap: int, reached: int):
+    def skill_tile(skill: str, cap: int):
         icon_rel = f"skills/{skill.lower()}.png"
         has_icon = asset_exists(icon_rel)
 
@@ -1362,24 +1261,12 @@ def main(page: ft.Page):
             ),
         )
 
-        reached_badge = ft.Container(
-            padding=ft.Padding.symmetric(horizontal=6, vertical=2),
-            bgcolor="#1f2418",
-            border=ft.Border.all(1, BORDER_LIGHT),
-            border_radius=6,
-            content=ft.Text(
-                str(reached), size=12, weight=ft.FontWeight.BOLD, color=QUEST_GREEN
-            ),
-        )
-
         return ft.Container(
             width=84,
             height=82,
             border_radius=8,
             bgcolor="#1a1510",
             border=ft.Border.all(1, BORDER_LIGHT),
-            on_click=(lambda e: open_skill_level_window(skill)) if cap > 1 else None,
-            tooltip=("Click to update reached level" if cap > 1 else None),
             content=ft.Stack(
                 controls=[
                     ft.Container(expand=True, alignment=ALIGN_CENTER, content=icon),
@@ -1396,21 +1283,12 @@ def main(page: ft.Page):
                         content=cap_badge,
                         visible=(cap > 1),
                     ),
-                    ft.Container(
-                        expand=True,
-                        alignment=ALIGN_BOTTOM_LEFT,
-                        padding=6,
-                        content=reached_badge,
-                        visible=(cap > 1),
-                    ),
                 ]
             ),
         )
 
     def open_skills_window(_):
-        tiles = [
-            skill_tile(skill, cap, reached) for skill, cap, reached in tracked_skills()
-        ]
+        tiles = [skill_tile(skill, cap) for skill, cap in tracked_skills()]
 
         if hasattr(ft, "GridView"):
             grid = ft.GridView(
@@ -1466,7 +1344,7 @@ def main(page: ft.Page):
                         content=grid_content,
                     ),
                     ft.Text(
-                        "Top-right is unlock cap. Bottom-left is your reached level.",
+                        "Top-right number is your unlocked cap for that skill.",
                         color=TEXT_DIM,
                         size=11,
                     ),
@@ -1685,19 +1563,41 @@ def main(page: ft.Page):
         open_dialog(dlg)
 
     def complete_current_card(_):
-        cid = state.get("activeCardId")
-        if not cid:
-            snack("No active card.")
-            return
-        if not gate_satisfied(state):
-            snack(gate_amount_text(state.get("activeGate")) or "Gate not satisfied.")
-            return
-        card = cards_by_id.get(cid, {"id": cid, "type": "?"})
-        log_completed(card)
-        complete_active_card(state, repeatable=is_repeatable(card))
-        save()
-        refresh()
-        snack("Completed!")
+        try:
+            cid = state.get("activeCardId")
+            if not cid:
+                msg = "No active card."
+                snack(msg)
+                set_status(msg, TEXT_DIM)
+                return
+            if not gate_satisfied(state):
+                msg = gate_amount_text(state.get("activeGate")) or "Gate not satisfied."
+                snack(msg)
+                set_status(msg, TEXT_DIM)
+                return
+
+            card = cards_by_id.get(cid, {"id": cid, "type": "?"})
+            log_completed(card)
+            completed = complete_active_card(state, repeatable=is_repeatable(card))
+
+            if not completed:
+                msg = f"Could not complete active card: {cid}"
+                print(msg)
+                snack("Could not complete task. Check terminal for details.")
+                set_status(msg, QUEST_RED)
+                return
+
+            save()
+            refresh()
+            snack("Completed!")
+            set_status(
+                f"Completed: {card.get('title', cid)}",
+                QUEST_GREEN,
+            )
+        except Exception:
+            traceback.print_exc()
+            snack("Error while completing task. Check terminal for details.")
+            set_status("Task completion failed. See terminal traceback.", QUEST_RED)
 
     def open_slayer_masters_window(_):
         dlg = ft.AlertDialog(modal=True)

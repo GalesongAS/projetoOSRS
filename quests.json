@@ -500,7 +500,7 @@
     "type": "QUEST",
     "title": "Bone Voyage",
     "description": "Complete the quest: Bone Voyage.",
-    "weight": 15,
+    "weight": 5,
     "requires": [
       {
         "kind": "CARD_COMPLETED",
